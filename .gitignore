@@ -1,3 +1,13 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+
 # Built application files
 *.apk
 *.ap_
@@ -35,21 +45,59 @@ captures/
 # Intellij
 *.iml
 .idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/libraries
 
 # Keystore files
 *.jks
+certificates/
 
-# External native build folder generated in Android Studio 2.2 and later
-.externalNativeBuild
+# More miscellaneous stuff
+.DS_Store
+Thumbs.db
+TODO.txt
+import-summary.txt
+.gradle
+bin/
+gen/
+local.properties
+/.idea
+.DS_Store
+build/
+.gradle/
+*.apk
+*.ap_
+*.dex
+*.class
+proguard/
+.idea
+*.iml
+*.yml
+!.travis.yml
+target
+Thumbs.db
+*.swp
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+# Generated files
+bin/
+gen/
 
-# Freeline
-freeline.py
-freeline/
-freeline_project_description.json
+# Gradle files
+.gradle/
+build/
+gradle.properties
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Intellij project files
+*.iws
+.idea/tasks.xml
+.idea
+
+*.iml
+
+# OS
+.DS_Store
+
+# Api key
+app/src/main/res/values/api_key.xml
+
