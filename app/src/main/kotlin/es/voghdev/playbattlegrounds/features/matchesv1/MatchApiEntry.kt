@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matches
+package es.voghdev.playbattlegrounds.features.matchesv1
 
 class MatchApiEntry(
         val id: String,

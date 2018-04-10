@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PlayBattlegrounds</string>
+    <string name="intro_title">Hi noob</string>
+    <string name="intro_subtitle">What\'s your PUBG account?</string>
+    <string name="accept">Accept</string>
+    <string name="user_name_hint">e.g. JohnDoe123</string>
 </resources>

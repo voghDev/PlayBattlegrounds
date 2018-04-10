@@ -1,4 +1,4 @@
-package es.voghdev.playbattlegrounds.features.matches
+package es.voghdev.playbattlegrounds.features.matchesv1
 
 class AssetApiEntry(
         val id: String,
