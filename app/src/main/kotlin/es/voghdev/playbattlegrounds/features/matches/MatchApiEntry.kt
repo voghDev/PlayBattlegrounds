@@ -15,8 +15,6 @@
  */
 package es.voghdev.playbattlegrounds.features.matches
 
-import es.voghdev.playbattlegrounds.features.matches.AssetApiEntry
-
 class MatchApiEntry(
         val id: String,
         val createdAt: String,
