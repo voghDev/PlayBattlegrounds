@@ -23,5 +23,6 @@ class MatchApiEntry(
         val patchVersion: String,
         val titleId: String,
         val shardId: String,
-        val assets: List<AssetApiEntry>
+        val assets: List<AssetApiEntry>,
+        val rosters: List<RosterApiEntry>
 )

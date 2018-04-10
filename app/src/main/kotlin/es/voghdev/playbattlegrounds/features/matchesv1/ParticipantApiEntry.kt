@@ -15,9 +15,9 @@
  */
 package es.voghdev.playbattlegrounds.features.matchesv1
 
-data class MatchByIdRequest(
-        val platform: String,
-        val region: String,
-        val apiKey: String,
-        val id: String
+class ParticipantApiEntry(
+        val id: String,
+        val description: String,
+        val actor: String,
+        val shardId: String
 )
