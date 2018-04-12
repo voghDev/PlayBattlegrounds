@@ -101,3 +101,4 @@ local.properties
 # Api key
 app/src/main/res/values/api_key.xml
 
+pubg-api.properties
