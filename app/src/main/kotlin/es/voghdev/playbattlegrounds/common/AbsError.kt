@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.usecase
+package es.voghdev.playbattlegrounds.common
 
-import arrow.core.Either
-import es.voghdev.playbattlegrounds.common.AbsError
-import es.voghdev.playbattlegrounds.features.players.model.Player
-
-interface GetPlayerByName {
-    fun getPlayerByName(name: String): Either<Player, AbsError>
-}
+data class AbsError(val message: String)

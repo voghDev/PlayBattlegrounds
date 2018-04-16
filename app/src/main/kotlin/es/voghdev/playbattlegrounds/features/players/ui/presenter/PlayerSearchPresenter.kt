@@ -15,18 +15,34 @@
  */
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
+import arrow.core.Either
+import arrow.core.left
 import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 
-class PlayerSearchPresenter(val resLocator: ResLocator) :
+class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
 
     }
 
-    interface MVPView {
+    fun onSendButtonClicked(playerName: String) {
+        val result = getPlayerByName.getPlayerByName(playerName)
+        when(result) {
+            is Either.Left -> {
+                view?.showPlayerName(result.a.name)
+            }
+            is Either.Right -> {
+                view?.showError(result.b.message)
+            }
+        }
+    }
 
+    interface MVPView {
+        fun showPlayerName(name: String)
+        fun showError(message: String)
     }
 
     interface Navigator {
