@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.api.model
+package es.voghdev.chucknorrisjokes.datasource.api
 
-class PlayerByIdApiResponse(
-        val data: List<PlayerByIdApiEntry>?,
-        val links: LinksApiEntry,
-        val meta: MetaApiEntry?
-) {
-    fun hasData(): Boolean = data?.size ?: 0 > 0
+interface ApiRequest {
+    fun getEndPoint(): String {
+        return "http://api.playbattlegrounds.com/"
+    }
 }

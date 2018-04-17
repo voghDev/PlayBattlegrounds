@@ -16,7 +16,6 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import arrow.core.Either
-import arrow.core.left
 import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
