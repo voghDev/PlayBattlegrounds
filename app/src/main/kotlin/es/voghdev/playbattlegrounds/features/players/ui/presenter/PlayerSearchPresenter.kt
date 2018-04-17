@@ -19,6 +19,7 @@ import arrow.core.Either
 import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import org.jetbrains.anko.doAsync
 
 class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
@@ -27,9 +28,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     }
 
-    fun onSendButtonClicked(playerName: String) {
+    fun onSendButtonClicked(playerName: String) = doAsync {
         val result = getPlayerByName.getPlayerByName(playerName)
-        when(result) {
+        when (result) {
             is Either.Left -> {
                 view?.showPlayerName(result.a.name)
             }
