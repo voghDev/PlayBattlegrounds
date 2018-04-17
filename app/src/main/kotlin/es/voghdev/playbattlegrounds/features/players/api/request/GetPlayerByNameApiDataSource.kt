@@ -53,7 +53,7 @@ class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
             if (rsp?.body()?.hasData() == true) {
                 return Either.left(rsp?.body()?.data?.first()?.toDomain()!!)
             } else if (rsp?.errorBody() != null) {
-                val error = rsp?.errorBody().string()
+                val error = rsp?.errorBody()?.string()!!
                 return Either.right(AbsError(error))
             }
         } catch (e: JsonSyntaxException) {
