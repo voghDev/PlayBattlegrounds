@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds
+package es.voghdev.playbattlegrounds.onboarding
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 
-class MainActivity : AppCompatActivity() {
+class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         btn_send.setOnClickListener {

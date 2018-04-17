@@ -8,6 +8,7 @@ import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
+import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.runBlocking
 
@@ -34,11 +35,11 @@ class PlayerSearchActivity : BaseActivity(), PlayerSearchPresenter.MVPView, Play
         return R.layout.activity_player_search
     }
 
-    override fun showPlayerName(name: String) {
+    override fun showPlayerName(name: String) = ui {
         tv_player_name.text = name
     }
 
-    override fun showError(message: String) {
+    override fun showError(message: String) = ui {
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
         ColoredSnackbar.alertBold(snackbar).show()

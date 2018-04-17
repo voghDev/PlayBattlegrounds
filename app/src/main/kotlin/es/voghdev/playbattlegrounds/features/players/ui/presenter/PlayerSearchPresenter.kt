@@ -28,16 +28,14 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     }
 
-    fun onSendButtonClicked(playerName: String) {
-        doAsync {
-            val result = getPlayerByName.getPlayerByName(playerName)
-            when (result) {
-                is Either.Left -> {
-                    view?.showPlayerName(result.a.name)
-                }
-                is Either.Right -> {
-                    view?.showError(result.b.message)
-                }
+    fun onSendButtonClicked(playerName: String) = doAsync {
+        val result = getPlayerByName.getPlayerByName(playerName)
+        when (result) {
+            is Either.Left -> {
+                view?.showPlayerName(result.a.name)
+            }
+            is Either.Right -> {
+                view?.showError(result.b.message)
             }
         }
     }
