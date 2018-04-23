@@ -6,7 +6,7 @@ import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
-import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
+import es.voghdev.playbattlegrounds.features.players.mock.GetPlayerByNameMockDataSource
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
@@ -18,7 +18,7 @@ class PlayerSearchActivity : BaseActivity(), PlayerSearchPresenter.MVPView, Play
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = PlayerSearchPresenter(AndroidResLocator(this), GetPlayerByNameApiDataSource())
+        presenter = PlayerSearchPresenter(AndroidResLocator(this), GetPlayerByNameMockDataSource())
         presenter?.view = this
         presenter?.navigator = this
 

@@ -15,8 +15,9 @@
  */
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
-import arrow.core.Either
 import com.appandweb.weevento.ui.presenter.Presenter
+import es.voghdev.playbattlegrounds.common.Fail
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.jetbrains.anko.doAsync
@@ -31,13 +32,19 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     fun onSendButtonClicked(playerName: String) = doAsync {
         val result = getPlayerByName.getPlayerByName(playerName)
         when (result) {
-            is Either.Left -> {
+            is Ok -> {
                 view?.showPlayerName(result.a.name)
+
+                requestPlayerMatches(playerName)
             }
-            is Either.Right -> {
+            is Fail -> {
                 view?.showError(result.b.message)
             }
         }
+    }
+
+    private fun requestPlayerMatches(playerName: String) {
+
     }
 
     interface MVPView {
