@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.api.model
+package es.voghdev.playbattlegrounds.common
 
-class PlayerByIdApiResponse(
-        val data: List<PlayerByIdApiEntry>?,
-        val links: LinksApiEntry,
-        val meta: MetaApiEntry?
-) {
-    fun hasData(): Boolean = data?.size ?: 0 > 0
-}
+data class AbsError(val message: String)

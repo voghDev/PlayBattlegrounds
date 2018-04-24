@@ -4,4 +4,5 @@
     <string name="intro_subtitle">What\'s your PUBG account?</string>
     <string name="accept">Accept</string>
     <string name="user_name_hint">e.g. JohnDoe123</string>
+    <string name="search_box_hint">Enter user name</string>
 </resources>

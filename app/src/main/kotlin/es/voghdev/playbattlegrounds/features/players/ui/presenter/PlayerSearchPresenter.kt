@@ -16,17 +16,40 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import com.appandweb.weevento.ui.presenter.Presenter
+import es.voghdev.playbattlegrounds.common.Fail
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import org.jetbrains.anko.doAsync
 
-class PlayerSearchPresenter(val resLocator: ResLocator) :
+class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
 
     }
 
-    interface MVPView {
+    fun onSendButtonClicked(playerName: String) = doAsync {
+        val result = getPlayerByName.getPlayerByName(playerName)
+        when (result) {
+            is Ok -> {
+                view?.showPlayerName(result.a.name)
 
+                requestPlayerMatches(playerName)
+            }
+            is Fail -> {
+                view?.showError(result.b.message)
+            }
+        }
+    }
+
+    private fun requestPlayerMatches(playerName: String) {
+
+    }
+
+    interface MVPView {
+        fun showPlayerName(name: String)
+        fun showError(message: String)
     }
 
     interface Navigator {

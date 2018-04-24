@@ -16,5 +16,21 @@
 package es.voghdev.playbattlegrounds.common
 
 import android.app.Application
+import android.content.Context
+import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
+import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.players.mock.GetPlayerByNameMockDataSource
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.singleton
 
-class App : Application()
+class App : Application(), KodeinAware {
+    override val kodein = Kodein {
+        bind<GetPlayerByName>() with singleton { GetPlayerByNameMockDataSource() }
+        bind<ResLocator>() with singleton { AndroidResLocator(applicationContext) }
+    }
+}
+
+fun Context.asApp(): App = this.applicationContext as App

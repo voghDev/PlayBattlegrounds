@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds
+package es.voghdev.playbattlegrounds.common
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.startActivity
+import arrow.core.Either
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        btn_send.setOnClickListener {
-            startActivity<PlayerSearchActivity>()
-        }
-    }
-}
+typealias Ok<A, B> = Either.Left<A, B>
+typealias Fail<A, B> = Either.Right<A, B>

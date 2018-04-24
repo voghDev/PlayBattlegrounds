@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.api.model
+package es.voghdev.chucknorrisjokes.datasource.api.model
 
-class PlayerByIdApiResponse(
-        val data: List<PlayerByIdApiEntry>?,
-        val links: LinksApiEntry,
-        val meta: MetaApiEntry?
-) {
-    fun hasData(): Boolean = data?.size ?: 0 > 0
+import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface PlayerService {
+    @GET("shards/pc-eu/players")
+    fun getPlayerByName(@Query("filter{playerNames}") playerName: String): Call<PlayerByIdApiResponse>
 }
