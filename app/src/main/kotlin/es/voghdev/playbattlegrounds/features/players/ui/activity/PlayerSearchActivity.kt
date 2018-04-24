@@ -4,21 +4,30 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
-import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
+import es.voghdev.playbattlegrounds.common.asApp
+import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
-import es.voghdev.playbattlegrounds.features.players.mock.GetPlayerByNameMockDataSource
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.runBlocking
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
 
-class PlayerSearchActivity : BaseActivity(), PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator {
+class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator {
+    override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
+
+    val getPlayerByNameDataSource: GetPlayerByName by instance()
+    val resLocator: ResLocator by instance()
+
     var presenter: PlayerSearchPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = PlayerSearchPresenter(AndroidResLocator(this), GetPlayerByNameMockDataSource())
+        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource)
         presenter?.view = this
         presenter?.navigator = this
 
