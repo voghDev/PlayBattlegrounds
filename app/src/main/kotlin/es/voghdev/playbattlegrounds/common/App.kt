@@ -16,11 +16,15 @@
 package es.voghdev.playbattlegrounds.common
 
 import android.app.Application
+import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.singleton
 
 class App : Application(), KodeinAware {
     override val kodein = Kodein {
-
+        bind<GetPlayerByName>() with singleton { GetPlayerByNameApiDataSource() }
     }
 }
