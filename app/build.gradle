@@ -20,6 +20,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        prod {
+            Properties prop = new Properties();
+            prop.load(project.rootProject.file('pubg-api.properties').newDataInputStream())
+            def apiKey = prop.get("apiKey", null)
+            if (apiKey == null)
+                throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
+
+            buildConfigField("String", "PUBGApiKey", apiKey)
+        }
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
