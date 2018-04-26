@@ -32,7 +32,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
-    override fun getPlayerByName(name: String): Either<Player, AbsError> {
+    override fun getPlayerByName(name: String): Either<AbsError, Player> {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG)
             builder.addInterceptor(LogJsonInterceptor())
@@ -55,15 +55,15 @@ class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
             val rsp: Response<PlayerByIdApiResponse>? = call.execute()
 
             if (rsp?.body()?.hasData() == true) {
-                return Either.left(rsp?.body()?.data?.first()?.toDomain()!!)
+                return Either.right(rsp?.body()?.data?.first()?.toDomain()!!)
             } else if (rsp?.errorBody() != null) {
                 val error = rsp?.errorBody()?.string()!!
-                return Either.right(AbsError(error))
+                return Either.left(AbsError(error))
             }
         } catch (e: JsonSyntaxException) {
-            return Either.right(AbsError(e.message ?: "Unknown error parsing JSON"))
+            return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
         }
 
-        return Either.right(AbsError("Unknown error fetching player"))
+        return Either.left(AbsError("Unknown error fetching player"))
     }
 }

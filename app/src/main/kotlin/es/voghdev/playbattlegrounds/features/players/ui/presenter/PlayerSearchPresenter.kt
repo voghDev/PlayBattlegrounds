@@ -33,12 +33,12 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         val result = getPlayerByName.getPlayerByName(playerName)
         when (result) {
             is Ok -> {
-                view?.showPlayerName(result.a.name)
+                view?.showPlayerName(result.b.name)
 
                 requestPlayerMatches(playerName)
             }
             is Fail -> {
-                view?.showError(result.b.message)
+                view?.showError(result.a.message)
             }
         }
     }

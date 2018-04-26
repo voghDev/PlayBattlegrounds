@@ -21,8 +21,8 @@ import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 
 class GetPlayerByNameMockDataSource : GetPlayerByName {
-    override fun getPlayerByName(name: String): Either<Player, AbsError> =
-            Either.left(
+    override fun getPlayerByName(name: String): Either<AbsError, Player> =
+            Either.right(
                     Player(
                             "account.afbb96044b3b4e888e3cef65fcdaf898",
                             "eqs_insanity",
