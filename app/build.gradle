@@ -29,7 +29,7 @@ android {
             if (apiKey == null)
                 throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
 
-            buildConfigField("String", "PUBGApiKey", apiKey)
+            buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
         }
     }
 
