@@ -18,9 +18,13 @@ package es.voghdev.playbattlegrounds.datasource.api.model
 import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface PlayerService {
     @GET("shards/pc-eu/players")
-    fun getPlayerByName(@Query("filter{playerNames}") playerName: String): Call<PlayerByIdApiResponse>
+    fun getPlayerByName(
+            @Header("Authorization") apiKey: String,
+            @Header("accept") mediaType: String,
+            @Query("filter{playerNames}") playerName: String): Call<PlayerByIdApiResponse>
 }

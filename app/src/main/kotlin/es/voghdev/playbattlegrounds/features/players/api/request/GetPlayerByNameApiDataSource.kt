@@ -45,7 +45,11 @@ class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
 
         val service: PlayerService = retrofit.create(PlayerService::class.java)
 
-        val call: Call<PlayerByIdApiResponse> = service.getPlayerByName(name)
+        val call: Call<PlayerByIdApiResponse> = service.getPlayerByName(
+                "Bearer ${BuildConfig.PUBGApiKey}",
+                "application/vnd.api+json",
+                name
+        )
 
         try {
             val rsp: Response<PlayerByIdApiResponse>? = call.execute()

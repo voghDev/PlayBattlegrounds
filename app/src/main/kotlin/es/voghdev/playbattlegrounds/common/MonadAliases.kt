@@ -17,5 +17,5 @@ package es.voghdev.playbattlegrounds.common
 
 import arrow.core.Either
 
-typealias Ok<A, B> = Either.Left<A, B>
-typealias Fail<A, B> = Either.Right<A, B>
+typealias Ok<A, B> = Either.Left<A, B> // Ok is maybe not the best identifier, but arrow has its own Success
+typealias Fail<A, B> = Either.Right<A, B> // I don't like Fail neither, but arrow has its own Failure
