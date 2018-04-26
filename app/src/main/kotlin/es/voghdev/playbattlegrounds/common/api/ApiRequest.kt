@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.chucknorrisjokes.datasource.api
+package es.voghdev.playbattlegrounds.datasource.api
 
 interface ApiRequest {
     fun getEndPoint(): String {

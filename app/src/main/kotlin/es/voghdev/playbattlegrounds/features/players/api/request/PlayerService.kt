@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.chucknorrisjokes.datasource.api.model
+package es.voghdev.playbattlegrounds.datasource.api.model
 
 import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
 import retrofit2.Call
