@@ -29,7 +29,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByIdDataSource)
+        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -38,7 +38,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         }
 
         rootView.setOnClickListener {
-            presenter?.onSendButtonClicked("some_player")
+            presenter?.onSendButtonClicked(et_username.text.toString().trim())
         }
     }
 
