@@ -10,6 +10,7 @@ import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.runBlocking
@@ -37,8 +38,12 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
             presenter?.initialize()
         }
 
-        rootView.setOnClickListener {
+        btn_send.setOnClickListener {
             presenter?.onSendButtonClicked(et_username.text.toString().trim())
+        }
+
+        rootView.setOnClickListener {
+            presenter?.onRootViewClicked()
         }
     }
 
@@ -54,5 +59,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
         ColoredSnackbar.alertBold(snackbar).show()
+    }
+
+    override fun hideSoftKeyboard() = ui {
+        hideSoftKeyboard(rootView)
     }
 }

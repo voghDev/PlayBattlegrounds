@@ -29,11 +29,16 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     }
 
+    fun onRootViewClicked() {
+        view?.hideSoftKeyboard()
+    }
+
     fun onSendButtonClicked(playerName: String) = doAsync {
         val result = getPlayerByName.getPlayerByName(playerName.toLowerCase())
         when (result) {
             is Ok -> {
                 view?.showPlayerName(result.b.name)
+                view?.hideSoftKeyboard()
 
                 requestPlayerMatches(playerName)
             }
@@ -50,6 +55,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     interface MVPView {
         fun showPlayerName(name: String)
         fun showError(message: String)
+        fun hideSoftKeyboard()
     }
 
     interface Navigator {
