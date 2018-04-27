@@ -8,6 +8,7 @@ import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
@@ -19,6 +20,7 @@ import org.kodein.di.generic.instance
 class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
+    val getPlayerByIdDataSource: GetPlayerById by instance()
     val getPlayerByNameDataSource: GetPlayerByName by instance()
     val resLocator: ResLocator by instance()
 
@@ -27,7 +29,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource)
+        presenter = PlayerSearchPresenter(resLocator, getPlayerByIdDataSource)
         presenter?.view = this
         presenter?.navigator = this
 

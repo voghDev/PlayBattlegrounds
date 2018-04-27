@@ -26,5 +26,11 @@ interface PlayerService {
     fun getPlayerByName(
             @Header("Authorization") apiKey: String,
             @Header("accept") mediaType: String,
-            @Query("filter{playerNames}") playerName: String): Call<PlayerByIdApiResponse>
+            @Query("filter[playerNames]") playerName: String): Call<PlayerByIdApiResponse>
+
+    @GET("shards/pc-eu/players")
+    fun getPlayerById(
+            @Header("Authorization") apiKey: String,
+            @Header("accept") mediaType: String,
+            @Query("filter[playerIds]") playerName: String): Call<PlayerByIdApiResponse>
 }

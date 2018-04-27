@@ -19,10 +19,10 @@ import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import org.jetbrains.anko.doAsync
 
-class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName) :
+class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerById: GetPlayerById) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
@@ -30,7 +30,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     }
 
     fun onSendButtonClicked(playerName: String) = doAsync {
-        val result = getPlayerByName.getPlayerByName(playerName)
+        val result = getPlayerById.getPlayerById(playerName)
         when (result) {
             is Ok -> {
                 view?.showPlayerName(result.b.name)
