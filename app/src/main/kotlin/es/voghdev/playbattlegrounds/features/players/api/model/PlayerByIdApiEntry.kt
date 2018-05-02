@@ -21,7 +21,7 @@ class PlayerByIdApiEntry(
         val type: String,
         val id: String,
         val attributes: PlayerAttributesApiEntry,
-        val relationships: PlayerRelationshipsApiEntry,
+        val relationships: PlayerRelationshipsApiEntry?,
         val links: PlayerLinksApiEntry
 ) {
     fun toDomain(): Player {
@@ -30,6 +30,7 @@ class PlayerByIdApiEntry(
                 name = attributes.name,
                 patchVersion = attributes.patchVersion,
                 titleId = attributes.titleId,
+                matches = relationships?.matches?.data?.map { it.toDomain() } ?: emptyList(),
                 link = links.self
         )
     }

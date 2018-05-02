@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matches
+package es.voghdev.playbattlegrounds
 
-data class Match(
-        val id: String,
-        val date: Long = 0L,
-        val durationInSeconds: Int = 0
-)
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+class MatchDateTest {
+    @Test
+    fun `should parse match date in PUBG Api format`() {
+        val parsed = "2018-05-01T22:45:35Z".toDate("yyyy-MM-dd")
+
+        assertEquals(1525125600000L, parsed)
+    }
+}

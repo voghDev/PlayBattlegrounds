@@ -19,11 +19,13 @@ import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.toDate
 import org.jetbrains.anko.doAsync
 
-class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName) :
+class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
@@ -50,11 +52,23 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     }
 
     private fun requestPlayerMatches(player: Player) {
+        if (player.matches.isNotEmpty()) {
+            val result = getMatchById.getMatchById(player.matches.first().id)
+            when (result) {
+                is Ok ->
+                    view?.showLastMatchInfo("Last match: ${result.b.date.toDate()}")
+                is Fail -> {
+                    view?.showError(result.a.message)
+                }
+            }
 
+            // player.matches.forEach {  }
+        }
     }
 
     interface MVPView {
         fun showPlayerName(name: String)
+        fun showLastMatchInfo(text: String)
         fun showError(message: String)
         fun hideSoftKeyboard()
     }

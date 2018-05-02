@@ -7,8 +7,8 @@ import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
+import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
@@ -21,8 +21,8 @@ import org.kodein.di.generic.instance
 class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    val getPlayerByIdDataSource: GetPlayerById by instance()
     val getPlayerByNameDataSource: GetPlayerByName by instance()
+    val getMatchByIdDataSource: GetMatchById by instance()
     val resLocator: ResLocator by instance()
 
     var presenter: PlayerSearchPresenter? = null
@@ -30,7 +30,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource)
+        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, getMatchByIdDataSource)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -53,6 +53,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun showPlayerName(name: String) = ui {
         tv_player_name.text = name
+    }
+
+    override fun showLastMatchInfo(text: String) = ui {
+        tv_last_match.text = text
     }
 
     override fun showError(message: String) = ui {

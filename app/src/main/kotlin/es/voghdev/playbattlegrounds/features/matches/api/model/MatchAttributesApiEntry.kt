@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matches.api
+package es.voghdev.playbattlegrounds.features.matches.api.model
 
 class MatchAttributesApiEntry(
         val shardId: String,
