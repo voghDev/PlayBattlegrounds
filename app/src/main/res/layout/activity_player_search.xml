@@ -13,6 +13,8 @@
             android:id="@+id/et_username"
             style="@style/FullW"
             android:hint="@string/search_box_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:gravity="top|center_horizontal" />
 
     </android.support.design.widget.TextInputLayout>
