@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     android:background="@color/colorPrimaryDark">
 
     <LinearLayout
@@ -30,6 +31,8 @@
                 android:id="@+id/et_user"
                 style="@style/FullW"
                 android:gravity="top|center_horizontal"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:hint="@string/user_name_hint" />
 
         </android.support.design.widget.TextInputLayout>
