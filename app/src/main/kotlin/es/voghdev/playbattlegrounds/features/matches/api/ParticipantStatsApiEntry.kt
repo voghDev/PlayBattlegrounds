@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matches
+package es.voghdev.playbattlegrounds.features.matches.api
 
-class ParticipantAttributesApiEntry(
-        val stats: ParticipantStatsApiEntry?,
-        val actor: String,
-        val shardId: String
+class ParticipantStatsApiEntry(
+        val DBNOs: Int
 )

@@ -1,4 +1,4 @@
-package es.voghdev.playbattlegrounds.features.matches
+package es.voghdev.playbattlegrounds.features.matches.api
 
 class MatchByIdApiEntry(
         val type: String,

@@ -19,6 +19,7 @@ import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.jetbrains.anko.doAsync
 
@@ -40,7 +41,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
                 view?.showPlayerName(result.b.name)
                 view?.hideSoftKeyboard()
 
-                requestPlayerMatches(playerName)
+                requestPlayerMatches(result.b)
             }
             is Fail -> {
                 view?.showError(result.a.message)
@@ -48,7 +49,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         }
     }
 
-    private fun requestPlayerMatches(playerName: String) {
+    private fun requestPlayerMatches(player: Player) {
 
     }
 

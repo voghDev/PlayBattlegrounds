@@ -15,8 +15,6 @@
  */
 package es.voghdev.playbattlegrounds.features.matches
 
-class ParticipantByIdApiEntry(
-        val id: String,
-        val type: String,
-        val attributes: ParticipantAttributesApiEntry
+data class Match(
+        val id: String
 )
