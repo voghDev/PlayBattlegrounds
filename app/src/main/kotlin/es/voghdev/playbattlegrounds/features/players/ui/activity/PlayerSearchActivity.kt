@@ -2,6 +2,7 @@ package es.voghdev.playbattlegrounds.features.players.ui.activity
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.view.View.*
 import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
@@ -53,10 +54,12 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun showPlayerName(name: String) = ui {
         tv_player_name.text = name
+        tv_player_name.visibility = VISIBLE
     }
 
     override fun showLastMatchInfo(text: String) = ui {
         tv_last_match.text = text
+        tv_last_match.visibility = VISIBLE
     }
 
     override fun showError(message: String) = ui {
@@ -67,5 +70,19 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun hideSoftKeyboard() = ui {
         hideSoftKeyboard(rootView)
+    }
+
+    override fun showLoading() = ui {
+        btn_send.visibility = INVISIBLE
+        tv_last_match.visibility = INVISIBLE
+        tv_player_name.visibility = INVISIBLE
+
+        progressBar.visibility = VISIBLE
+    }
+
+    override fun hideLoading() = ui {
+        btn_send.visibility = VISIBLE
+
+        progressBar.visibility = GONE
     }
 }

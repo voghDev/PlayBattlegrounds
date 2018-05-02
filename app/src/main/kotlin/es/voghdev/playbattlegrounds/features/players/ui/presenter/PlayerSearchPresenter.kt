@@ -37,6 +37,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     }
 
     fun onSendButtonClicked(playerName: String) = doAsync {
+        view?.showLoading()
+
         val result = getPlayerByName.getPlayerByName(playerName.toLowerCase())
         when (result) {
             is Ok -> {
@@ -47,6 +49,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
             }
             is Fail -> {
                 view?.showError(result.a.message)
+                view?.hideLoading()
             }
         }
     }
@@ -55,14 +58,15 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         if (player.matches.isNotEmpty()) {
             val result = getMatchById.getMatchById(player.matches.first().id)
             when (result) {
-                is Ok ->
+                is Ok -> {
                     view?.showLastMatchInfo("Last match: ${result.b.date.toDate()}")
+                    view?.hideLoading()
+                }
                 is Fail -> {
                     view?.showError(result.a.message)
+                    view?.hideLoading()
                 }
             }
-
-            // player.matches.forEach {  }
         }
     }
 
@@ -71,6 +75,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         fun showLastMatchInfo(text: String)
         fun showError(message: String)
         fun hideSoftKeyboard()
+        fun showLoading()
+        fun hideLoading()
     }
 
     interface Navigator {
