@@ -14,6 +14,7 @@ class MatchByIdApiEntry(
         return Match(
                 id = id,
                 date = attributes?.createdAt?.toDate("yyyy-MM-dd") ?: 0L,
+                gameMode = attributes?.gameMode ?: "",
                 durationInSeconds = attributes?.duration ?: 0
         )
     }

@@ -19,10 +19,10 @@ import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
-import es.voghdev.playbattlegrounds.toDate
 import org.jetbrains.anko.doAsync
 
 class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById) :
@@ -56,17 +56,19 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     private fun requestPlayerMatches(player: Player) {
         if (player.matches.isNotEmpty()) {
-            val result = getMatchById.getMatchById(player.matches.first().id)
-            when (result) {
-                is Ok -> {
-                    view?.showLastMatchInfo("Last match: ${result.b.date.toDate()}")
-                    view?.hideLoading()
-                }
-                is Fail -> {
-                    view?.showError(result.a.message)
-                    view?.hideLoading()
+            var errors = 0
+            player.matches.subList(0, player.matches.size).take(5).forEach {
+                val result = getMatchById.getMatchById(it.id)
+                when (result) {
+                    is Ok ->
+                        view?.addMatch(result.b)
+                    is Fail ->
+                        ++errors
                 }
             }
+
+            if (errors > 0)
+                view?.showError("Could not load $errors matches")
         }
     }
 
@@ -74,6 +76,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         fun showPlayerName(name: String)
         fun showLastMatchInfo(text: String)
         fun showError(message: String)
+        fun addMatch(match: Match)
         fun hideSoftKeyboard()
         fun showLoading()
         fun hideLoading()

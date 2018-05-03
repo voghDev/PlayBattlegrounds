@@ -8,6 +8,7 @@ import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
+import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
@@ -84,5 +85,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         btn_send.visibility = VISIBLE
 
         progressBar.visibility = GONE
+    }
+
+    override fun addMatch(match: Match) = ui {
+
     }
 }
