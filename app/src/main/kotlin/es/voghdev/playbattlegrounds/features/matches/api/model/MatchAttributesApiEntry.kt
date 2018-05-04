@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.common
+package es.voghdev.playbattlegrounds.features.matches.api.model
 
-import arrow.core.Either
-
-typealias Ok<A, B> = Either.Right<A, B> // Ok is maybe not the best identifier, but arrow has its own Success
-typealias Fail<A, B> = Either.Left<A, B> // I don't like Fail neither, but arrow has its own Failure
+class MatchAttributesApiEntry(
+        val shardId: String,
+        val tags: String?,
+        val mapName: String,
+        val createdAt: String,
+        val gameMode: String,
+        val titleId: String,
+        val duration: Int
+)

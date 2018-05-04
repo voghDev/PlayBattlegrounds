@@ -19,37 +19,70 @@ import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.matches.Match
+import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.jetbrains.anko.doAsync
 
-class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName) :
+class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
 
     }
 
+    fun onRootViewClicked() {
+        view?.hideSoftKeyboard()
+    }
+
     fun onSendButtonClicked(playerName: String) = doAsync {
-        val result = getPlayerByName.getPlayerByName(playerName)
+        view?.showLoading()
+
+        val result = getPlayerByName.getPlayerByName(playerName.toLowerCase())
         when (result) {
             is Ok -> {
-                view?.showPlayerName(result.a.name)
+                view?.showPlayerName(result.b.name)
+                view?.hideSoftKeyboard()
 
-                requestPlayerMatches(playerName)
+                requestPlayerMatches(result.b)
             }
             is Fail -> {
-                view?.showError(result.b.message)
+                view?.showError(result.a.message)
+                view?.hideLoading()
             }
         }
     }
 
-    private fun requestPlayerMatches(playerName: String) {
+    private fun requestPlayerMatches(player: Player) {
+        if (player.matches.isNotEmpty()) {
+            var errors = 0
+            player.matches.subList(0, player.matches.size).take(5).forEach {
+                val result = getMatchById.getMatchById(it.id)
+                when (result) {
+                    is Ok -> {
+                        view?.addMatch(result.b)
+                    }
+                    is Fail ->
+                        ++errors
+                }
+            }
 
+            view?.hideLoading()
+
+            if (errors > 0)
+                view?.showError("Could not load $errors matches")
+        }
     }
 
     interface MVPView {
         fun showPlayerName(name: String)
+        fun showLastMatchInfo(text: String)
         fun showError(message: String)
+        fun addMatch(match: Match)
+        fun hideSoftKeyboard()
+        fun showLoading()
+        fun hideLoading()
     }
 
     interface Navigator {

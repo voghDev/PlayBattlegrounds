@@ -12,8 +12,10 @@
         <EditText
             android:id="@+id/et_username"
             style="@style/FullW"
+            android:gravity="top|center_horizontal"
             android:hint="@string/search_box_hint"
-            android:gravity="top|center_horizontal" />
+            android:imeOptions="actionDone"
+            android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -32,8 +34,33 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:gravity="center_horizontal"
-        android:textStyle="bold"
         android:text=""
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_last_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_player_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        android:text=""
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        style="@style/FullScreen"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/tv_last_match" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Element"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

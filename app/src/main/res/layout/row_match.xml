@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <ImageView
+        android:id="@+id/iv_map"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/Element"
+        android:layout_marginLeft="96dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tv_rank"
+        style="@style/Element"
+        android:layout_marginLeft="96dp"
+        android:layout_marginTop="48dp"
+        android:text="#1"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_kills"
+        style="@style/Element"
+        android:layout_marginLeft="136dp"
+        android:layout_marginTop="48dp"
+        android:text="0 Kills"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/tv_game_mode"
+        style="@style/Element"
+        android:layout_gravity="right"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="48dp"
+        android:gravity="right"
+        android:text="solo-fpp" />
+
+</FrameLayout>

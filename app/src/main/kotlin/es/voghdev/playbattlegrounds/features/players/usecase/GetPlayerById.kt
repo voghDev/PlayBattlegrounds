@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matchesv1
+package es.voghdev.playbattlegrounds.features.players.usecase
 
-data class MatchByIdRequest(
-        val platform: String,
-        val region: String,
-        val apiKey: String,
-        val id: String
-)
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.features.players.model.Player
+
+interface GetPlayerById {
+    fun getPlayerById(id: String): Either<AbsError, Player>
+}

@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matchesv1
+package es.voghdev.playbattlegrounds.features.matches
 
-class AssetApiEntry(
+data class Match(
         val id: String,
-        val createdAt: String,
-        val titleId: String,
-        val name: String,
-        val description: String,
-        val filename: String,
-        val contentType: String,
-        val URL: String,
-        val shardId: String
+        val date: Long = 0L,
+        val gameMode: String = "",
+        val map: String = "",
+        val durationInSeconds: Int = 0
 )

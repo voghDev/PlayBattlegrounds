@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.common
+package es.voghdev.playbattlegrounds
 
-import arrow.core.Either
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
-typealias Ok<A, B> = Either.Right<A, B> // Ok is maybe not the best identifier, but arrow has its own Success
-typealias Fail<A, B> = Either.Left<A, B> // I don't like Fail neither, but arrow has its own Failure
+class MatchDateTest {
+    @Test
+    fun `should parse match date in PUBG Api format`() {
+        val parsed = "2018-05-01T22:45:35Z".toDate("yyyy-MM-dd")
+
+        assertEquals(1525125600000L, parsed)
+    }
+}

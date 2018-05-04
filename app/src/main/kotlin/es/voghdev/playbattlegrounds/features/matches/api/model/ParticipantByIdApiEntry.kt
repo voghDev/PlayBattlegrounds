@@ -1,4 +1,3 @@
-package es.voghdev.playbattlegrounds.features.matchesv1
 /*
  * Copyright (C) 2018 Olmo Gallegos Hernández.
  *
@@ -14,9 +13,10 @@ package es.voghdev.playbattlegrounds.features.matchesv1
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package es.voghdev.playbattlegrounds.features.matches.api.model
 
-data class MatchesRequest(
-        val platform: String,
-        val region: String,
-        val apiKey: String
+class ParticipantByIdApiEntry(
+        val id: String,
+        val type: String,
+        val attributes: ParticipantAttributesApiEntry
 )

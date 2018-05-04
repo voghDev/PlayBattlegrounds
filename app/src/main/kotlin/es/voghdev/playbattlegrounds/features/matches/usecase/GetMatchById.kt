@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matchesv1
+package es.voghdev.playbattlegrounds.features.matches.usecase
 
-class RosterApiEntry(
-        val id: String,
-        val participants: List<ParticipantApiEntry>,
-        val won: String,
-        val shardId: String
-)
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.features.matches.Match
+
+interface GetMatchById {
+    fun getMatchById(id: String): Either<AbsError, Match>
+}

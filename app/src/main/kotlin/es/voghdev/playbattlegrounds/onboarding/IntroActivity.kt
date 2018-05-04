@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
+import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 
@@ -30,6 +31,10 @@ class IntroActivity : AppCompatActivity() {
 
         btn_send.setOnClickListener {
             startActivity<PlayerSearchActivity>()
+        }
+
+        rootView.setOnClickListener {
+            hideSoftKeyboard(et_user)
         }
     }
 }

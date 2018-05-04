@@ -13,16 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matchesv1
+package es.voghdev.playbattlegrounds.features.matches.api.model
 
-class MatchApiEntry(
-        val id: String,
-        val createdAt: String,
-        val duration: Int,
-        val gameMode: String,
-        val patchVersion: String,
-        val titleId: String,
-        val shardId: String,
-        val assets: List<AssetApiEntry>,
-        val rosters: List<RosterApiEntry>
+class ParticipantStatsApiEntry(
+        val DBNOs: Int
 )

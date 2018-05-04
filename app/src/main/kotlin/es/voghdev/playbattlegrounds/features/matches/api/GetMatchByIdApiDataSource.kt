@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.api.request
+package es.voghdev.playbattlegrounds.features.matches.api
 
 import arrow.core.Either
 import com.google.gson.JsonSyntaxException
@@ -22,18 +22,17 @@ import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
 import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
-import es.voghdev.playbattlegrounds.datasource.api.model.PlayerService
-import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
-import es.voghdev.playbattlegrounds.features.players.model.Player
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.matches.Match
+import es.voghdev.playbattlegrounds.features.matches.api.model.MatchByIdApiResponse
+import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
-    override fun getPlayerByName(name: String): Either<AbsError, Player> {
+class GetMatchByIdApiDataSource : GetMatchById, ApiRequest {
+    override fun getMatchById(id: String): Either<AbsError, Match> {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG)
             builder.addInterceptor(LogJsonInterceptor())
@@ -46,19 +45,20 @@ class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
                 .client(builder.build())
                 .build()
 
-        val service: PlayerService = retrofit.create(PlayerService::class.java)
+        val service: MatchService = retrofit.create(MatchService::class.java)
 
-        val call: Call<PlayerByIdApiResponse> = service.getPlayerByName(
+        val call: Call<MatchByIdApiResponse> = service.getMatchById(
                 "Bearer ${BuildConfig.PUBGApiKey}",
                 "application/vnd.api+json",
-                name
+                "pc-eu",
+                id
         )
 
         try {
-            val rsp: Response<PlayerByIdApiResponse>? = call.execute()
+            val rsp: Response<MatchByIdApiResponse>? = call.execute()
 
             if (rsp?.body()?.hasData() == true) {
-                return Either.right(rsp?.body()?.data?.first()?.toDomain()!!)
+                return Either.right(rsp?.body()?.data?.toDomain()!!)
             } else if (rsp?.errorBody() != null) {
                 val error = rsp?.errorBody()?.string()!!
                 return Either.left(AbsError(error))
@@ -67,6 +67,6 @@ class GetPlayerByNameApiDataSource : GetPlayerByName, ApiRequest {
             return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
         }
 
-        return Either.left(AbsError("Unknown error fetching player"))
+        return Either.left(AbsError("Unknown error fetching match"))
     }
 }
