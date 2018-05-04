@@ -19,5 +19,6 @@ data class Match(
         val id: String,
         val date: Long = 0L,
         val gameMode: String = "",
+        val map: String = "",
         val durationInSeconds: Int = 0
 )

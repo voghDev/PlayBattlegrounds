@@ -73,25 +73,23 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.7.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    // Kotlin
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16'
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.16"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-common:0.9.1a"
     testCompile "com.nhaarman:mockito-kotlin:1.4.0"
 
-    // Square
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
 
-    // Arrow
     compile 'io.arrow-kt:arrow-core:0.7.1'
 
-    // Kodein
     compile 'org.kodein.di:kodein-di-generic-jvm:5.0.0'
+
+    compile 'com.github.pedrovgs:renderers:3.4.0'
 
     ktlint "com.github.shyiko:ktlint:0.15.0"
 }

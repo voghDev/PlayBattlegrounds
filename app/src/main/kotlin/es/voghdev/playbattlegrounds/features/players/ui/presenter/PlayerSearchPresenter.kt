@@ -60,12 +60,15 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
             player.matches.subList(0, player.matches.size).take(5).forEach {
                 val result = getMatchById.getMatchById(it.id)
                 when (result) {
-                    is Ok ->
+                    is Ok -> {
                         view?.addMatch(result.b)
+                    }
                     is Fail ->
                         ++errors
                 }
             }
+
+            view?.hideLoading()
 
             if (errors > 0)
                 view?.showError("Could not load $errors matches")

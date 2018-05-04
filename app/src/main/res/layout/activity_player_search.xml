@@ -50,11 +50,17 @@
         android:textSize="15sp"
         android:textStyle="bold" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        style="@style/FullScreen"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/tv_last_match" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Element"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:visibility="gone" />
 
 </RelativeLayout>
