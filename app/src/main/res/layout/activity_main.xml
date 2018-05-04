@@ -37,6 +37,19 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tv_server"
+            style="@style/IntroSubtitle"
+            android:text="Server"
+            />
+
+        <Spinner
+            android:id="@+id/spn_server"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/servers"
+            />
+
         <Button
             android:id="@+id/btn_send"
             style="@style/IntroSendButton" />

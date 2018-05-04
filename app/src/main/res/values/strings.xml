@@ -1,4 +1,12 @@
 <resources>
+    <string-array name="servers">
+        <item>pc-eu</item>
+        <item>pc-na</item>
+        <item>pc-sa</item>
+        <item>pc-kr</item>
+        <item>pc-as</item>
+        <item>pc-oc</item>
+    </string-array>
     <string name="app_name">PlayBattlegrounds</string>
     <string name="intro_title">Hi noob</string>
     <string name="intro_subtitle">What\'s your PUBG account?</string>
