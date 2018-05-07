@@ -16,4 +16,4 @@ This is a small App that tries to work on the following aspects:
 [2]: https://github.com/arrow-kt/arrow
 [3]: https://github.com/shyiko/ktlint
 
-[appSample]: ./img/sample.git
+[appSample]: ./img/sample.gif
