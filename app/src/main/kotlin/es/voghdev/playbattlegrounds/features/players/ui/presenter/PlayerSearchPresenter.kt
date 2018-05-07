@@ -56,6 +56,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     private fun requestPlayerMatches(player: Player) {
         if (player.matches.isNotEmpty()) {
+            view?.clearList()
+
             var errors = 0
             player.matches.subList(0, player.matches.size).take(5).forEach {
                 val result = getMatchById.getMatchById(it.id)
@@ -82,6 +84,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         fun showPlayerName(name: String)
         fun showLastMatchInfo(text: String)
         fun showError(message: String)
+        fun clearList()
         fun addMatch(match: Match)
         fun hideSoftKeyboard()
         fun showLoading()

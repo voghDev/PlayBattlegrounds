@@ -99,6 +99,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         progressBar.visibility = GONE
     }
 
+    override fun clearList() = ui {
+        adapter?.clear()
+    }
+
     override fun addMatch(match: Match) = ui {
         adapter?.add(match)
 
