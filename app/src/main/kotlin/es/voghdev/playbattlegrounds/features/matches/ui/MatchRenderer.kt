@@ -86,7 +86,8 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
 
         tv_kills?.setTextColor(context.colorStateList(when (content?.numberOfKillsForCurrentPlayer) {
             0, 1 -> R.color.red
-            2, 3, 4, 5 -> R.color.green
+            2 -> R.color.colorPrimary
+            3, 4, 5 -> R.color.green
             else -> R.color.blue
         }))
     }
