@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootView"
     android:background="@color/colorPrimaryDark">
 
     <LinearLayout
@@ -31,24 +31,26 @@
                 android:id="@+id/et_user"
                 style="@style/FullW"
                 android:gravity="top|center_horizontal"
+                android:hint="@string/user_name_hint"
                 android:imeOptions="actionDone"
-                android:inputType="text"
-                android:hint="@string/user_name_hint" />
+                android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/tv_server"
             style="@style/IntroSubtitle"
-            android:text="Server"
-            />
+            android:text="@string/server_selection_message"
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/spn_server"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/servers"
-            />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:foregroundTint="@color/white"
+            android:entries="@array/servers" />
 
         <Button
             android:id="@+id/btn_send"

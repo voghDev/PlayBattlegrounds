@@ -13,4 +13,5 @@
     <string name="accept">Accept</string>
     <string name="user_name_hint">e.g. JohnDoe123</string>
     <string name="search_box_hint">Enter user name</string>
+    <string name="server_selection_message">What Server do you play in?</string>
 </resources>

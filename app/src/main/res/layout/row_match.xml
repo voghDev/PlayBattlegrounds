@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="16dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/iv_map"
@@ -44,5 +43,14 @@
         android:layout_marginTop="48dp"
         android:gravity="right"
         android:text="solo-fpp" />
+
+    <View
+        android:id="@+id/v_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="92dp"
+        android:background="@color/colorPrimaryDark" />
 
 </FrameLayout>
