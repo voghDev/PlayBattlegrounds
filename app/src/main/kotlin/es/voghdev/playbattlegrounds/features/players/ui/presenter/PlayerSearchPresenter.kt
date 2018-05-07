@@ -42,7 +42,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         val result = getPlayerByName.getPlayerByName(playerName)
         when (result) {
             is Ok -> {
-                view?.showPlayerName(result.b.name)
+                view?.showPlayerFoundMessage("Found: ${result.b.name}. Loading matches...")
                 view?.hideSoftKeyboard()
 
                 requestPlayerMatches(result.b)
@@ -81,8 +81,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     }
 
     interface MVPView {
-        fun showPlayerName(name: String)
-        fun showLastMatchInfo(text: String)
+        fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
         fun clearList()
         fun addMatch(match: Match)

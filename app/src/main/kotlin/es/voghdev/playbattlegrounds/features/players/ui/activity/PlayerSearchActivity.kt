@@ -65,14 +65,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         return R.layout.activity_player_search
     }
 
-    override fun showPlayerName(name: String) = ui {
-        tv_player_name.text = name
-        tv_player_name.visibility = VISIBLE
-    }
+    override fun showPlayerFoundMessage(message: String) = ui {
+        val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
-    override fun showLastMatchInfo(text: String) = ui {
-        tv_last_match.text = text
-        tv_last_match.visibility = VISIBLE
+        ColoredSnackbar.confirm(snackbar).show()
     }
 
     override fun showError(message: String) = ui {
@@ -87,20 +83,20 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun showLoading() = ui {
         btn_send.visibility = INVISIBLE
-        tv_last_match.visibility = INVISIBLE
-        tv_player_name.visibility = INVISIBLE
+        recyclerView.visibility = INVISIBLE
 
         progressBar.visibility = VISIBLE
     }
 
     override fun hideLoading() = ui {
         btn_send.visibility = VISIBLE
+        recyclerView.visibility = VISIBLE
 
         progressBar.visibility = GONE
     }
 
     override fun clearList() = ui {
-        adapter?.clear()
+        adapter
     }
 
     override fun addMatch(match: Match) = ui {

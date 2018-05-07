@@ -26,35 +26,11 @@
         android:layout_centerHorizontal="true"
         android:text="@string/search" />
 
-    <TextView
-        android:id="@+id/tv_player_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_send"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:gravity="center_horizontal"
-        android:text=""
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tv_last_match"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_player_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:gravity="center_horizontal"
-        android:text=""
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         style="@style/FullScreen"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/tv_last_match" />
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/btn_send" />
 
     <ProgressBar
         android:id="@+id/progressBar"
