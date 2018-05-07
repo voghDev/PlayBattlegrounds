@@ -21,15 +21,18 @@ import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.jetbrains.anko.doAsync
 
-class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById) :
+class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById, val getPlayerAccount: GetPlayerAccount) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
-
+        val account = getPlayerAccount.getPlayerAccount()
+        if(account.isNotEmpty())
+            view?.fillPlayerAccount(account)
     }
 
     fun onRootViewClicked() {
@@ -88,6 +91,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         fun hideSoftKeyboard()
         fun showLoading()
         fun hideLoading()
+        fun fillPlayerAccount(account: String)
     }
 
     interface Navigator {

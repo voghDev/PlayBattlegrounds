@@ -2,6 +2,7 @@ package es.voghdev.playbattlegrounds
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -49,3 +50,55 @@ fun String.toDate(format: String): Long {
 }
 
 fun Long.toDate(format: String = "yyyy/MM/dd") = SimpleDateFormat(format).format(this)
+
+fun Context.getPreferences(): SharedPreferences {
+    return this.getSharedPreferences("PlayBattlegroundsPrefs", 0)
+}
+
+fun Context.putPreference(key: String, value: Boolean) {
+    getPreferences().edit().putBoolean(key, value).apply()
+}
+
+fun Context.putPreference(key: String, value: String) {
+    getPreferences().edit().putString(key, value).apply()
+}
+
+fun Context.putPreference(key: String, value: Int) {
+    getPreferences().edit().putInt(key, value).apply()
+}
+
+fun Context.putPreference(key: String, value: Float) {
+    getPreferences().edit().putFloat(key, value).apply()
+}
+
+fun Context.putPreference(key: String, value: Long) {
+    getPreferences().edit().putLong(key, value).apply()
+}
+
+fun Context.getBooleanPreference(key: String): Boolean {
+    return getPreferences().getBoolean(key, false)
+}
+
+fun Context.getStringPreference(key: String): String {
+    return getPreferences().getString(key, "")
+}
+
+fun Context.getIntPreference(key: String, defaultValue: Int): Int {
+    return getPreferences().getInt(key, defaultValue)
+}
+
+fun Context.getFloatPreference(key: String, defaultValue: Float): Float {
+    return getPreferences().getFloat(key, defaultValue)
+}
+
+fun Context.getIntPreference(key: String): Int {
+    return getPreferences().getInt(key, 0)
+}
+
+fun Context.getLongPreference(key: String): Long {
+    return getPreferences().getLong(key, 0L)
+}
+
+fun Context.removePreference(key: String) {
+    return getPreferences().edit().remove(key).apply()
+}

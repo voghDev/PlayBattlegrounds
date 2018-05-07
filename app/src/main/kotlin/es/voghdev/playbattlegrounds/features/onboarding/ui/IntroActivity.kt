@@ -18,23 +18,42 @@ package es.voghdev.playbattlegrounds.onboarding
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.common.asApp
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
 
-class IntroActivity : AppCompatActivity() {
+class IntroActivity : AppCompatActivity(), KodeinAware {
+    override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
+
+    val setPlayerAccount: SetPlayerAccount by instance()
+    val getPlayerAccount: GetPlayerAccount by instance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
         btn_send.setOnClickListener {
+            setPlayerAccount.setPlayerAccount(et_user.text.toString().trim())
+
             startActivity<PlayerSearchActivity>()
         }
 
         rootView.setOnClickListener {
             hideSoftKeyboard(et_user)
+        }
+
+        if (getPlayerAccount.getPlayerAccount().isNotEmpty()) {
+            startActivity<PlayerSearchActivity>()
+
+            finish()
         }
     }
 }

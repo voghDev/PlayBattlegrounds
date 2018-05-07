@@ -21,9 +21,11 @@ import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.api.GetMatchByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference.PlayerAccountPreferences
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
-import es.voghdev.playbattlegrounds.features.players.mock.GetPlayerByNameMockDataSource
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.kodein.di.Kodein
@@ -37,6 +39,8 @@ class App : Application(), KodeinAware {
         bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource() }
         bind<GetPlayerByName>() with singleton { GetPlayerByNameApiDataSource() }
         bind<ResLocator>() with singleton { AndroidResLocator(applicationContext) }
+        bind<SetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
+        bind<GetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
     }
 }
 

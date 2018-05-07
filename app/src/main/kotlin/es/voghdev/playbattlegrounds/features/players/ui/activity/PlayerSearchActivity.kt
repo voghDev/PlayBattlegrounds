@@ -14,6 +14,7 @@ import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
@@ -29,6 +30,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     val getPlayerByNameDataSource: GetPlayerByName by instance()
     val getMatchByIdDataSource: GetMatchById by instance()
+    val getPlayerAccount: GetPlayerAccount by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<Match>? = null
 
@@ -44,7 +46,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, getMatchByIdDataSource)
+        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, getMatchByIdDataSource, getPlayerAccount)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -95,8 +97,12 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         progressBar.visibility = GONE
     }
 
+    override fun fillPlayerAccount(account: String) {
+        et_username.setText(account)
+    }
+
     override fun clearList() = ui {
-        adapter
+        adapter?.clear()
     }
 
     override fun addMatch(match: Match) = ui {
