@@ -53,6 +53,8 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
     override fun render() {
         renderMatchDate(content)
         renderGameMode(content)
+        renderNumberOfKills(content)
+        renderWinPlace(content)
         renderMap(content)
     }
 
@@ -64,14 +66,21 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
         tv_game_mode?.text = content.gameMode
     }
 
+    private fun renderNumberOfKills(content: Match?) {
+        tv_kills?.text = context.getString(R.string.n_kills_param, content?.numberOfKillsForCurrentPlayer ?: 0)
+    }
+
+    private fun renderWinPlace(content: Match?) {
+        tv_rank?.text = "#${content?.placeForCurrentPlayer}"
+    }
+
     private fun renderMap(content: Match) {
         iv_map?.setImageResource(
-                if (content.map.toLowerCase().contains("erangel"))
-                    R.mipmap.erangel_xsmall
-                else if (content.map.toLowerCase().contentEquals("desert"))
-                    R.mipmap.miramar_xsmall
-                else
-                    R.mipmap.miramar_xsmall)
+                when {
+                    content.map.toLowerCase().contains("erangel") -> R.mipmap.erangel_xsmall
+                    content.map.toLowerCase().contentEquals("desert") -> R.mipmap.miramar_xsmall
+                    else -> R.mipmap.miramar_xsmall
+                })
     }
 
     interface OnRowClicked {

@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/tv_kills"
         style="@style/Element"
-        android:layout_marginLeft="136dp"
+        android:layout_marginLeft="144dp"
         android:layout_marginTop="48dp"
         android:text="0 Kills"
         android:textSize="22sp" />

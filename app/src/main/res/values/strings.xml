@@ -15,4 +15,5 @@
     <string name="search_box_hint">Enter user name</string>
     <string name="server_selection_message">What Server do you play in?</string>
     <string name="search">Search</string>
+    <string name="n_kills_param">%1$d kills</string>
 </resources>

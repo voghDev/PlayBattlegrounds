@@ -7,16 +7,13 @@ class MatchByIdApiEntry(
         val type: String,
         val id: String,
         val attributes: MatchAttributesApiEntry?,
-        val relationships: MatchRelationshipsApiEntry,
-        val included: List<ParticipantByIdApiEntry>
+        val relationships: MatchRelationshipsApiEntry
 ) {
-    fun toDomain(): Match {
-        return Match(
-                id = id,
-                date = attributes?.createdAt?.toDate("yyyy-MM-dd") ?: 0L,
-                gameMode = attributes?.gameMode ?: "",
-                map = attributes?.mapName ?: "",
-                durationInSeconds = attributes?.duration ?: 0
-        )
-    }
+    fun toDomain(): Match = Match(
+            id = id,
+            date = attributes?.createdAt?.toDate("yyyy-MM-dd") ?: 0L,
+            gameMode = attributes?.gameMode ?: "",
+            map = attributes?.mapName ?: "",
+            durationInSeconds = attributes?.duration ?: 0
+    )
 }

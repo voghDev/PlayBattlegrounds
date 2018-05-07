@@ -58,7 +58,7 @@ class GetMatchByIdApiDataSource : GetMatchById, ApiRequest {
             val rsp: Response<MatchByIdApiResponse>? = call.execute()
 
             if (rsp?.body()?.hasData() == true) {
-                return Either.right(rsp?.body()?.data?.toDomain()!!)
+                return Either.right(rsp?.body()?.toDomain() ?: Match())
             } else if (rsp?.errorBody() != null) {
                 val error = rsp?.errorBody()?.string()!!
                 return Either.left(AbsError(error))

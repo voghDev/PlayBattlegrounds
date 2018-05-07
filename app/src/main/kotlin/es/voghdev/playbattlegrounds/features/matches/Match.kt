@@ -16,9 +16,20 @@
 package es.voghdev.playbattlegrounds.features.matches
 
 data class Match(
-        val id: String,
+        val id: String = "",
         val date: Long = 0L,
         val gameMode: String = "",
         val map: String = "",
-        val durationInSeconds: Int = 0
-)
+        val durationInSeconds: Int = 0,
+        var participants: List<MatchParticipant> = emptyList(),
+        var numberOfKillsForCurrentPlayer: Int = 0,
+        var placeForCurrentPlayer: Int = 0
+) {
+    fun getNumberOfKills(participantName: String): Int {
+        return participants.filter { it.name == participantName }.firstOrNull()?.kills ?: 0
+    }
+
+    fun getWinPlaceForParticipant(participantName: String): Int {
+        return participants.filter { it.name == participantName }.firstOrNull()?.place ?: 0
+    }
+}

@@ -35,7 +35,7 @@ class ParticipantStatsApiEntry(
         val name: String?,
         val playerId: String?,
         val revives: Int?,
-        val rideDistance: Int?,
+        val rideDistance: Float?,
         val roadKills: Int?,
         val teamKills: Int?,
         val timeSurvived: Int?,

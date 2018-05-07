@@ -61,6 +61,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
                 val result = getMatchById.getMatchById(it.id)
                 when (result) {
                     is Ok -> {
+                        result.b.numberOfKillsForCurrentPlayer = result.b.getNumberOfKills(player.name)
+                        result.b.placeForCurrentPlayer = result.b.getWinPlaceForParticipant(player.name)
+
                         view?.addMatch(result.b)
                     }
                     is Fail ->
