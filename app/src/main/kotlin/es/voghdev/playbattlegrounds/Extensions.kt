@@ -2,7 +2,9 @@ package es.voghdev.playbattlegrounds
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import java.text.ParseException
@@ -18,6 +20,14 @@ fun Fragment.ui(action: () -> Unit) {
     activity?.runOnUiThread {
         action()
     }
+}
+
+fun Fragment.colorStateList(colorResId: Int): ColorStateList {
+    return ColorStateList.valueOf(ContextCompat.getColor(context!!, colorResId))
+}
+
+fun Context.colorStateList(colorResId: Int): ColorStateList {
+    return ColorStateList.valueOf(ContextCompat.getColor(this, colorResId))
 }
 
 fun Context.hideSoftKeyboard(v: View) {

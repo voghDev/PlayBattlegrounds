@@ -15,6 +15,8 @@
  */
 package es.voghdev.playbattlegrounds.features.matches.ui
 
+import android.content.res.ColorStateList
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +24,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.pedrogomez.renderers.Renderer
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.colorStateList
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.toDate
 
@@ -64,6 +67,16 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
 
     private fun renderGameMode(content: Match) {
         tv_game_mode?.text = content.gameMode
+
+        tv_game_mode?.backgroundTintList = context.colorStateList(when (content.gameMode) {
+            "solo-fpp" -> R.color.green
+            "solo" -> R.color.dark_green
+            "squad-fpp" -> R.color.red
+            "squad" -> R.color.light_red
+            "duo-fpp" -> R.color.blue
+            "duo" -> R.color.dark_blue
+            else -> R.color.colorPrimary
+        })
     }
 
     private fun renderNumberOfKills(content: Match?) {
