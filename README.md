@@ -10,6 +10,10 @@ This is a small App that tries to work on the following aspects:
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
 
+![Sample][appSample]
+
 [1]: https://github.com/Kodein-Framework/Kodein-DI/
 [2]: https://github.com/arrow-kt/arrow
 [3]: https://github.com/shyiko/ktlint
+
+[appSample]: ./img/sample.png
