@@ -24,7 +24,7 @@
         style="@style/Button"
         android:layout_below="@+id/til_username"
         android:layout_centerHorizontal="true"
-        android:text="@android:string/search_go" />
+        android:text="@string/search" />
 
     <TextView
         android:id="@+id/tv_player_name"
