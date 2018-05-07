@@ -39,7 +39,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
     fun onSendButtonClicked(playerName: String) = doAsync {
         view?.showLoading()
 
-        val result = getPlayerByName.getPlayerByName(playerName.toLowerCase())
+        val result = getPlayerByName.getPlayerByName(playerName)
         when (result) {
             is Ok -> {
                 view?.showPlayerName(result.b.name)

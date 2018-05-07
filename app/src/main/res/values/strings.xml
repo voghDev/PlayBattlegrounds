@@ -16,4 +16,8 @@
     <string name="server_selection_message">What Server do you play in?</string>
     <string name="search">Search</string>
     <string name="n_kills_param">%1$d kills</string>
+    <plurals name="kills">
+        <item quantity="one">%d kill</item>
+        <item quantity="other">%d kills</item>
+    </plurals>
 </resources>

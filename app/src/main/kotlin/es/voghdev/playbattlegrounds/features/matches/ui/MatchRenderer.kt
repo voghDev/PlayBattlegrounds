@@ -80,7 +80,15 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
     }
 
     private fun renderNumberOfKills(content: Match?) {
-        tv_kills?.text = context.getString(R.string.n_kills_param, content?.numberOfKillsForCurrentPlayer ?: 0)
+        tv_kills?.text = context.resources.getQuantityString(R.plurals.kills,
+                content?.numberOfKillsForCurrentPlayer ?: 0,
+                content?.numberOfKillsForCurrentPlayer ?: 0)
+
+        tv_kills?.setTextColor(context.colorStateList(when (content?.numberOfKillsForCurrentPlayer) {
+            0, 1 -> R.color.red
+            2, 3, 4, 5 -> R.color.green
+            else -> R.color.blue
+        }))
     }
 
     private fun renderWinPlace(content: Match?) {
