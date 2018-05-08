@@ -8,5 +8,6 @@ data class Player(
         val patchVersion: String,
         val titleId: String,
         val link: String,
+        var shardId: String,
         val matches: List<Match> = emptyList()
 )

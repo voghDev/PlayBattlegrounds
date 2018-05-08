@@ -31,6 +31,7 @@ class PlayerByIdApiEntry(
                 patchVersion = attributes.patchVersion,
                 titleId = attributes.titleId,
                 matches = relationships?.matches?.data?.map { it.toDomain() } ?: emptyList(),
+                shardId = attributes.shardId,
                 link = links.self
         )
     }

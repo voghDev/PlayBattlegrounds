@@ -28,7 +28,8 @@ class GetPlayerByNameMockDataSource : GetPlayerByName {
                             "eqs_insanity",
                             "",
                             "bluehole-pubg",
-                            "https://api.playbattlegrounds.com/shards/pc-eu/players/account.afbb96044b3b4e888e3cef65fcdaf898"
+                            "https://api.playbattlegrounds.com/shards/pc-eu/players/account.afbb96044b3b4e888e3cef65fcdaf898",
+                            "pc-eu"
                     )
             )
 }
