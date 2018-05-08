@@ -6,7 +6,7 @@ Sample project to do some requests to the PUBG Open API
 This is a small App that tries to work on the following aspects:
 
 - Dependency Injection in Kotlin using [Kodein 5.x][1]
-- Basic usage of Monads such as Either, using [arrow][2]
+- Basic usage of Monads such as Either, using [arrow-kt][2]
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
 
