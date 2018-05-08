@@ -16,6 +16,8 @@
 package es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference
 
 import android.content.Context
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
 import es.voghdev.playbattlegrounds.getStringPreference
@@ -24,9 +26,9 @@ import es.voghdev.playbattlegrounds.putPreference
 class PlayerAccountPreferences(val appContext: Context) : GetPlayerAccount, SetPlayerAccount {
     val PLAYER_ACCOUNT = "player_account"
 
-    override fun setPlayerAccount(name: String) {
-        appContext.putPreference(PLAYER_ACCOUNT, name)
-    }
+    override fun setPlayerAccount(name: String) =
+            appContext.putPreference(PLAYER_ACCOUNT, name)
 
-    override fun getPlayerAccount(): String = appContext.getStringPreference(PLAYER_ACCOUNT)
+    override fun getPlayerAccount(): Either<AbsError, String> =
+            Either.Right(appContext.getStringPreference(PLAYER_ACCOUNT))
 }

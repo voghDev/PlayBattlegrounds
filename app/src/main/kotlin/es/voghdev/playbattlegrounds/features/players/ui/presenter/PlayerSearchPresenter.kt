@@ -31,8 +31,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     override suspend fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
-        if(account.isNotEmpty())
-            view?.fillPlayerAccount(account)
+        if(account is Ok && account.b.isNotEmpty())
+            view?.fillPlayerAccount(account.b)
     }
 
     fun onRootViewClicked() {

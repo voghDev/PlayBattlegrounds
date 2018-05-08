@@ -2,6 +2,7 @@ package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import org.junit.Before
 import org.mockito.Mock
@@ -14,6 +15,8 @@ class PlayerSearchPresenterTest {
     @Mock lateinit var mockGetPlayerByName: GetPlayerByName
 
     @Mock lateinit var mockGetMatchById : GetMatchById
+
+    @Mock lateinit var mockGetPlayerAccount : GetPlayerAccount
 
     @Mock lateinit var mockNavigator: PlayerSearchPresenter.Navigator
 
@@ -29,7 +32,7 @@ class PlayerSearchPresenterTest {
     }
 
     private fun createPresenterWithMocks(): PlayerSearchPresenter {
-        val presenter = PlayerSearchPresenter(mockResLocator, mockGetPlayerByName, mockGetMatchById)
+        val presenter = PlayerSearchPresenter(mockResLocator, mockGetPlayerByName, mockGetMatchById, mockGetPlayerAccount)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter

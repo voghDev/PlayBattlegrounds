@@ -21,9 +21,13 @@ import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.api.GetMatchByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.onboarding.datasource.res.GetRegionsAndroidResDataSource
 import es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference.PlayerAccountPreferences
+import es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference.PlayerRegionPreferences
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
@@ -41,6 +45,8 @@ class App : Application(), KodeinAware {
         bind<ResLocator>() with singleton { AndroidResLocator(applicationContext) }
         bind<SetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
+        bind<GetRegions>() with singleton { GetRegionsAndroidResDataSource(applicationContext) }
+        bind<SetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
     }
 }
 

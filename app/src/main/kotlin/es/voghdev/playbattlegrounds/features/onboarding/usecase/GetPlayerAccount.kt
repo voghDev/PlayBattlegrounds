@@ -15,6 +15,9 @@
  */
 package es.voghdev.playbattlegrounds.features.onboarding.usecase
 
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
+
 interface GetPlayerAccount {
-    fun getPlayerAccount() : String
+    fun getPlayerAccount() : Either<AbsError, String>
 }

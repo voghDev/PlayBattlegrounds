@@ -1,11 +1,19 @@
 <resources>
     <string-array name="servers">
         <item>pc-eu</item>
+        <item>pc-krjp</item>
+        <item>pc-jp</item>
         <item>pc-na</item>
-        <item>pc-sa</item>
-        <item>pc-kr</item>
-        <item>pc-as</item>
+        <item>pc-ru</item>
         <item>pc-oc</item>
+        <item>pc-kakao</item>
+        <item>pc-sea</item>
+        <item>pc-sa</item>
+        <item>pc-as</item>
+        <item>xbox-as</item>
+        <item>xbox-eu</item>
+        <item>xbox-na</item>
+        <item>xbox-oc</item>
     </string-array>
     <string name="app_name">PlayBattlegrounds</string>
     <string name="intro_title">Hi noob</string>
