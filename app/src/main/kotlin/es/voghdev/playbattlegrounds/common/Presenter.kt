@@ -15,9 +15,6 @@
  */
 package com.appandweb.weevento.ui.presenter
 
-import com.appandweb.catchapp.domain.executor.AnkoExecutor
-import com.appandweb.catchapp.domain.executor.Executor
-
 abstract class Presenter<T1, T2>() {
     open suspend fun initialize() { /* Empty */ }
 
@@ -29,12 +26,6 @@ abstract class Presenter<T1, T2>() {
         view = null
         navigator = null
     }
-
-    suspend fun execute(function: () -> Unit) {
-        executor?.execute(function)
-    }
-
-    var executor: Executor? = AnkoExecutor()
 
     var view: T1? = null
     var navigator: T2? = null

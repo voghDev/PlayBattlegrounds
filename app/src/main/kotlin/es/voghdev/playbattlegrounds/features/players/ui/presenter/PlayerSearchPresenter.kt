@@ -24,14 +24,15 @@ import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
-import org.jetbrains.anko.doAsync
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
 
 class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById, val getPlayerAccount: GetPlayerAccount) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     override suspend fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
-        if(account is Ok && account.b.isNotEmpty())
+        if (account is Ok && account.b.isNotEmpty())
             view?.fillPlayerAccount(account.b)
     }
 
@@ -39,10 +40,14 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         view?.hideSoftKeyboard()
     }
 
-    fun onSendButtonClicked(playerName: String) = doAsync {
+    suspend fun onSendButtonClicked(playerName: String) {
         view?.showLoading()
 
-        val result = getPlayerByName.getPlayerByName(playerName)
+        val task = async(CommonPool) {
+            getPlayerByName.getPlayerByName(playerName)
+        }
+
+        val result = task.await()
         when (result) {
             is Ok -> {
                 view?.showPlayerFoundMessage("Found: ${result.b.name}. Loading matches...")
@@ -81,6 +86,10 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
             if (errors > 0)
                 view?.showError("Could not load $errors matches")
         }
+    }
+
+    fun onMatchClicked(match: Match) {
+        /* Navigator should navigate */
     }
 
     interface MVPView {

@@ -20,6 +20,8 @@ import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -50,12 +52,14 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         presenter?.view = this
         presenter?.navigator = this
 
-        runBlocking {
+        launch(CommonPool) {
             presenter?.initialize()
         }
 
         btn_send.setOnClickListener {
-            presenter?.onSendButtonClicked(et_username.text.toString().trim())
+            launch(CommonPool) {
+                presenter?.onSendButtonClicked(et_username.text.toString().trim())
+            }
         }
 
         rootView.setOnClickListener {
@@ -97,7 +101,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         progressBar.visibility = GONE
     }
 
-    override fun fillPlayerAccount(account: String) {
+    override fun fillPlayerAccount(account: String) = ui {
         et_username.setText(account)
     }
 
@@ -112,6 +116,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun onMatchClicked(match: Match) {
-        match.date
+        presenter?.onMatchClicked(match)
     }
 }
