@@ -11,7 +11,7 @@ class MatchByIdApiEntry(
 ) {
     fun toDomain(): Match = Match(
             id = id,
-            date = attributes?.createdAt?.toDate("yyyy-MM-dd") ?: 0L,
+            date = attributes?.createdAt?.toDate("yyyy-MM-dd HH:mm:ss") ?: 0L,
             gameMode = attributes?.gameMode ?: "",
             map = attributes?.mapName ?: "",
             durationInSeconds = attributes?.duration ?: 0

@@ -25,4 +25,11 @@ class MatchDateTest {
 
         assertEquals(1525125600000L, parsed)
     }
+
+    @Test
+    fun `should also parse match time supporting PUBG Api format`() {
+        val parsed = "2018-05-08T11:04:28Z".toDate("yyyy-MM-dd hh:mm:ss")
+
+        assertEquals(1525770268000L, parsed)
+    }
 }

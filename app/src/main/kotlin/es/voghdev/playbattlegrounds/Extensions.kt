@@ -38,8 +38,9 @@ fun Context.hideSoftKeyboard(v: View) {
 
 fun String.toDate(format: String): Long {
     try {
-        val df = SimpleDateFormat(format)
-        val d = df.parse(this)
+        val date = this.split("T").get(0)
+        val time = this.split("T").get(1).removeSuffix("Z")
+        val d = SimpleDateFormat(format).parse("$date $time")
         return d.time
     } catch (e: ParseException) {
         e.printStackTrace()
@@ -49,7 +50,7 @@ fun String.toDate(format: String): Long {
     return 0L
 }
 
-fun Long.toDate(format: String = "yyyy/MM/dd") = SimpleDateFormat(format).format(this)
+fun Long.toDate(format: String = "yyyy/MM/dd HH:mm") = SimpleDateFormat(format).format(this)
 
 fun Context.getPreferences(): SharedPreferences {
     return this.getSharedPreferences("PlayBattlegroundsPrefs", 0)
