@@ -16,6 +16,8 @@
 package es.voghdev.playbattlegrounds.datasource.api
 
 interface ApiRequest {
+    fun getDefaultRegion() = "pc-eu"
+
     fun getEndPoint(): String {
         return "http://api.playbattlegrounds.com/"
     }

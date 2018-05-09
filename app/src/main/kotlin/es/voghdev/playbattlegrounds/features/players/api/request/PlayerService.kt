@@ -19,18 +19,21 @@ import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResp
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PlayerService {
-    @GET("shards/pc-eu/players")
+    @GET("shards/{region}/players")
     fun getPlayerByName(
             @Header("Authorization") apiKey: String,
             @Header("accept") mediaType: String,
+            @Path("region") region: String,
             @Query("filter[playerNames]") playerName: String): Call<PlayerByIdApiResponse>
 
-    @GET("shards/pc-eu/players")
+    @GET("shards/{region}/players")
     fun getPlayerById(
             @Header("Authorization") apiKey: String,
             @Header("accept") mediaType: String,
+            @Path("region") region: String,
             @Query("filter[playerIds]") playerName: String): Call<PlayerByIdApiResponse>
 }

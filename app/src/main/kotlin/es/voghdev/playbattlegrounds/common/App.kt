@@ -36,9 +36,9 @@ import org.kodein.di.generic.singleton
 
 class App : Application(), KodeinAware {
     override val kodein = Kodein {
-        bind<GetPlayerById>() with singleton { GetPlayerByIdApiDataSource() }
-        bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource() }
-        bind<GetPlayerByName>() with singleton { GetPlayerByNameApiDataSource() }
+        bind<GetPlayerById>() with singleton { GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
+        bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
+        bind<GetPlayerByName>() with singleton { GetPlayerByNameApiDataSource(PlayerRegionPreferences(applicationContext)) }
         bind<ResLocator>() with singleton { AndroidResLocator(applicationContext) }
         bind<SetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }

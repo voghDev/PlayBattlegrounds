@@ -19,19 +19,21 @@ import arrow.core.Either
 import com.google.gson.JsonSyntaxException
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
 import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.api.model.MatchByIdApiResponse
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GetMatchByIdApiDataSource : GetMatchById, ApiRequest {
+class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatchById, ApiRequest {
     override fun getMatchById(id: String): Either<AbsError, Match> {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG)
@@ -47,10 +49,12 @@ class GetMatchByIdApiDataSource : GetMatchById, ApiRequest {
 
         val service: MatchService = retrofit.create(MatchService::class.java)
 
+        val region = getPlayerRegion.getPlayerRegion()
+
         val call: Call<MatchByIdApiResponse> = service.getMatchById(
                 "Bearer ${BuildConfig.PUBGApiKey}",
                 "application/vnd.api+json",
-                "pc-eu",
+                (region as? Either.Right)?.b?.name ?: getDefaultRegion(),
                 id
         )
 
