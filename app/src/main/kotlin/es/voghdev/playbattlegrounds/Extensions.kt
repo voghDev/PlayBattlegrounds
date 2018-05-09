@@ -50,7 +50,7 @@ fun String.toDate(format: String): Long {
     return 0L
 }
 
-fun Long.toDate(format: String = "yyyy/MM/dd HH:mm") = SimpleDateFormat(format).format(this)
+fun Long.toDate(format: String = "yyyy/MM/dd - HH:mm") = SimpleDateFormat(format).format(this)
 
 fun Context.getPreferences(): SharedPreferences {
     return this.getSharedPreferences("PlayBattlegroundsPrefs", 0)
