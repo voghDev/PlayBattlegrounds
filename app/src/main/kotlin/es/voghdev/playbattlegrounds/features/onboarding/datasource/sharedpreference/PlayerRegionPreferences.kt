@@ -30,6 +30,13 @@ class PlayerRegionPreferences(val appContext: Context) : SetPlayerRegion, GetPla
     override fun setCurrentRegion(region: Region) =
             appContext.putPreference(PLAYER_REGION, region.name)
 
-    override fun getPlayerRegion(): Either<AbsError, Region> =
-            Either.right(Region(appContext.getStringPreference(PLAYER_REGION)))
+    override fun getPlayerRegion(): Either<AbsError, Region> {
+        if (appContext == null)
+            return Either.left(AbsError("You must pass a non-null Application Context"))
+
+        if (appContext.getStringPreference(PLAYER_REGION).isEmpty())
+            return Either.left(AbsError("Player region not found"))
+
+        return Either.right(Region(appContext.getStringPreference(PLAYER_REGION)))
+    }
 }
