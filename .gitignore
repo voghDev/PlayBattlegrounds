@@ -102,3 +102,6 @@ local.properties
 app/src/main/res/values/api_key.xml
 
 pubg-api.properties
+
+# Payment flavors
+app/src/paid/*
