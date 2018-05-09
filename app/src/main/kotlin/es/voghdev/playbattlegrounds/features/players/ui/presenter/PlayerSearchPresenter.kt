@@ -36,11 +36,23 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
             view?.fillPlayerAccount(account.b)
     }
 
+    suspend fun onInitialData(data: InitialData) {
+        if (data.getPlayerName().isNotEmpty()) {
+            view?.fillPlayerAccount(data.getPlayerName())
+
+            requestPlayerData(data.getPlayerName())
+        }
+    }
+
     fun onRootViewClicked() {
         view?.hideSoftKeyboard()
     }
 
     suspend fun onSendButtonClicked(playerName: String) {
+        requestPlayerData(playerName)
+    }
+
+    private suspend fun requestPlayerData(playerName: String) {
         view?.showLoading()
 
         val task = async(CommonPool) {
@@ -105,5 +117,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
 
     interface Navigator {
 
+    }
+
+    interface InitialData {
+        fun getPlayerName(): String
     }
 }

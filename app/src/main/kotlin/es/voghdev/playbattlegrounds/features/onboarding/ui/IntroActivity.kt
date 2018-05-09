@@ -51,9 +51,11 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.activity_intro)
 
         btn_send.setOnClickListener {
-            setPlayerAccount.setPlayerAccount(et_user.text.toString().trim())
+            val playerName = et_user.text.toString().trim()
 
-            startActivity<PlayerSearchActivity>()
+            setPlayerAccount.setPlayerAccount(playerName)
+
+            startActivity<PlayerSearchActivity>("playerName" to playerName)
         }
 
         rootView.setOnClickListener {
