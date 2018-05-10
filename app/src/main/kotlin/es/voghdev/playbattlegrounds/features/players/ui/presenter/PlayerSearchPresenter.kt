@@ -30,7 +30,7 @@ import kotlinx.coroutines.experimental.async
 class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById, val getPlayerAccount: GetPlayerAccount) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
-    override suspend fun initialize() {
+    suspend override fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
         if (account is Ok && account.b.isNotEmpty())
             view?.fillPlayerAccount(account.b)
@@ -115,9 +115,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         fun fillPlayerAccount(account: String)
     }
 
-    interface Navigator {
-
-    }
+    interface Navigator
 
     interface InitialData {
         fun getPlayerName(): String

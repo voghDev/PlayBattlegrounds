@@ -20,5 +20,5 @@ import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.onboarding.model.Region
 
 interface GetRegions {
-    fun getRegions() : Either<AbsError, List<Region>>
+    fun getRegions(): Either<AbsError, List<Region>>
 }

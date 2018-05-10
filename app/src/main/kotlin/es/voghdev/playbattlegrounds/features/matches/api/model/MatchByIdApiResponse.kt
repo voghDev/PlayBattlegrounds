@@ -13,5 +13,4 @@ class MatchByIdApiResponse(
             participants = included?.map { it.toDomain() } ?: emptyList()
         } ?: Match()
     }
-
 }

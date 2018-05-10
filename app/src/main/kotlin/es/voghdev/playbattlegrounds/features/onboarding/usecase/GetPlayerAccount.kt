@@ -19,5 +19,5 @@ import arrow.core.Either
 import es.voghdev.playbattlegrounds.common.AbsError
 
 interface GetPlayerAccount {
-    fun getPlayerAccount() : Either<AbsError, String>
+    fun getPlayerAccount(): Either<AbsError, String>
 }

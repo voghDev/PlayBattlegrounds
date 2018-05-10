@@ -14,9 +14,9 @@ class PlayerSearchPresenterTest {
 
     @Mock lateinit var mockGetPlayerByName: GetPlayerByName
 
-    @Mock lateinit var mockGetMatchById : GetMatchById
+    @Mock lateinit var mockGetMatchById: GetMatchById
 
-    @Mock lateinit var mockGetPlayerAccount : GetPlayerAccount
+    @Mock lateinit var mockGetPlayerAccount: GetPlayerAccount
 
     @Mock lateinit var mockNavigator: PlayerSearchPresenter.Navigator
 
