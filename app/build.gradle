@@ -102,7 +102,7 @@ repositories {
 task ktlint(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"
     classpath = configurations.ktlint
-    args "src/**/*.kt"
+    args "src/**/*.kt", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/ktlint.xml"
 }
 
 check.dependsOn ktlint
