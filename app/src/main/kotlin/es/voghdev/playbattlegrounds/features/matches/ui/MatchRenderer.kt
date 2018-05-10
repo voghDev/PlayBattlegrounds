@@ -15,8 +15,6 @@
  */
 package es.voghdev.playbattlegrounds.features.matches.ui
 
-import android.content.res.ColorStateList
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +48,7 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
     }
 
     override fun inflate(inflater: LayoutInflater?, parent: ViewGroup?): View {
-        return inflater?.inflate(R.layout.row_match, parent, false) ?: View(context);
+        return inflater?.inflate(R.layout.row_match, parent, false) ?: View(context)
     }
 
     override fun render() {

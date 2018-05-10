@@ -22,11 +22,11 @@ class ParticipantByIdApiEntry(
         val type: String,
         val attributes: ParticipantAttributesApiEntry?
 ) {
-    fun getName() : String = attributes?.stats?.name ?: ""
-    fun getPlace() : Int = attributes?.stats?.winPlace ?: 0
+    fun getName(): String = attributes?.stats?.name ?: ""
+    fun getPlace(): Int = attributes?.stats?.winPlace ?: 0
     fun getNumberOfKills(): Int = attributes?.stats?.kills ?: 0
 
-    fun toDomain() : MatchParticipant {
+    fun toDomain(): MatchParticipant {
         return MatchParticipant(id, getName(), getNumberOfKills(), getPlace())
     }
 }

@@ -19,7 +19,6 @@ import arrow.core.Either
 import com.google.gson.JsonSyntaxException
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
-import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
 import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
