@@ -20,14 +20,17 @@ import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
-import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
+import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 
-class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: GetPlayerByName, val getMatchById: GetMatchById, val getPlayerAccount: GetPlayerAccount) :
+class PlayerSearchPresenter(val resLocator: ResLocator,
+                            val getPlayerByName: GetPlayerByName,
+                            val matchRepository: MatchRepository,
+                            val getPlayerAccount: GetPlayerAccount) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     suspend override fun initialize() {
@@ -60,6 +63,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         }
 
         val result = task.await()
+
         when (result) {
             is Ok -> {
                 view?.showPlayerFoundMessage("Found: ${result.b.name}. Loading matches...")
@@ -74,19 +78,27 @@ class PlayerSearchPresenter(val resLocator: ResLocator, val getPlayerByName: Get
         }
     }
 
-    private fun requestPlayerMatches(player: Player) {
+    private suspend fun requestPlayerMatches(player: Player) {
         if (player.matches.isNotEmpty()) {
             view?.clearList()
 
             var errors = 0
             player.matches.subList(0, player.matches.size).take(5).forEach {
-                val result = getMatchById.getMatchById(it.id)
+                val task = async(CommonPool) {
+                    matchRepository.getMatchById(it.id)
+                }
+
+                val result = task.await()
+
                 when (result) {
                     is Ok -> {
-                        result.b.numberOfKillsForCurrentPlayer = result.b.getNumberOfKills(player.name)
-                        result.b.placeForCurrentPlayer = result.b.getWinPlaceForParticipant(player.name)
+                        val copy = result.b.copy(
+                                numberOfKillsForCurrentPlayer = result.b.getNumberOfKills(player.name),
+                                placeForCurrentPlayer = result.b.getWinPlaceForParticipant(player.name))
 
-                        view?.addMatch(result.b)
+                        matchRepository.insertMatch(copy)
+
+                        view?.addMatch(copy)
                     }
                     is Fail ->
                         ++errors

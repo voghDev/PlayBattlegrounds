@@ -14,6 +14,7 @@ import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
 import es.voghdev.playbattlegrounds.features.matches.Match
+import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
@@ -37,7 +38,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
     val getPlayerByNameDataSource: GetPlayerByName by instance()
-    val getMatchByIdDataSource: GetMatchById by instance()
+    val matchRepository: MatchRepository by instance()
     val getPlayerAccount: GetPlayerAccount by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<Match>? = null
@@ -54,7 +55,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, getMatchByIdDataSource, getPlayerAccount)
+        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, matchRepository, getPlayerAccount)
         presenter?.view = this
         presenter?.navigator = this
 

@@ -17,18 +17,18 @@ package es.voghdev.playbattlegrounds.common
 
 import android.app.Application
 import android.content.Context
+import com.raizlabs.android.dbflow.config.FlowManager
 import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.api.GetMatchByIdApiDataSource
+import es.voghdev.playbattlegrounds.features.matches.db.GetMatchByIdDBDataSource
+import es.voghdev.playbattlegrounds.features.matches.db.InsertMatchDBDataSource
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.onboarding.datasource.res.GetRegionsAndroidResDataSource
 import es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference.PlayerAccountPreferences
 import es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference.PlayerRegionPreferences
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.*
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
@@ -49,6 +49,25 @@ class App : Application(), KodeinAware {
         bind<GetRegions>() with singleton { GetRegionsAndroidResDataSource(applicationContext) }
         bind<SetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<GetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
+        bind<MatchRepository>() with singleton {
+            MatchRepository(
+                    GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
+                    GetMatchByIdDBDataSource(),
+                    InsertMatchDBDataSource()
+            )
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        FlowManager.init(this)
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+
+        FlowManager.destroy()
     }
 }
 
