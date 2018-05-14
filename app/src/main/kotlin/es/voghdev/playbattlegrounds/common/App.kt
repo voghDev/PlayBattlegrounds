@@ -47,6 +47,7 @@ class App : Application(), KodeinAware {
         bind<SetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetRegions>() with singleton { GetRegionsAndroidResDataSource(applicationContext) }
+        bind<GetSeasons>() with singleton { GetSeasonsApiDataSource() }
         bind<SetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<GetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<MatchRepository>() with singleton {
