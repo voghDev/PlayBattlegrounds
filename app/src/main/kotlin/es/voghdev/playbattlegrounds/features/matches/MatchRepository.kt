@@ -25,7 +25,8 @@ class MatchRepository(val getMatchByIdApiDataSource: GetMatchById,
                       val getMatchByIdDBDataSource: GetMatchById,
                       val insertMatchDBDataSource: InsertMatch) :
         GetMatchById,
-        InsertMatch by insertMatchDBDataSource {
+        InsertMatch {
+
     override fun getMatchById(id: String): Either<AbsError, Match> {
         val dbResult = getMatchByIdDBDataSource.getMatchById(id)
 
@@ -34,5 +35,10 @@ class MatchRepository(val getMatchByIdApiDataSource: GetMatchById,
         val apiResult = getMatchByIdApiDataSource.getMatchById(id)
 
         return apiResult
+    }
+
+    override fun insertMatch(match: Match) {
+        if (match.placeForCurrentPlayer > 0) // Workaround to avoid inserting matches twice
+            insertMatchDBDataSource.insertMatch(match)
     }
 }

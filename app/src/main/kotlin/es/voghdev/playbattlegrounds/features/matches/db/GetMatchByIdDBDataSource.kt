@@ -25,7 +25,7 @@ class GetMatchByIdDBDataSource : GetMatchById {
     override fun getMatchById(id: String): Either<AbsError, Match> {
         val match = SQLite.select()
                 .from(MatchDBEntry::class.java)
-                .where(MatchDBEntry_Table.id.`is`(id))
+                .where(MatchDBEntry_Table.id.eq(id))
                 .queryList()
                 .firstOrNull()?.toDomain()
 

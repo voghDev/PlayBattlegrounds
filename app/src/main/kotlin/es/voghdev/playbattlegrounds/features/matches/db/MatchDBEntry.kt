@@ -67,8 +67,8 @@ class MatchDBEntry : BaseModel {
                 map,
                 durationInSeconds,
                 emptyList(),
-                5, // numberOfKillsForCurrentPlayer,
-                11//placeForCurrentPlayer
+                numberOfKillsForCurrentPlayer,
+                placeForCurrentPlayer // La primera vez inserta bien, la segunda extrae con el conjunto vacio, y re-inserta
         )
     }
 }
