@@ -17,13 +17,18 @@ package es.voghdev.playbattlegrounds.features.season.api.model
 
 import es.voghdev.playbattlegrounds.features.players.api.model.LinksApiEntry
 import es.voghdev.playbattlegrounds.features.players.api.model.MetaApiEntry
+import es.voghdev.playbattlegrounds.features.season.Season
 
 class SeasonsApiResponse(
         val data: List<SeasonApiEntry>,
         val links: LinksApiEntry,
         val meta: MetaApiEntry
 ) {
-    fun hasData() : Boolean {
+    fun hasData(): Boolean {
         return data != null
+    }
+
+    fun toDomain(): List<Season> {
+        return emptyList()
     }
 }

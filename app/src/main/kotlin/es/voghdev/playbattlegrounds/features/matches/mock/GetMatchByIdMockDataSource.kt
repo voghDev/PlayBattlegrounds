@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.matches.db
+package es.voghdev.playbattlegrounds.features.matches.mock
 
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.matches.Match
-import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
+import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 
-class InsertMatchDBDataSource : InsertMatch {
-    override fun insertMatch(match: Match) {
-        MatchDBEntry(match).save()
+class GetMatchByIdMockDataSource : GetMatchById {
+    override fun getMatchById(id: String): Either<AbsError, Match> {
+        return Either.right(Match(id = "s4mpl3m4tch"))
     }
 }

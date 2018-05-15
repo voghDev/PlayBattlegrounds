@@ -16,11 +16,14 @@
 package com.appandweb.weevento.ui.presenter
 
 abstract class Presenter<T1, T2>() {
-    open suspend fun initialize() { /* Empty */ }
+    open suspend fun initialize() { /* Empty */
+    }
 
-    open suspend fun resume() { /* Empty */ }
+    open suspend fun resume() { /* Empty */
+    }
 
-    open suspend fun pause() { /* Empty */ }
+    open suspend fun pause() { /* Empty */
+    }
 
     open suspend fun destroy() {
         view = null

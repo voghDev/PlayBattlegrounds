@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.common.db
+package es.voghdev.playbattlegrounds.features.matches.mock
 
-import com.raizlabs.android.dbflow.annotation.Database
+import es.voghdev.playbattlegrounds.features.matches.Match
+import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
 
-@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, generatedClassSeparator = "_")
-object AppDatabase {
-    const val NAME: String = "BattlegroundsDB"
-    const val VERSION: Int = 1
+class InsertMatchMockDataSource : InsertMatch {
+    override fun insertMatch(match: Match) = Unit
 }
