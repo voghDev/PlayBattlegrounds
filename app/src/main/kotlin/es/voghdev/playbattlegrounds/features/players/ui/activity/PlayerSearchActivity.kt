@@ -3,33 +3,26 @@ package es.voghdev.playbattlegrounds.features.players.ui.activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View.GONE
-import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.View.INVISIBLE
+import android.view.View.GONE
 import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
-import es.voghdev.playbattlegrounds.common.db.AppDatabase
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
-import es.voghdev.playbattlegrounds.copyDatabaseToSDCard
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
-import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
-import kotlinx.android.synthetic.main.activity_player_search.btn_send
-import kotlinx.android.synthetic.main.activity_player_search.et_username
-import kotlinx.android.synthetic.main.activity_player_search.progressBar
-import kotlinx.android.synthetic.main.activity_player_search.recyclerView
-import kotlinx.android.synthetic.main.activity_player_search.rootView
+import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.kodein.di.Kodein
@@ -75,11 +68,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
         rootView.setOnClickListener {
             presenter?.onRootViewClicked()
-        }
-
-        rootView.setOnLongClickListener {
-            copyDatabaseToSDCard(AppDatabase.NAME)
-            true
         }
     }
 

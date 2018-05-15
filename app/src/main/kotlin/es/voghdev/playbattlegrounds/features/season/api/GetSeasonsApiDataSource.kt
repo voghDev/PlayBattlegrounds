@@ -63,7 +63,7 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
             } else {
                 return Either.left(AbsError("Unknown error parsing JSON"))
             }
-        } catch(e: JsonSyntaxException) {
+        } catch (e: JsonSyntaxException) {
             return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
         }
     }

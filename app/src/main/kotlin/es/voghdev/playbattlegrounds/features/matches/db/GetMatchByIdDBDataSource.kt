@@ -29,9 +29,7 @@ class GetMatchByIdDBDataSource : GetMatchById {
                 .queryList()
                 .firstOrNull()?.toDomain()
 
-        return if (match is Match)
-            Either.right(match)
-        else
-            Either.left(AbsError("Match $id not found"))
+        return if (match is Match) Either.right(match)
+        else Either.left(AbsError("Match $id not found"))
     }
 }

@@ -4,15 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
-import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.nio.channels.FileChannel
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -107,28 +102,4 @@ fun Context.getLongPreference(key: String): Long {
 
 fun Context.removePreference(key: String) {
     return getPreferences().edit().remove(key).apply()
-}
-
-fun Context.copyDatabaseToSDCard(dbName: String) {
-    try {
-        val sd = Environment.getExternalStorageDirectory()
-        val data = Environment.getDataDirectory()
-
-        if (sd.canWrite()) {
-            val currentDBPath: String = "//data//" + BuildConfig.APPLICATION_ID + "//databases//" + dbName + ".db"
-            val backupDBPath: String = dbName + "-backup.db"
-            val currentDB: File = File(data, currentDBPath)
-            val backupDB: File = File(sd, backupDBPath)
-
-            if (currentDB.exists()) {
-                val src: FileChannel = FileInputStream(currentDB).channel
-                val dst: FileChannel = FileOutputStream(backupDB).channel
-                dst.transferFrom(src, 0, src.size())
-                src.close()
-                dst.close()
-            }
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
 }

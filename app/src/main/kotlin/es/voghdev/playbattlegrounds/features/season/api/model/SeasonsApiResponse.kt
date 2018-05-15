@@ -24,9 +24,9 @@ class SeasonsApiResponse(
         val links: LinksApiEntry,
         val meta: MetaApiEntry
 ) {
-    fun hasData() : Boolean {
+    fun hasData(): Boolean {
         return data != null
     }
 
-    fun toDomain() : List<Season> = emptyList()
+    fun toDomain(): List<Season> = emptyList()
 }
