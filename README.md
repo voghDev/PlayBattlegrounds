@@ -12,8 +12,14 @@ This is a small App that tries to work on the following aspects:
 
 ![Sample][appSample]
 
+Icons
+-----
+
+All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast-chicken_889702#term=chicken&page=1&position=36) were downloaded from [flaticon.com][4]
+
 [1]: https://github.com/Kodein-Framework/Kodein-DI/
 [2]: https://github.com/arrow-kt/arrow
 [3]: https://github.com/shyiko/ktlint
+[4]: http://www.flaticon.com
 
 [appSample]: ./img/sample.gif
