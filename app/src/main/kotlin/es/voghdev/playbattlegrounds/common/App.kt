@@ -19,7 +19,10 @@ import android.app.Application
 import android.content.Context
 import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.api.GetMatchByIdApiDataSource
+import es.voghdev.playbattlegrounds.features.matches.mock.GetMatchByIdMockDataSource
+import es.voghdev.playbattlegrounds.features.matches.mock.InsertMatchMockDataSource
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.onboarding.datasource.res.GetRegionsAndroidResDataSource
 import es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference.PlayerAccountPreferences
@@ -33,6 +36,8 @@ import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdAp
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
+import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.bind
@@ -47,8 +52,16 @@ class App : Application(), KodeinAware {
         bind<SetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetRegions>() with singleton { GetRegionsAndroidResDataSource(applicationContext) }
+        bind<GetSeasons>() with singleton { GetSeasonsApiDataSource() }
         bind<SetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<GetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
+        bind<MatchRepository>() with singleton {
+            MatchRepository(
+                    GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
+                    GetMatchByIdMockDataSource(),
+                    InsertMatchMockDataSource()
+            )
+        }
     }
 }
 

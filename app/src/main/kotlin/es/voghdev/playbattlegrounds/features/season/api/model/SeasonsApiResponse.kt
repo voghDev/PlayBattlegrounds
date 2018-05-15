@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.appandweb.weevento.ui.presenter
+package es.voghdev.playbattlegrounds.features.season.api.model
 
-abstract class Presenter<T1, T2>() {
-    open suspend fun initialize() { /* Empty */
+import es.voghdev.playbattlegrounds.features.players.api.model.LinksApiEntry
+import es.voghdev.playbattlegrounds.features.players.api.model.MetaApiEntry
+import es.voghdev.playbattlegrounds.features.season.Season
+
+class SeasonsApiResponse(
+        val data: List<SeasonApiEntry>,
+        val links: LinksApiEntry,
+        val meta: MetaApiEntry
+) {
+    fun hasData(): Boolean {
+        return data != null
     }
 
-    open suspend fun resume() { /* Empty */
+    fun toDomain(): List<Season> {
+        return emptyList()
     }
-
-    open suspend fun pause() { /* Empty */
-    }
-
-    open suspend fun destroy() {
-        view = null
-        navigator = null
-    }
-
-    var view: T1? = null
-    var navigator: T2? = null
 }

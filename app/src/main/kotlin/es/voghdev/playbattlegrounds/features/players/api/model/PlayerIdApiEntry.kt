@@ -13,23 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.appandweb.weevento.ui.presenter
+package es.voghdev.playbattlegrounds.features.players.api.model
 
-abstract class Presenter<T1, T2>() {
-    open suspend fun initialize() { /* Empty */
-    }
-
-    open suspend fun resume() { /* Empty */
-    }
-
-    open suspend fun pause() { /* Empty */
-    }
-
-    open suspend fun destroy() {
-        view = null
-        navigator = null
-    }
-
-    var view: T1? = null
-    var navigator: T2? = null
-}
+class PlayerIdApiEntry(
+        val type: String,
+        val id: String
+)
