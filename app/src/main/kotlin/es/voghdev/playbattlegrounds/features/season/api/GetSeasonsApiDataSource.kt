@@ -49,7 +49,8 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
 
         val call: Call<SeasonsApiResponse> = service.getSeasons(
                 "Bearer ${BuildConfig.PUBGApiKey}",
-                "application/vnd.api+json")
+                "application/vnd.api+json",
+                "pc-eu")
 
         try {
             val rsp: Response<SeasonsApiResponse>? = call.execute()
@@ -59,6 +60,8 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
             } else if (rsp?.errorBody() != null) {
                 val error = rsp?.errorBody()?.string()!!
                 return Either.left(AbsError(error))
+            } else {
+                return Either.left(AbsError("Unknown error parsing JSON"))
             }
         } catch(e: JsonSyntaxException) {
             return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))

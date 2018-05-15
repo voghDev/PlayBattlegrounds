@@ -33,6 +33,8 @@ import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdAp
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
+import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.bind

@@ -11,8 +11,10 @@ import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
+import es.voghdev.playbattlegrounds.common.db.AppDatabase
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
+import es.voghdev.playbattlegrounds.copyDatabaseToSDCard
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
@@ -73,6 +75,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
         rootView.setOnClickListener {
             presenter?.onRootViewClicked()
+        }
+
+        rootView.setOnLongClickListener {
+            copyDatabaseToSDCard(AppDatabase.NAME)
+            true
         }
     }
 

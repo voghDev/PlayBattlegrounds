@@ -67,8 +67,8 @@ class MatchDBEntry : BaseModel {
                 map,
                 durationInSeconds,
                 emptyList(),
-                numberOfKillsForCurrentPlayer,
-                placeForCurrentPlayer
+                5, // numberOfKillsForCurrentPlayer,
+                11//placeForCurrentPlayer
         )
     }
 }

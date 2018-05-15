@@ -92,12 +92,15 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
                 when (result) {
                     is Ok -> {
+                        val name = player.name
+                        val kills = result.b.getNumberOfKills(name)
+                        val place = result.b.getWinPlaceForParticipant(name)
                         val copy = result.b.copy(
-                                numberOfKillsForCurrentPlayer = result.b.getNumberOfKills(player.name),
-                                placeForCurrentPlayer = result.b.getWinPlaceForParticipant(player.name))
+                                numberOfKillsForCurrentPlayer = kills,
+                                placeForCurrentPlayer = place)
 
                         matchRepository.insertMatch(copy)
-
+                        
                         view?.addMatch(copy)
                     }
                     is Fail ->
