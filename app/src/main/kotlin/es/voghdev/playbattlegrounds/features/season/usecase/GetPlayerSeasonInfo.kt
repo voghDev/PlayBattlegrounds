@@ -13,8 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.season.api.model
+package es.voghdev.playbattlegrounds.features.season.usecase
 
-class PlayerSeasonAttributesApiEntry(
-        val gameModeStats: GameModeStatsSetApiEntry
-)
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.features.players.model.Player
+import es.voghdev.playbattlegrounds.features.season.Season
+import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
+
+interface GetPlayerSeasonInfo {
+    fun getPlayerSeasonInfo(player: Player, season: Season) : Either<AbsError, PlayerSeasonInfo>
+}

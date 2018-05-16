@@ -15,6 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.features.season.api
 
+import es.voghdev.playbattlegrounds.features.season.api.model.SeasonInfoApiResponse
 import es.voghdev.playbattlegrounds.features.season.api.model.SeasonsApiResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -24,8 +25,17 @@ import retrofit2.http.Path
 interface SeasonService {
     @GET("shards/{region}/seasons")
     fun getSeasons(
-            @Header("Authorization")apiKey: String,
-            @Header("accept")mediaType: String,
-            @Path("region")region: String
-            ): Call<SeasonsApiResponse>
+            @Header("Authorization") apiKey: String,
+            @Header("accept") mediaType: String,
+            @Path("region") region: String
+    ): Call<SeasonsApiResponse>
+
+    @GET("shards/{region}/players/{account}/seasons/{season}")
+    fun getPlayerSeasonInfo(
+            @Header("Authorization") apiKey: String,
+            @Header("accept") mediaType: String,
+            @Path("region") region: String,
+            @Path("account") account: String,
+            @Path("season") season: String
+    ): Call<SeasonInfoApiResponse>
 }

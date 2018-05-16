@@ -28,5 +28,7 @@ class SeasonsApiResponse(
         return data != null
     }
 
-    fun toDomain(): List<Season> = emptyList()
+    fun toDomain(): List<Season> {
+        return data.map { it.toDomain() }
+    }
 }

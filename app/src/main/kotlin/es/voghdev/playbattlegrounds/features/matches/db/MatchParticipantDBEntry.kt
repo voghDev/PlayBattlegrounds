@@ -38,6 +38,8 @@ class MatchParticipantDBEntry : BaseModel {
     var kills: Int = 0
     @Column
     var place: Int = 0
+    @Column
+    var matchId: String = ""
 
     constructor() {
         // Mandatory for DBFlow
@@ -49,6 +51,7 @@ class MatchParticipantDBEntry : BaseModel {
             this.name = name
             this.kills = kills
             this.place = place
+            this.matchId = matchId
         }
     }
 
@@ -57,7 +60,8 @@ class MatchParticipantDBEntry : BaseModel {
                 id,
                 name,
                 kills,
-                place
+                place,
+                matchId
         )
     }
 }

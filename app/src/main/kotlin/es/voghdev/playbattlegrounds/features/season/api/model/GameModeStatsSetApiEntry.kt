@@ -15,6 +15,11 @@
  */
 package es.voghdev.playbattlegrounds.features.season.api.model
 
-class PlayerSeasonAttributesApiEntry(
-        val gameModeStats: GameModeStatsSetApiEntry
+class GameModeStatsSetApiEntry(
+        val duo: GameModeStatsApiEntry,
+        val duoFPP: GameModeStatsApiEntry,
+        val solo: GameModeStatsApiEntry,
+        val soloFPP: GameModeStatsApiEntry,
+        val squad: GameModeStatsApiEntry,
+        val squadFPP: GameModeStatsApiEntry
 )
