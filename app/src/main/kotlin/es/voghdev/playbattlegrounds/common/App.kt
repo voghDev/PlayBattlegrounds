@@ -38,7 +38,9 @@ import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
+import es.voghdev.playbattlegrounds.features.season.sharedpref.SetCurrentSeasonSharedPrefDataSource
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
+import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.bind
@@ -56,7 +58,7 @@ class App : Application(), KodeinAware {
         bind<GetSeasons>() with singleton { GetSeasonsApiDataSource() }
         bind<SetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<GetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
-
+        bind<SetCurrentSeason>() with singleton { SetCurrentSeasonSharedPrefDataSource() }
         bind<MatchRepository>() with singleton {
             MatchRepository(
                     GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
