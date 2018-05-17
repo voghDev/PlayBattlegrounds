@@ -15,11 +15,13 @@
  */
 package es.voghdev.playbattlegrounds.features.season.api.model
 
+import com.google.gson.annotations.SerializedName
+
 class GameModeStatsSetApiEntry(
-        val duo: GameModeStatsApiEntry,
-        val duoFPP: GameModeStatsApiEntry,
-        val solo: GameModeStatsApiEntry,
-        val soloFPP: GameModeStatsApiEntry,
-        val squad: GameModeStatsApiEntry,
-        val squadFPP: GameModeStatsApiEntry
+        @SerializedName("duo") val duo: GameModeStatsApiEntry?,
+        @SerializedName("duo-fpp") val duoFPP: GameModeStatsApiEntry?,
+        @SerializedName("solo") val solo: GameModeStatsApiEntry?,
+        @SerializedName("solo-fpp") val soloFPP: GameModeStatsApiEntry?,
+        @SerializedName("squad") val squad: GameModeStatsApiEntry?,
+        @SerializedName("squad-fpp") val squadFPP: GameModeStatsApiEntry?
 )

@@ -20,11 +20,14 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
+import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.toast
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -35,6 +38,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getPlayerByNameDataSource: GetPlayerByName by instance()
     val matchRepository: MatchRepository by instance()
     val getPlayerAccount: GetPlayerAccount by instance()
+    val getCurrentSeason: GetCurrentSeason by instance()
+    val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<Match>? = null
 
@@ -50,7 +55,12 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, matchRepository, getPlayerAccount)
+        presenter = PlayerSearchPresenter(resLocator,
+                getPlayerByNameDataSource,
+                matchRepository,
+                getPlayerAccount,
+                getCurrentSeason,
+                getPlayerSeasonInfo)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -121,5 +131,13 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun onMatchClicked(match: Match) {
         presenter?.onMatchClicked(match)
+    }
+
+    override fun showPlayerBestRating(rating: Int) = ui {
+        toast("Best rating: $rating")
+    }
+
+    override fun showPlayerBestKDR(kdr: Float) = ui {
+        toast("Best Kill/Death ratio: $kdr")
     }
 }

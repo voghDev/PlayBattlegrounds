@@ -16,9 +16,10 @@
 package es.voghdev.playbattlegrounds.features.season.model
 
 data class PlayerSeasonGameModeStats(
-        val killPoints: Float,
-        val kills: Int,
-        val top10s: Int,
-        val winPoints: Float,
-        val wins: Int
+        val killPoints: Float = 0f,
+        val kills: Int = 0,
+        val top10s: Int = 0,
+        val winPoints: Float = 0f,
+        val roundsPlayed: Int = 0,
+        val wins: Int = 0
 )

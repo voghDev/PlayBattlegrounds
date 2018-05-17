@@ -22,5 +22,5 @@ import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 
 interface GetPlayerSeasonInfo {
-    fun getPlayerSeasonInfo(player: Player, season: Season) : Either<AbsError, PlayerSeasonInfo>
+    fun getPlayerSeasonInfo(player: Player, season: Season): Either<AbsError, PlayerSeasonInfo>
 }

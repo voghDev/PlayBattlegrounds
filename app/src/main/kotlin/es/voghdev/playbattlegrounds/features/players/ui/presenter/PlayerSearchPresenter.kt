@@ -24,13 +24,17 @@ import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
+import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 
 class PlayerSearchPresenter(val resLocator: ResLocator,
                             val getPlayerByName: GetPlayerByName,
                             val matchRepository: MatchRepository,
-                            val getPlayerAccount: GetPlayerAccount) :
+                            val getPlayerAccount: GetPlayerAccount,
+                            val getCurrentSeason: GetCurrentSeason,
+                            val getPlayerSeasonInfo: GetPlayerSeasonInfo) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     suspend override fun initialize() {
@@ -70,6 +74,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 view?.hideSoftKeyboard()
 
                 requestPlayerMatches(result.b)
+
+                requestPlayerSeasonStats(result.b)
             }
             is Fail -> {
                 view?.showError(result.a.message)
@@ -115,6 +121,28 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         }
     }
 
+    private suspend fun requestPlayerSeasonStats(player: Player) {
+        val currentSeasonResult = async(CommonPool) {
+            getCurrentSeason.getCurrentSeason()
+        }.await()
+
+        if (currentSeasonResult is Ok) {
+            val seasonInfoTask = async(CommonPool) {
+                getPlayerSeasonInfo.getPlayerSeasonInfo(player, currentSeasonResult.b)
+            }
+
+            val seasonInfo = seasonInfoTask.await()
+
+            if (seasonInfo is Ok) {
+                val rating = seasonInfo.b.getMaximumRating()
+                val kdr = seasonInfo.b.getMaximumKillDeathRatio()
+
+                view?.showPlayerBestKDR(kdr)
+                view?.showPlayerBestRating(rating)
+            }
+        }
+    }
+
     fun onMatchClicked(match: Match) {
         /* Navigator should navigate */
     }
@@ -128,6 +156,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showLoading()
         fun hideLoading()
         fun fillPlayerAccount(account: String)
+        fun showPlayerBestRating(rating: Int)
+        fun showPlayerBestKDR(kdr: Float)
     }
 
     interface Navigator
