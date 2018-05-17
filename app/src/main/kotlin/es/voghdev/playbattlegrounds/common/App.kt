@@ -56,6 +56,7 @@ class App : Application(), KodeinAware {
         bind<GetSeasons>() with singleton { GetSeasonsApiDataSource() }
         bind<SetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<GetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
+
         bind<MatchRepository>() with singleton {
             MatchRepository(
                     GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),

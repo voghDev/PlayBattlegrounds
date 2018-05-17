@@ -28,7 +28,9 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
+import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
+import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_intro.*
 import org.jetbrains.anko.startActivity
@@ -46,6 +48,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     val setUserRegion: SetPlayerRegion by instance()
     val getRegions: GetRegions by instance()
     val getSeasons: GetSeasons by instance()
+    val setCurrentSeason : SetCurrentSeason by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +75,13 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
         }
 
         fillServersSpinner()
+
+        val seasonsResult = getSeasons.getSeasons()
+        if(seasonsResult is Ok) {
+            val currentSeason = seasonsResult.b.firstOrNull { it.isCurrentSeason }
+            if(currentSeason != null)
+                setCurrentSeasons.setCurrentSeason(currentSeason)
+        }
     }
 
     private fun fillServersSpinner() {
