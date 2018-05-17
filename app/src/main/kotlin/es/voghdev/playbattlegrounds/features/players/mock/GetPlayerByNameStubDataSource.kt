@@ -20,7 +20,7 @@ import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 
-class GetPlayerByNameMockDataSource : GetPlayerByName {
+class GetPlayerByNameStubDataSource : GetPlayerByName {
     override fun getPlayerByName(name: String): Either<AbsError, Player> =
             Either.right(
                     Player(
