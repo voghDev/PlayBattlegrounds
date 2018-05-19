@@ -20,6 +20,8 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
+import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
@@ -35,6 +37,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getPlayerByNameDataSource: GetPlayerByName by instance()
     val matchRepository: MatchRepository by instance()
     val getPlayerAccount: GetPlayerAccount by instance()
+    val getCurrentSeason: GetCurrentSeason by instance()
+    val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<Match>? = null
 
@@ -50,7 +54,12 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        presenter = PlayerSearchPresenter(resLocator, getPlayerByNameDataSource, matchRepository, getPlayerAccount)
+        presenter = PlayerSearchPresenter(resLocator,
+                getPlayerByNameDataSource,
+                matchRepository,
+                getPlayerAccount,
+                getCurrentSeason,
+                getPlayerSeasonInfo)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -94,6 +103,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun showLoading() = ui {
         btn_send.visibility = INVISIBLE
         recyclerView.visibility = INVISIBLE
+        tv_kdr.visibility = INVISIBLE
+        tv_rating.visibility = INVISIBLE
 
         progressBar.visibility = VISIBLE
     }
@@ -101,6 +112,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun hideLoading() = ui {
         btn_send.visibility = VISIBLE
         recyclerView.visibility = VISIBLE
+        tv_rating.visibility = VISIBLE
+        tv_kdr.visibility = VISIBLE
 
         progressBar.visibility = GONE
     }
@@ -121,5 +134,13 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun onMatchClicked(match: Match) {
         presenter?.onMatchClicked(match)
+    }
+
+    override fun showPlayerBestRating(rating: String, color: String) = ui {
+        tv_rating.text = "Best Rating: $rating"
+    }
+
+    override fun showPlayerBestKDR(kdr: String, color: String) = ui {
+        tv_kdr.text = "Best Kill/Death ratio: $kdr"
     }
 }

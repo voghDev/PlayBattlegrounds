@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.season.api.model
+package es.voghdev.playbattlegrounds.common.db
 
-class PlayerSeasonAttributesApiEntry(
-        val gameModeStats: GameModeStatsSetApiEntry
-)
+import com.raizlabs.android.dbflow.annotation.Database
+
+@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, generatedClassSeparator = "_")
+object AppDatabase {
+    const val NAME: String = "BattlegroundsDB"
+    const val VERSION: Int = 1
+}

@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.mock
+package es.voghdev.playbattlegrounds.features.season.usecase
 
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.players.model.Player
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.Season
+import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 
-class GetPlayerByNameMockDataSource : GetPlayerByName {
-    override fun getPlayerByName(name: String): Either<AbsError, Player> =
-            Either.right(
-                    Player(
-                            "account.afbb96044b3b4e888e3cef65fcdaf898",
-                            "eqs_insanity",
-                            "",
-                            "bluehole-pubg",
-                            "https://api.playbattlegrounds.com/shards/pc-eu/players/account.afbb96044b3b4e888e3cef65fcdaf898",
-                            "pc-eu"
-                    )
-            )
+interface GetPlayerSeasonInfo {
+    fun getPlayerSeasonInfo(player: Player, season: Season): Either<AbsError, PlayerSeasonInfo>
 }

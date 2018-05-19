@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.onboarding.datasource.sharedpreference
+package es.voghdev.playbattlegrounds.features.onboarding.sharedpreference
 
 import android.content.Context
 import arrow.core.Either

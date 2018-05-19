@@ -9,6 +9,7 @@ This is a small App that tries to work on the following aspects:
 - Basic usage of Monads such as Either, using [arrow-kt][2]
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
+- Android UI Design using [ConstraintLayout][5]
 
 ![Sample][appSample]
 
@@ -21,5 +22,6 @@ All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast
 [2]: https://github.com/arrow-kt/arrow
 [3]: https://github.com/shyiko/ktlint
 [4]: http://www.flaticon.com
+[5]: https://developer.android.com/reference/android/support/constraint/ConstraintLayout
 
 [appSample]: ./img/sample.gif

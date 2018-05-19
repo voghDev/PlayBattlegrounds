@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.season.api.model
+package es.voghdev.playbattlegrounds.features.season.model
 
-class PlayerSeasonAttributesApiEntry(
-        val gameModeStats: GameModeStatsSetApiEntry
+data class PlayerSeasonGameModeStats(
+        val killPoints: Float = 0f,
+        val kills: Int = 0,
+        val top10s: Int = 0,
+        val winPoints: Float = 0f,
+        val roundsPlayed: Int = 0,
+        val wins: Int = 0
 )

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.onboarding.datasource.res
+package es.voghdev.playbattlegrounds.features.onboarding.res
 
 import android.content.Context
 import arrow.core.Either

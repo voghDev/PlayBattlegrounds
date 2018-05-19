@@ -24,6 +24,8 @@
     <string name="server_selection_message">What Server do you play in?</string>
     <string name="search">Search</string>
     <string name="n_kills_param">%1$d kills</string>
+    <string name="best_kdr">Best Kill/Death Ratio:</string>
+    <string name="best_rating">Best Rating:</string>
     <plurals name="kills">
         <item quantity="one">%d kill</item>
         <item quantity="other">%d kills</item>

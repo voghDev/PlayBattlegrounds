@@ -19,5 +19,6 @@ class MatchParticipant(
         val id: String = "",
         val name: String = "",
         val kills: Int = 0,
-        val place: Int = 0
+        val place: Int = 0,
+        var matchId: String = ""
 )
