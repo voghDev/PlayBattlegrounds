@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.players.ui.activity.PlayerSearchActivity"/>
+        <activity android:name=".features.players.ui.activity.PlayerSearchActivity" android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>
