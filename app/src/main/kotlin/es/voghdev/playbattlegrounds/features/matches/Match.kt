@@ -26,7 +26,7 @@ data class Match(
         var participants: List<MatchParticipant> = emptyList(),
         var numberOfKillsForCurrentPlayer: Int = 0,
         var placeForCurrentPlayer: Int = 0
-): ListEntity() {
+) : ListEntity() {
     fun getNumberOfKills(participantName: String): Int {
         return participants.filter { it.name == participantName }.firstOrNull()?.kills ?: 0
     }

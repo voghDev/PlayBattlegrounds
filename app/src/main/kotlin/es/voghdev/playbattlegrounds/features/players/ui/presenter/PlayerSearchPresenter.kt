@@ -27,7 +27,6 @@ import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
-import es.voghdev.playbattlegrounds.format
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 

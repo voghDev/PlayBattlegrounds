@@ -25,7 +25,7 @@ data class PlayerSeasonInfo(
         val statsSoloFPP: PlayerSeasonGameModeStats,
         val statsSquad: PlayerSeasonGameModeStats,
         val statsSquadFPP: PlayerSeasonGameModeStats
-): ListEntity() {
+) : ListEntity() {
     fun getMaximumRating(): Int {
         return getRatingForGameModeStats(getBestRatingStats())
     }
