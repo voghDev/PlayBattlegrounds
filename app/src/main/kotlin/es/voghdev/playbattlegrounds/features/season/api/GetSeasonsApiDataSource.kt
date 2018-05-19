@@ -30,6 +30,8 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
 
 class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
     override fun getSeasons(): Either<AbsError, List<Season>> {
@@ -38,6 +40,8 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(getEndPoint())
@@ -47,13 +51,13 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
 
         val service: SeasonService = retrofit.create(SeasonService::class.java)
 
-        val call: Call<SeasonsApiResponse> = service.getSeasons(
+        val call: Call<SeasonsApiResponse>? = service.getSeasons(
                 "Bearer ${BuildConfig.PUBGApiKey}",
                 "application/vnd.api+json",
                 "pc-eu")
 
         try {
-            val rsp: Response<SeasonsApiResponse>? = call.execute()
+            val rsp: Response<SeasonsApiResponse>? = call?.execute()
 
             if (rsp?.body()?.hasData() == true) {
                 return Either.right(rsp?.body()?.toDomain() ?: emptyList())
@@ -65,6 +69,8 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
             }
         } catch (e: JsonSyntaxException) {
             return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
+        } catch (e: UnknownHostException) {
+            return Either.left(AbsError("Please check your internet connection"))
         }
     }
 }

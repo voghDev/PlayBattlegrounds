@@ -31,6 +31,8 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
 
 class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatchById, ApiRequest {
     override fun getMatchById(id: String): Either<AbsError, Match> {
@@ -39,6 +41,8 @@ class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatch
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(getEndPoint())
@@ -68,6 +72,8 @@ class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatch
             }
         } catch (e: JsonSyntaxException) {
             return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
+        } catch (e: UnknownHostException) {
+            return Either.left(AbsError("Please check your internet connection"))
         }
 
         return Either.left(AbsError("Unknown error fetching match"))

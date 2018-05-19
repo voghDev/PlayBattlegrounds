@@ -32,6 +32,8 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
 
 class GetPlayerByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPlayerById, ApiRequest {
     override fun getPlayerById(id: String): Either<AbsError, Player> {
@@ -40,6 +42,8 @@ class GetPlayerByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPlay
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(getEndPoint())
@@ -69,6 +73,8 @@ class GetPlayerByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPlay
             }
         } catch (e: JsonSyntaxException) {
             return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
+        } catch (e: UnknownHostException) {
+            return Either.left(AbsError("Please check your internet connection"))
         }
 
         return Either.left(AbsError("Unknown error fetching player"))
