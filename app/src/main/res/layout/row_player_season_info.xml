@@ -3,6 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/upper_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="1px"
+        android:background="@color/colorPrimaryDark" />
+
     <TextView
         android:id="@+id/tv_kdr_title"
         style="@style/Element"
@@ -11,6 +18,7 @@
         android:layout_below="@+id/tv_title"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="8dp"
+        android:textStyle="italic"
         android:text="Best Kill/Death ratio:"
         android:textSize="18sp" />
 
@@ -32,6 +40,7 @@
         android:layout_alignLeft="@+id/tv_kdr_title"
         android:layout_below="@+id/tv_kdr_title"
         android:text="Best Rating:"
+        android:textStyle="italic"
         android:textSize="18sp" />
 
     <TextView
@@ -46,6 +55,7 @@
         android:textStyle="bold" />
 
     <View
+        android:id="@+id/lower_separator"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/tv_rating_title"
