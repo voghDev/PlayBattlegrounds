@@ -15,6 +15,8 @@
  */
 package es.voghdev.playbattlegrounds.features.matches
 
+import es.voghdev.playbattlegrounds.common.ui.ListEntity
+
 data class Match(
         val id: String = "",
         val date: Long = 0L,
@@ -24,7 +26,7 @@ data class Match(
         var participants: List<MatchParticipant> = emptyList(),
         var numberOfKillsForCurrentPlayer: Int = 0,
         var placeForCurrentPlayer: Int = 0
-) {
+): ListEntity() {
     fun getNumberOfKills(participantName: String): Int {
         return participants.filter { it.name == participantName }.firstOrNull()?.kills ?: 0
     }

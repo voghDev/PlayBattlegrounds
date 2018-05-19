@@ -15,6 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.features.season
 
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import android.widget.TextView
 import com.pedrogomez.renderers.Renderer
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
+import es.voghdev.playbattlegrounds.format
 
 class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSeasonInfo>() {
     var tv_kdr: TextView? = null
@@ -43,6 +45,35 @@ class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSea
     }
 
     override fun render() {
+        renderPlayerKillDeathRatio()
+        renderPlayerRating()
+    }
+
+    private fun renderPlayerRating() {
+        val bestRatingStats = content.getBestRatingStats()
+        val rating = content.getRatingForGameModeStats(bestRatingStats)
+        tv_rating?.text = "$rating"
+
+        tv_rating?.setTextColor(when {
+            rating > 2200 -> ContextCompat.getColor(context, R.color.blue)
+            rating > 1900 -> ContextCompat.getColor(context, R.color.green)
+            rating > 1700 -> ContextCompat.getColor(context, R.color.colorPrimary)
+            else -> ContextCompat.getColor(context, R.color.light_red)
+        })
+    }
+
+    private fun renderPlayerKillDeathRatio() {
+        val bestKdrStats = content.getBestKDRStats()
+        val kdr = content.getKillDeathRatioForGameModeStats(bestKdrStats)
+
+        tv_kdr?.text = "${kdr.format(2)}"
+
+        tv_kdr?.setTextColor(when {
+            kdr > 2f -> ContextCompat.getColor(context, R.color.blue)
+            kdr > 1f -> ContextCompat.getColor(context, R.color.green)
+            kdr > 0.75f -> ContextCompat.getColor(context, R.color.colorPrimary)
+            else -> ContextCompat.getColor(context, R.color.light_red)
+        })
     }
 
     interface OnRowClicked {

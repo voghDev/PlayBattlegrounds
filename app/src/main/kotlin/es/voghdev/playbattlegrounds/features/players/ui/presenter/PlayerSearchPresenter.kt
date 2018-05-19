@@ -77,6 +77,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 view?.showPlayerFoundMessage("Found: ${result.b.name}. Loading matches...")
                 view?.hideSoftKeyboard()
 
+                view?.clearList()
+
                 requestPlayerSeasonStats(result.b)
 
                 requestPlayerMatches(result.b)
@@ -90,7 +92,6 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     private suspend fun requestPlayerMatches(player: Player) {
         if (player.matches.isNotEmpty()) {
-            view?.clearList()
 
             var errors = 0
             player.matches.subList(0, player.matches.size).take(5).forEach {
@@ -149,7 +150,11 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun onMatchClicked(match: Match) {
-        /* Navigator should navigate */
+        /* Should navigate to a screen with Match details? */
+    }
+
+    fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {
+        /* Should navigate to a screen with all your KDRs and Ratings */
     }
 
     interface MVPView {

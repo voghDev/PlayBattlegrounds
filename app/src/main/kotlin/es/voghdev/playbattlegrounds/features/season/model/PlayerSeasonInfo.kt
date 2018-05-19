@@ -15,6 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.features.season.model
 
+import es.voghdev.playbattlegrounds.common.ui.ListEntity
 import kotlin.math.roundToInt
 
 data class PlayerSeasonInfo(
@@ -24,7 +25,7 @@ data class PlayerSeasonInfo(
         val statsSoloFPP: PlayerSeasonGameModeStats,
         val statsSquad: PlayerSeasonGameModeStats,
         val statsSquadFPP: PlayerSeasonGameModeStats
-) {
+): ListEntity() {
     fun getMaximumRating(): Int {
         return getRatingForGameModeStats(getBestRatingStats())
     }

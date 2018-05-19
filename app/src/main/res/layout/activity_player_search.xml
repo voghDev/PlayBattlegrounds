@@ -21,11 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintVertical_bias="0.05"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/et_username"
@@ -41,36 +41,21 @@
     <ImageButton
         android:id="@+id/btn_send"
         style="@style/SearchButton"
-        android:layout_marginTop="16dp"
         android:text="@string/search"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/guideline1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_kdr"
-        style="@style/StatsLabel"
-        android:text="@string/best_kdr"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_username" />
-
-    <TextView
-        android:id="@+id/tv_rating"
-        style="@style/StatsLabel"
-        android:text="@string/best_rating"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_kdr" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         style="@style/FullW"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rating" />
+        app:layout_constraintTop_toBottomOf="@+id/til_username" />
 
     <ProgressBar
         android:id="@+id/progressBar"

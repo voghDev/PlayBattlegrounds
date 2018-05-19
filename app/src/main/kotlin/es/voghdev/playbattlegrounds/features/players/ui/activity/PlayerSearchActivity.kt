@@ -3,9 +3,7 @@ package es.voghdev.playbattlegrounds.features.players.ui.activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View.VISIBLE
-import android.view.View.INVISIBLE
-import android.view.View.GONE
+import android.view.View.*
 import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
@@ -13,6 +11,7 @@ import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
+import es.voghdev.playbattlegrounds.common.ui.ListEntity
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
@@ -33,7 +32,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 
-class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked {
+class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
     val getPlayerByNameDataSource: GetPlayerByName by instance()
@@ -42,7 +41,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getCurrentSeason: GetCurrentSeason by instance()
     val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
     val resLocator: ResLocator by instance()
-    var adapter: RVRendererAdapter<Match>? = null
+    var adapter: RVRendererAdapter<ListEntity>? = null
 
     var presenter: PlayerSearchPresenter? = null
 
@@ -51,10 +50,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
         val matchRenderer = MatchRenderer(this)
         val seasonRenderer = PlayerSeasonInfoRenderer(this)
-        val rendererBuilder = RendererBuilder<Match>()
+        val rendererBuilder = RendererBuilder<ListEntity>()
                 .bind(Match::class.java, matchRenderer)
                 .bind(PlayerSeasonInfo::class.java, seasonRenderer)
-        adapter = RVRendererAdapter<Match>(rendererBuilder)
+        adapter = RVRendererAdapter<ListEntity>(rendererBuilder)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -108,8 +107,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun showLoading() = ui {
         btn_send.visibility = INVISIBLE
         recyclerView.visibility = INVISIBLE
-        tv_kdr.visibility = INVISIBLE
-        tv_rating.visibility = INVISIBLE
 
         progressBar.visibility = VISIBLE
     }
@@ -117,8 +114,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun hideLoading() = ui {
         btn_send.visibility = VISIBLE
         recyclerView.visibility = VISIBLE
-        tv_rating.visibility = VISIBLE
-        tv_kdr.visibility = VISIBLE
 
         progressBar.visibility = GONE
     }
@@ -141,15 +136,13 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         presenter?.onMatchClicked(match)
     }
 
-    override fun showPlayerBestRating(rating: String, color: String) = ui {
-        tv_rating.text = "Best Rating: $rating"
-    }
-
-    override fun showPlayerBestKDR(kdr: String, color: String) = ui {
-        tv_kdr.text = "Best Kill/Death ratio: $kdr"
+    override fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {
+        presenter?.onPlayerSeasonInfoClicked(playerSeasonInfo)
     }
 
     override fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo) = ui {
         adapter?.add(seasonInfo)
+
+        adapter?.notifyDataSetChanged()
     }
 }
