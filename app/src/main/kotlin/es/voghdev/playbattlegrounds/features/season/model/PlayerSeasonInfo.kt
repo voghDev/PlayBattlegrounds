@@ -32,7 +32,7 @@ data class PlayerSeasonInfo(
     fun getMaximumKillDeathRatio(): Float {
         val bestStats = getBestKDRStats()
 
-        val deaths: Int = bestStats?.roundsPlayed?.minus(bestStats?.wins) ?: 1
+        val deaths: Int = maxOf(bestStats?.roundsPlayed?.minus(bestStats?.wins) ?: 1, 1)
 
         return bestStats?.kills?.toFloat()?.div(deaths) ?: 0f
     }

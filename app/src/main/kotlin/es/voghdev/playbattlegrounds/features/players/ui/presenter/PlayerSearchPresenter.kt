@@ -37,6 +37,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                             val getPlayerSeasonInfo: GetPlayerSeasonInfo) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
+    val RED = "#ff9900"
+
     suspend override fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
         if (account is Ok && account.b.isNotEmpty())
@@ -137,8 +139,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 val rating = seasonInfo.b.getMaximumRating()
                 val kdr = seasonInfo.b.getMaximumKillDeathRatio()
 
-                view?.showPlayerBestKDR(kdr)
-                view?.showPlayerBestRating(rating)
+                view?.showPlayerBestKDR(kdr.toString(), RED)
+                view?.showPlayerBestRating(rating.toString(), RED)
             }
         }
     }
@@ -156,8 +158,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showLoading()
         fun hideLoading()
         fun fillPlayerAccount(account: String)
-        fun showPlayerBestRating(rating: Int)
-        fun showPlayerBestKDR(kdr: Float)
+        fun showPlayerBestRating(rating: String, color: String)
+        fun showPlayerBestKDR(kdr: String, color: String)
     }
 
     interface Navigator
