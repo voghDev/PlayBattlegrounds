@@ -3,7 +3,9 @@ package es.voghdev.playbattlegrounds.features.players.ui.activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View.*
+import android.view.View.VISIBLE
+import android.view.View.INVISIBLE
+import android.view.View.GONE
 import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
@@ -103,7 +105,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         recyclerView.visibility = INVISIBLE
         tv_kdr.visibility = INVISIBLE
         tv_rating.visibility = INVISIBLE
-
 
         progressBar.visibility = VISIBLE
     }

@@ -23,6 +23,8 @@ fun Fragment.ui(action: () -> Unit) {
     }
 }
 
+fun Float.format(digits: Int): String = java.lang.String.format("%.${digits}f", this)
+
 fun Fragment.colorStateList(colorResId: Int): ColorStateList {
     return ColorStateList.valueOf(ContextCompat.getColor(context!!, colorResId))
 }

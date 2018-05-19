@@ -26,6 +26,7 @@ import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
+import es.voghdev.playbattlegrounds.format
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 
@@ -139,7 +140,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 val rating = seasonInfo.b.getMaximumRating()
                 val kdr = seasonInfo.b.getMaximumKillDeathRatio()
 
-                view?.showPlayerBestKDR(kdr.toString(), RED)
+                view?.showPlayerBestKDR(kdr.format(2), RED)
                 view?.showPlayerBestRating(rating.toString(), RED)
             }
         }
