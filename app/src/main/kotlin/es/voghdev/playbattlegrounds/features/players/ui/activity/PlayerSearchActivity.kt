@@ -20,6 +20,8 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
+import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
@@ -47,8 +49,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val renderer = MatchRenderer(this)
-        val rendererBuilder = RendererBuilder<Match>(renderer)
+        val matchRenderer = MatchRenderer(this)
+        val seasonRenderer = PlayerSeasonInfoRenderer(this)
+        val rendererBuilder = RendererBuilder<Match>()
+                .bind(Match::class.java, matchRenderer)
+                .bind(PlayerSeasonInfo::class.java, seasonRenderer)
         adapter = RVRendererAdapter<Match>(rendererBuilder)
 
         recyclerView.adapter = adapter
@@ -142,5 +147,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun showPlayerBestKDR(kdr: String, color: String) = ui {
         tv_kdr.text = "Best Kill/Death ratio: $kdr"
+    }
+
+    override fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo) = ui {
+        adapter?.add(seasonInfo)
     }
 }

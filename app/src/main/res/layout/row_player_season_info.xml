@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_kdr_title"
+        style="@style/Element"
+        android:layout_height="24dp"
+        android:layout_alignLeft="@+id/tv_title"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Best Kill/Death ratio:"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_kdr"
+        style="@style/Element"
+        android:layout_alignBottom="@id/tv_kdr_title"
+        android:layout_alignTop="@id/tv_kdr_title"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/tv_kdr_title"
+        android:text="3.00"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_rating_title"
+        style="@style/Element"
+        android:layout_height="24dp"
+        android:layout_alignLeft="@+id/tv_kdr_title"
+        android:layout_below="@+id/tv_kdr_title"
+        android:text="Best Rating:"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        style="@style/Element"
+        android:layout_alignBottom="@+id/tv_rating_title"
+        android:layout_alignTop="@+id/tv_rating_title"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/tv_rating_title"
+        android:text="1800"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/tv_rating_title"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimaryDark" />
+
+</RelativeLayout>

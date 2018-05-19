@@ -24,6 +24,7 @@ import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.format
@@ -76,9 +77,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 view?.showPlayerFoundMessage("Found: ${result.b.name}. Loading matches...")
                 view?.hideSoftKeyboard()
 
-                requestPlayerMatches(result.b)
-
                 requestPlayerSeasonStats(result.b)
+
+                requestPlayerMatches(result.b)
             }
             is Fail -> {
                 view?.showError(result.a.message)
@@ -140,8 +141,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 val rating = seasonInfo.b.getMaximumRating()
                 val kdr = seasonInfo.b.getMaximumKillDeathRatio()
 
-                view?.showPlayerBestKDR(kdr.format(2), RED)
-                view?.showPlayerBestRating(rating.toString(), RED)
+                view?.addPlayerStatsRow(seasonInfo.b)
+//                view?.showPlayerBestKDR(kdr.format(2), RED)
+//                view?.showPlayerBestRating(rating.toString(), RED)
             }
         }
     }
@@ -159,8 +161,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showLoading()
         fun hideLoading()
         fun fillPlayerAccount(account: String)
-        fun showPlayerBestRating(rating: String, color: String)
-        fun showPlayerBestKDR(kdr: String, color: String)
+//        fun showPlayerBestRating(rating: String, color: String)
+//        fun showPlayerBestKDR(kdr: String, color: String)
+        fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo)
     }
 
     interface Navigator
