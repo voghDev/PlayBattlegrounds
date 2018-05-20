@@ -1,4 +1,6 @@
 # PlayBattlegrounds
+[![CircleCI](https://circleci.com/gh/voghDev/PlayBattlegrounds/tree/master.svg?style=svg)](https://circleci.com/gh/voghDev/PlayBattlegrounds/tree/master)
+
 Sample project to do some requests to the PUBG Open API
 
 <img height="100" src="./img/kotlin.png" width="100"> <img height="100" src="https://avatars2.githubusercontent.com/u/29458023?v=4&amp;s=200" width="100">
