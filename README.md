@@ -12,9 +12,18 @@ This is a small App that tries to work on the following aspects:
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
 - Android UI Design using [ConstraintLayout][5]
-- Continous Integration using [CircleCI][8] - thanks to [JcMinarro][6] for [this awesome PR][7]
+- Continous Integration using [CircleCI][8] - thanks to [JcMinarro][6] for [this awesome PR][9]
 
 ![Sample][appSample]
+
+Installing
+----------
+
+Clone this repository and create a file named `pubg-api.properties`. Paste your PUBG ApiKey inside it like this:
+
+    apiKey=abc12345
+
+where `abc12345` is your PUBG ApiKey. You can see an example in [pubg-api-sample.properties][7]
 
 Icons
 -----
@@ -27,7 +36,8 @@ All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast
 [4]: http://www.flaticon.com
 [5]: https://developer.android.com/reference/android/support/constraint/ConstraintLayout
 [6]: https://github.com/JcMinarro
-[7]: https://github.com/voghDev/PlayBattlegrounds/pull/9
+[7]: https://github.com/voghDev/PlayBattlegrounds/blob/master/pubg-api-sample.properties
 [8]: https://circleci.com/
+[9]: https://github.com/voghDev/PlayBattlegrounds/pull/9
 
 [appSample]: ./img/sample.gif
