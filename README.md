@@ -12,6 +12,7 @@ This is a small App that tries to work on the following aspects:
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
 - Android UI Design using [ConstraintLayout][5]
+- A small Database layer using [DBFlow][10]
 - Continous Integration using [CircleCI][8] - thanks to [JcMinarro][6] for [this awesome PR][9]
 
 ![Sample][appSample]
@@ -39,5 +40,6 @@ All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast
 [7]: https://github.com/voghDev/PlayBattlegrounds/blob/master/pubg-api-sample.properties
 [8]: https://circleci.com/
 [9]: https://github.com/voghDev/PlayBattlegrounds/pull/9
+[10]: https://github.com/Raizlabs/DBFlow
 
 [appSample]: ./img/sample.gif
