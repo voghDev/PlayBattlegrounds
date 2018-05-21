@@ -138,12 +138,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
             val seasonInfo = seasonInfoTask.await()
 
             if (seasonInfo is Ok) {
-                val rating = seasonInfo.b.getMaximumRating()
-                val kdr = seasonInfo.b.getMaximumKillDeathRatio()
-
                 view?.addPlayerStatsRow(seasonInfo.b)
-//                view?.showPlayerBestKDR(kdr.format(2), RED)
-//                view?.showPlayerBestRating(rating.toString(), RED)
             }
         }
     }
@@ -165,8 +160,6 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showLoading()
         fun hideLoading()
         fun fillPlayerAccount(account: String)
-//        fun showPlayerBestRating(rating: String, color: String)
-//        fun showPlayerBestKDR(kdr: String, color: String)
         fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo)
     }
 
