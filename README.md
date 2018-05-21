@@ -12,7 +12,7 @@ This is a small App that tries to work on the following aspects:
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
 - Android UI Design using [ConstraintLayout][5]
-- A small Database layer using [DBFlow][10]
+- A small Database layer using [DBFlow][10], fully implemented in Kotlin
 - Continous Integration using [CircleCI][8] - thanks to [JcMinarro][6] for [this awesome PR][9]
 
 ![Sample][appSample]
