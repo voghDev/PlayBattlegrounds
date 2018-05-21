@@ -20,7 +20,7 @@ import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 
-class GetMatchByIdMockDataSource : GetMatchById {
+class GetMatchByIdStubDataSource : GetMatchById {
     override fun getMatchById(id: String): Either<AbsError, Match> {
         return Either.right(Match(id = "s4mpl3m4tch"))
     }

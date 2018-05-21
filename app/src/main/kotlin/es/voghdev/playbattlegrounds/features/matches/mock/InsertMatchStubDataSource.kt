@@ -18,6 +18,6 @@ package es.voghdev.playbattlegrounds.features.matches.mock
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
 
-class InsertMatchMockDataSource : InsertMatch {
+class InsertMatchStubDataSource : InsertMatch {
     override fun insertMatch(match: Match) = Unit
 }
