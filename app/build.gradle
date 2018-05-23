@@ -33,6 +33,19 @@ android {
                 throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
 
             buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
+            buildConfigField("int", "Limit", "0")
+            dimension "isPaid"
+        }
+
+        season1 {
+            Properties prop = new Properties();
+            prop.load(project.rootProject.file('pubg-api.properties').newDataInputStream())
+            def apiKey = prop.get("apiKey", null)
+            if (apiKey == null)
+                throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
+
+            buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
+            buildConfigField("int", "Limit", "1529769061000")
             dimension "isPaid"
         }
     }

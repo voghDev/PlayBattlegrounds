@@ -15,7 +15,9 @@
  */
 package es.voghdev.playbattlegrounds.onboarding
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
@@ -23,21 +25,16 @@ import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.onboarding.model.Region
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.*
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
-import kotlinx.android.synthetic.main.activity_intro.btn_send
-import kotlinx.android.synthetic.main.activity_intro.et_user
-import kotlinx.android.synthetic.main.activity_intro.rootView
-import kotlinx.android.synthetic.main.activity_intro.spn_server
+import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.AlertDialogBuilder
 import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -54,6 +51,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     val getRegions: GetRegions by instance()
     val getSeasons: GetSeasons by instance()
     val setCurrentSeason: SetCurrentSeason by instance()
+    val isAppExpired: IsAppExpired by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +70,12 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
             hideSoftKeyboard(et_user)
         }
 
+        val expired = isAppExpired.isAppExpired()
+        if (expired)
+            showAppExpiredDialog()
+
         val playerAccount = getPlayerAccount.getPlayerAccount()
-        if (playerAccount is Ok && playerAccount.b.isNotEmpty()) {
+        if (!expired && playerAccount is Ok && playerAccount.b.isNotEmpty()) {
             startActivity<PlayerSearchActivity>()
 
             finish()
@@ -109,5 +111,20 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                         setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
             })
         }
+    }
+
+    private fun showAppExpiredDialog() {
+        val dialog = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.expired_title))
+                .setMessage(getString(R.string.expired_msg))
+                .setPositiveButton(android.R.string.ok, object: DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        finish()
+                    }
+                })
+                .setCancelable(false)
+                .create()
+
+        dialog.show()
     }
 }
