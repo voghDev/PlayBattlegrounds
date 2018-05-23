@@ -25,7 +25,11 @@ import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.onboarding.model.Region
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.*
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.IsAppExpired
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
@@ -34,7 +38,6 @@ import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.AlertDialogBuilder
 import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -117,7 +120,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
         val dialog = AlertDialog.Builder(this)
                 .setTitle(getString(R.string.expired_title))
                 .setMessage(getString(R.string.expired_msg))
-                .setPositiveButton(android.R.string.ok, object: DialogInterface.OnClickListener {
+                .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
                         finish()
                     }
