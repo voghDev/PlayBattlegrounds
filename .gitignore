@@ -104,3 +104,4 @@ pubg-api.properties
 
 # Payment flavors
 app/src/paid/*
+app/src/season1/*
