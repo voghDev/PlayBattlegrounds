@@ -33,7 +33,7 @@ android {
                 throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
 
             buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
-            buildConfigField("int", "Limit", "0")
+            buildConfigField("long", "Limit", "0L")
             dimension "isPaid"
         }
 
@@ -45,7 +45,7 @@ android {
                 throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
 
             buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
-            buildConfigField("int", "Limit", "1529769061000")
+            buildConfigField("long", "Limit", "1529769061000L")
             dimension "isPaid"
         }
     }

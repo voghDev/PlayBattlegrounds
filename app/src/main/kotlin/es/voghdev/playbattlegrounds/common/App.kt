@@ -70,9 +70,7 @@ class App : Application(), KodeinAware {
                     InsertMatchDBDataSource()
             )
         }
-        bind<IsAppExpired>() with singleton {
-            IsAppExpiredImpl(System.currentTimeMillis(), Limit.toLong())
-        }
+        bind<IsAppExpired>() with singleton { IsAppExpiredImpl(System.currentTimeMillis(), Limit) }
     }
 
     override fun onCreate() {
