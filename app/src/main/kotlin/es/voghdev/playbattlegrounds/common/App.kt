@@ -19,6 +19,7 @@ import android.app.Application
 import android.content.Context
 import com.raizlabs.android.dbflow.config.FlowManager
 import es.voghdev.playbattlegrounds.BuildConfig.Limit
+import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
@@ -31,15 +32,14 @@ import es.voghdev.playbattlegrounds.features.onboarding.res.GetRegionsAndroidRes
 import es.voghdev.playbattlegrounds.features.onboarding.sharedpreference.PlayerAccountPreferences
 import es.voghdev.playbattlegrounds.features.onboarding.sharedpreference.PlayerRegionPreferences
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.IsAppExpired
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
+import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.api.GetPlayerSeasonInfoApiDataSource
 import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
 import es.voghdev.playbattlegrounds.features.season.sharedpref.GetCurrentSeasonSharedPrefDataSource
@@ -55,9 +55,14 @@ import org.kodein.di.generic.singleton
 
 class App : Application(), KodeinAware {
     override val kodein = Kodein {
-        bind<GetPlayerById>() with singleton { GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
+        bind<PlayerRepository>() with singleton {
+            PlayerRepository(
+                    GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
+                    GetPlayerByNameApiDataSource(PlayerRegionPreferences(applicationContext)),
+                    getString(R.string.too_many_requests_msg)
+            )
+        }
         bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
-        bind<GetPlayerByName>() with singleton { GetPlayerByNameApiDataSource(PlayerRegionPreferences(applicationContext)) }
         bind<ResLocator>() with singleton { AndroidResLocator(applicationContext) }
         bind<SetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }
         bind<GetPlayerAccount>() with singleton { PlayerAccountPreferences(applicationContext) }

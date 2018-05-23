@@ -5,6 +5,8 @@ import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
@@ -16,6 +18,9 @@ class PlayerSearchPresenterTest {
 
     @Mock
     lateinit var mockResLocator: ResLocator
+
+    @Mock
+    lateinit var mockGetPlayerById: GetPlayerById
 
     @Mock
     lateinit var mockGetPlayerByName: GetPlayerByName
@@ -55,7 +60,11 @@ class PlayerSearchPresenterTest {
 
     private fun createPresenterWithMocks(): PlayerSearchPresenter {
         val presenter = PlayerSearchPresenter(mockResLocator,
-                mockGetPlayerByName,
+                PlayerRepository(
+                        mockGetPlayerById,
+                        mockGetPlayerByName,
+                        "Too many requests"
+                ),
                 MatchRepository(
                         mockGetMatchByIdApi,
                         mockGetMatchByIdDB,

@@ -16,14 +16,15 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import com.appandweb.weevento.ui.presenter.Presenter
+import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
@@ -31,7 +32,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 
 class PlayerSearchPresenter(val resLocator: ResLocator,
-                            val getPlayerByName: GetPlayerByName,
+                            val playerRepository: PlayerRepository,
                             val matchRepository: MatchRepository,
                             val getPlayerAccount: GetPlayerAccount,
                             val getCurrentSeason: GetCurrentSeason,
@@ -66,7 +67,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         view?.showLoading()
 
         val task = async(CommonPool) {
-            getPlayerByName.getPlayerByName(playerName)
+            playerRepository.getPlayerByName(playerName)
         }
 
         val result = task.await()
@@ -83,7 +84,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 requestPlayerMatches(result.b)
             }
             is Fail -> {
-                view?.showError(result.a.message)
+                view?.showErrorDialog(resLocator.getString(R.string.error), result.a.message)
                 view?.hideLoading()
             }
         }
@@ -154,6 +155,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     interface MVPView {
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
+        fun showErrorDialog(title: String, message: String)
         fun clearList()
         fun addMatch(match: Match)
         fun hideSoftKeyboard()

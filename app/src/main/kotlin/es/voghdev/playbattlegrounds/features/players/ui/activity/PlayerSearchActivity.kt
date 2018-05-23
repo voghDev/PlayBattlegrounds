@@ -17,6 +17,7 @@ package es.voghdev.playbattlegrounds.features.players.ui.activity
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View.VISIBLE
 import android.view.View.INVISIBLE
@@ -33,9 +34,9 @@ import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
@@ -52,7 +53,7 @@ import org.kodein.di.generic.instance
 class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    val getPlayerByNameDataSource: GetPlayerByName by instance()
+    val playerRepository: PlayerRepository by instance()
     val matchRepository: MatchRepository by instance()
     val getPlayerAccount: GetPlayerAccount by instance()
     val getCurrentSeason: GetCurrentSeason by instance()
@@ -76,7 +77,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         presenter = PlayerSearchPresenter(resLocator,
-                getPlayerByNameDataSource,
+                playerRepository,
                 matchRepository,
                 getPlayerAccount,
                 getCurrentSeason,
@@ -115,6 +116,17 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
         ColoredSnackbar.alertBold(snackbar).show()
+    }
+
+    override fun showErrorDialog(title: String, message: String) = ui {
+        val dialog = AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setCancelable(false)
+                .create()
+
+        dialog.show()
     }
 
     override fun hideSoftKeyboard() = ui {

@@ -52,6 +52,8 @@ fun String.toDate(format: String): Long {
     return 0L
 }
 
+fun Int.minutes(): Long = this * 60000L
+
 fun Long.toDate(format: String = "yyyy/MM/dd - HH:mm") = SimpleDateFormat(format).format(this)
 
 fun Context.getPreferences(): SharedPreferences {
