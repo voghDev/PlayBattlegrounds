@@ -99,6 +99,7 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
                 when {
                     content.map.toLowerCase().contains("erangel") -> R.mipmap.erangel_xsmall
                     content.map.toLowerCase().contentEquals("desert") -> R.mipmap.miramar_xsmall
+                    content.map.toLowerCase().contentEquals("sanhok") -> R.mipmap.sanhok_xsmall
                     else -> R.mipmap.miramar_xsmall
                 })
     }
