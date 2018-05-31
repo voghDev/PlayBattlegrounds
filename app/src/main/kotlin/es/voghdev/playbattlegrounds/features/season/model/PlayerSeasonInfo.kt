@@ -64,7 +64,7 @@ data class PlayerSeasonInfo(
 
     fun getKillDeathRatioForGameModeStats(stats: PlayerSeasonGameModeStats?): Float {
         val deaths: Int = stats?.roundsPlayed?.minus(stats?.wins) ?: 1
-        return stats?.kills?.toFloat()?.div(deaths) ?: 0f
+        return stats?.kills?.toFloat()?.div(maxOf(deaths, 1)) ?: 0f
     }
 
     fun getRatingForGameModeStats(stats: PlayerSeasonGameModeStats?): Int {
