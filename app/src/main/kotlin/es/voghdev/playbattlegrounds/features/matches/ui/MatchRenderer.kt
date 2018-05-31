@@ -17,6 +17,8 @@ package es.voghdev.playbattlegrounds.features.matches.ui
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,6 +34,7 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
     var tv_kills: TextView? = null
     var tv_game_mode: TextView? = null
     var iv_map: ImageView? = null
+    var iv_winner: ImageView? = null
 
     override fun hookListeners(rootView: View?) {
         rootView?.setOnClickListener {
@@ -45,6 +48,7 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
         tv_kills = rootView?.findViewById(R.id.tv_kills)
         tv_game_mode = rootView?.findViewById(R.id.tv_game_mode)
         iv_map = rootView?.findViewById(R.id.iv_map)
+        iv_winner = rootView?.findViewById(R.id.iv_winner)
     }
 
     override fun inflate(inflater: LayoutInflater?, parent: ViewGroup?): View {
@@ -56,6 +60,7 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
         renderGameMode(content)
         renderNumberOfKills(content)
         renderWinPlace(content)
+        renderChickenDinnerBadge(content)
         renderMap(content)
     }
 
@@ -92,6 +97,10 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
 
     private fun renderWinPlace(content: Match?) {
         tv_rank?.text = "#${content?.placeForCurrentPlayer}"
+    }
+
+    private fun renderChickenDinnerBadge(content: Match?) {
+        iv_winner?.visibility = if (content?.placeForCurrentPlayer == 1) VISIBLE else GONE
     }
 
     private fun renderMap(content: Match) {

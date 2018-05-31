@@ -34,4 +34,6 @@ data class Match(
     fun getWinPlaceForParticipant(participantName: String): Int {
         return participants.filter { it.name == participantName }.firstOrNull()?.place ?: 0
     }
+
+    fun isParticipantWinner(participantName: String): Boolean = getWinPlaceForParticipant(participantName) == 1
 }
