@@ -16,7 +16,8 @@
 package es.voghdev.playbattlegrounds.features.matches.api
 
 import arrow.core.Either
-import com.google.gson.JsonSyntaxException
+import arrow.core.Try
+import arrow.core.getOrElse
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
@@ -61,21 +62,20 @@ class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatch
                 id
         )
 
-        try {
+        val request = Try {
             val rsp: Response<MatchByIdApiResponse>? = call.execute()
 
-            if (rsp?.body()?.hasData() == true) {
-                return Either.right(rsp?.body()?.toDomain() ?: Match())
-            } else if (rsp?.errorBody() != null) {
-                val error = rsp?.errorBody()?.string()!!
-                return Either.left(AbsError(error))
-            }
-        } catch (e: JsonSyntaxException) {
-            return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
-        } catch (e: UnknownHostException) {
-            return Either.left(AbsError("Please check your internet connection"))
+            if (rsp?.errorBody() != null)
+                throw Exception(rsp?.errorBody()?.string())
+
+            return Either.right(rsp?.body()?.toDomain() ?: Match())
         }
 
-        return Either.left(AbsError("Unknown error fetching match"))
+        return request.getOrElse {
+            Either.left(AbsError(
+                    if (it is UnknownHostException)
+                        "Please check your Internet connection"
+                    else it.message ?: "Unknown Error"))
+        }
     }
 }

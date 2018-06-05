@@ -16,7 +16,8 @@
 package es.voghdev.playbattlegrounds.features.players.api.request
 
 import arrow.core.Either
-import com.google.gson.JsonSyntaxException
+import arrow.core.Try
+import arrow.core.getOrElse
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
@@ -62,21 +63,21 @@ class GetPlayerByNameApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPl
                 name
         )
 
-        try {
+        val request = Try {
             val rsp: Response<PlayerByIdApiResponse>? = call.execute()
 
-            if (rsp?.body()?.hasData() == true) {
-                return Either.right(rsp?.body()?.data?.first()?.toDomain()!!)
-            } else if (rsp?.errorBody() != null) {
-                val error = rsp?.errorBody()?.string()!!
-                return Either.left(AbsError(error))
+            if (rsp?.errorBody() != null) {
+                throw Exception(rsp?.errorBody()?.string())
             }
-        } catch (e: JsonSyntaxException) {
-            return Either.left(AbsError(e.message ?: "Unknown error parsing JSON"))
-        } catch (e: UnknownHostException) {
-            return Either.left(AbsError("Please check your internet connection"))
+
+            return Either.right(rsp?.body()?.data?.first()?.toDomain()!!)
         }
 
-        return Either.left(AbsError("Unknown error fetching player"))
+        return request.getOrElse {
+            Either.left(AbsError(
+                    if (it is UnknownHostException)
+                        "Please check your Internet connection"
+                    else it.message ?: "Unknown Error"))
+        }
     }
 }
