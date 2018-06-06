@@ -23,7 +23,7 @@ class PlayerRepositoryTest {
     }
 
     @Test
-    fun `should return false if requested six times in less than five minutes`() {
+    fun `should not throttle anymore if requested six times in less than five minutes`() {
         val repo = PlayerRepository(mockGetPlayerById,
                 mockGetPlayerByName,
                 "Too many requests")
@@ -34,7 +34,7 @@ class PlayerRepositoryTest {
         repo.userCanRequest(4)
         repo.userCanRequest(5)
 
-        assertFalse(repo.userCanRequest(6))
+        assertTrue(repo.userCanRequest(6))
     }
 
     @Test
@@ -65,6 +65,6 @@ class PlayerRepositoryTest {
         repo.userCanRequest(4)
         repo.userCanRequest(5)
 
-        assertFalse(repo.userCanRequest(60006))
+        assertTrue(repo.userCanRequest(60006))
     }
 }
