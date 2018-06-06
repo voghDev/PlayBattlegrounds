@@ -8,11 +8,11 @@ Sample project to do some requests to the PUBG Open API
 This is a small App that tries to work on the following aspects:
 
 - Dependency Injection in Kotlin using [Kodein 5.x][1]
-- Basic usage of Monads such as Either, using [arrow-kt][2]
+- Basic usage of Monads such as `Either` or `Try`, using [arrow-kt][2]
 - a testable Kotlin architecture where all requirements can be covered with Unit Tests
 - Kotlin Code style & formatting check using [ktlint][3]
 - Android UI Design using [ConstraintLayout][5]
-- Elegant & comfortable RecyclerView management using [Renderers 3.x][11]
+- Elegant & comfortable `RecyclerView` management using [Renderers 3.x][11]
 - A small Database layer using [DBFlow][10], fully implemented in Kotlin
 - Continous Integration using [CircleCI][8] - thanks to [JcMinarro][6] for [this awesome PR][9]
 
