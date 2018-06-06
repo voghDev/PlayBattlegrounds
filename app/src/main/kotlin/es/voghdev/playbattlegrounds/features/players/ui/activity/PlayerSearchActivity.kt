@@ -32,6 +32,8 @@ import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
 import es.voghdev.playbattlegrounds.common.ui.ListEntity
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
+import es.voghdev.playbattlegrounds.features.matches.ui.LoadMore
+import es.voghdev.playbattlegrounds.features.matches.ui.LoadMoreRenderer
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
@@ -50,7 +52,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 
-class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked {
+class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked, LoadMoreRenderer.OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
     val playerRepository: PlayerRepository by instance()
@@ -68,9 +70,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
         val matchRenderer = MatchRenderer(this)
         val seasonRenderer = PlayerSeasonInfoRenderer(this)
+        val loadMoreRenderer = LoadMoreRenderer(this)
         val rendererBuilder = RendererBuilder<ListEntity>()
                 .bind(Match::class.java, matchRenderer)
                 .bind(PlayerSeasonInfo::class.java, seasonRenderer)
+                .bind(LoadMore::class.java, loadMoreRenderer)
         adapter = RVRendererAdapter<ListEntity>(rendererBuilder)
 
         recyclerView.adapter = adapter
@@ -165,12 +169,30 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         presenter?.onMatchClicked(match)
     }
 
+    override fun onLoadMoreClicked() {
+        launch(CommonPool) {
+            presenter?.onLoadMoreMatchesClicked()
+        }
+    }
+
     override fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {
         presenter?.onPlayerSeasonInfoClicked(playerSeasonInfo)
     }
 
     override fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo) = ui {
         adapter?.add(seasonInfo)
+
+        adapter?.notifyDataSetChanged()
+    }
+
+    override fun addLoadMoreItem() = ui {
+        adapter?.add(LoadMore("matches"))
+
+        adapter?.notifyDataSetChanged()
+    }
+
+    override fun removeLoadMoreItem() = ui {
+        adapter?.remove(LoadMore("matches"))
 
         adapter?.notifyDataSetChanged()
     }
