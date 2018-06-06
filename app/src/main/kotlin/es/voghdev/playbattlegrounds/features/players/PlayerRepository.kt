@@ -26,17 +26,10 @@ class PlayerRepository(
     }
 
     fun userCanRequest(ms: Long): Boolean {
-        if (start == 0L)
-            start = ms
-
-        if (ms > start + 5.minutes()) {
-            count = 0
-            start = 0
-        }
-
-        if (ms < start + 5.minutes() && ++count > 5)
-            return false
-
+        /*
+        * Bluehole has announced the traffic limit in the /matches request has been removed,
+        * So no more throttling, Yeehaa!
+        * */
         return true
     }
 }
