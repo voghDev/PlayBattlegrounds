@@ -2,10 +2,14 @@
 
 buildscript {
     ext.kotlin_version = '1.2.31'
+    ext.anko_version = '0.9.1a'
+    ext.coroutines_version = '0.16'
+    ext.retrofit_version = '2.4.0'
+    ext.dbflow_version = '4.2.4'
 
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.1'
