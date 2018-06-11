@@ -86,7 +86,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
                 requestPlayerMatches(result.b)
 
-                view?.addLoadMoreItem()
+                if (player.matches.size > matchesFrom + 5)
+                    view?.addLoadMoreItem()
             }
             is Fail -> {
                 view?.showErrorDialog(resLocator.getString(R.string.error), result.a.message)
@@ -160,7 +161,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
         requestPlayerMatches(player, matchesFrom, 5)
 
-        view?.addLoadMoreItem()
+        if (player.matches.size > matchesFrom + 5)
+            view?.addLoadMoreItem()
     }
 
     fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {

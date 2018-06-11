@@ -1,16 +1,23 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
+import arrow.core.Either
+import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
-import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
-import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
-import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
+import kotlinx.coroutines.experimental.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
@@ -18,21 +25,6 @@ class PlayerSearchPresenterTest {
 
     @Mock
     lateinit var mockResLocator: ResLocator
-
-    @Mock
-    lateinit var mockGetPlayerById: GetPlayerById
-
-    @Mock
-    lateinit var mockGetPlayerByName: GetPlayerByName
-
-    @Mock
-    lateinit var mockGetMatchByIdApi: GetMatchById
-
-    @Mock
-    lateinit var mockGetMatchByIdDB: GetMatchById
-
-    @Mock
-    lateinit var mockInsertMatch: InsertMatch
 
     @Mock
     lateinit var mockGetPlayerAccount: GetPlayerAccount
@@ -47,28 +39,146 @@ class PlayerSearchPresenterTest {
     lateinit var mockNavigator: PlayerSearchPresenter.Navigator
 
     @Mock
+    lateinit var mockPlayerRepository: PlayerRepository
+
+    @Mock
+    lateinit var mockMatchRepository: MatchRepository
+
+    @Mock
     lateinit var mockView: PlayerSearchPresenter.MVPView
 
     lateinit var presenter: PlayerSearchPresenter
+
+    val someMatches = (1..5).map {
+        Match(id = "uuid00$it", gameMode = "solo-fpp", numberOfKillsForCurrentPlayer = it)
+    } as MutableList
+
+    val oneMoreMatch = Match(id = "uuid006", gameMode = "duo-fpp", numberOfKillsForCurrentPlayer = 15)
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        presenter = createPresenterWithMocks()
+        presenter = createPresenterWithMocks(mockPlayerRepository, mockMatchRepository)
     }
 
-    private fun createPresenterWithMocks(): PlayerSearchPresenter {
+
+    @Test
+    fun `should request player by name on start`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun getPlayerName(): String = "DiabloVT"
+        }
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockPlayerRepository).getPlayerByName("DiabloVT")
+    }
+
+    @Test
+    fun `should load matches 1 to 5 when search button is clicked`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun getPlayerName(): String = "DiabloVT"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = someMatches
+
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockMatchRepository).getMatchById("uuid001")
+        verify(mockMatchRepository).getMatchById("uuid002")
+        verify(mockMatchRepository).getMatchById("uuid003")
+        verify(mockMatchRepository).getMatchById("uuid004")
+        verify(mockMatchRepository).getMatchById("uuid005")
+    }
+
+    @Test
+    fun `should show a "load more" icon if there are more matches`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun getPlayerName(): String = "DiabloVT"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = someMatches.apply { add(oneMoreMatch) }
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockView).addLoadMoreItem()
+    }
+
+    @Test
+    fun `should not show a "load more" icon if there are no more matches`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun getPlayerName(): String = "DiabloVT"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = someMatches
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockView, never()).addLoadMoreItem()
+    }
+
+    @Test
+    fun `should show "load more" only once if there are ten matches`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun getPlayerName(): String = "DiabloVT"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = (1..10).map {
+                            Match(id = "id00$it", gameMode = "solo", numberOfKillsForCurrentPlayer = it)
+                        }
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onLoadMoreMatchesClicked()
+        }
+
+        verify(mockView, times(1)).addLoadMoreItem()
+    }
+
+    private fun createPresenterWithMocks(playerRepository: PlayerRepository, matchRepository: MatchRepository): PlayerSearchPresenter {
         val presenter = PlayerSearchPresenter(mockResLocator,
-                PlayerRepository(
-                        mockGetPlayerById,
-                        mockGetPlayerByName,
-                        "Too many requests"
-                ),
-                MatchRepository(
-                        mockGetMatchByIdApi,
-                        mockGetMatchByIdDB,
-                        mockInsertMatch),
+                playerRepository,
+                matchRepository,
                 mockGetPlayerAccount,
                 mockGetCurrentSeason,
                 mockGetPlayerSeasonInfo)
