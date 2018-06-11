@@ -14,7 +14,6 @@ import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
@@ -61,7 +60,6 @@ class PlayerSearchPresenterTest {
 
         presenter = createPresenterWithMocks(mockPlayerRepository, mockMatchRepository)
     }
-
 
     @Test
     fun `should request player by name on start`() {
