@@ -122,7 +122,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         ColoredSnackbar.alertBold(snackbar).show()
     }
 
-    override fun showErrorDialog(title: String, message: String) = ui {
+    override fun showDialog(title: String, message: String) = ui {
         val dialog = AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)

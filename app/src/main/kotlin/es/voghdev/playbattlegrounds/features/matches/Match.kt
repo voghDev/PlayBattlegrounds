@@ -34,4 +34,9 @@ data class Match(
     fun getWinPlaceForParticipant(participantName: String): Int {
         return participants.filter { it.name == participantName }.firstOrNull()?.place ?: 0
     }
+
+    fun isDuoOrSquad(): Boolean =
+            gameMode.contains("duo")
+                    || gameMode.contains("squad")
+                    || gameMode.contains("warmode")
 }

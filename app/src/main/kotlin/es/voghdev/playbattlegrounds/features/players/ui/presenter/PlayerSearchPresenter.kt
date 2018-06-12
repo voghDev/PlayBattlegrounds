@@ -90,7 +90,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                     view?.addLoadMoreItem()
             }
             is Fail -> {
-                view?.showErrorDialog(resLocator.getString(R.string.error), result.a.message)
+                view?.showDialog(resLocator.getString(R.string.error), result.a.message)
                 view?.hideLoading()
             }
         }
@@ -151,7 +151,17 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun onMatchClicked(match: Match) {
-        /* Should navigate to a screen with Match details? */
+        if (match.isDuoOrSquad()) {
+            val teammates = match.participants
+                    .filter { it.place == match.placeForCurrentPlayer }
+                    .map { "${it.name} (${it.kills} kills)" }
+                    .joinToString("\n")
+
+            view?.showDialog(
+                    "#${match.placeForCurrentPlayer}",
+                    if (teammates.isNotEmpty()) teammates
+                    else resLocator.getString(R.string.no_teammates_info))
+        }
     }
 
     suspend fun onLoadMoreMatchesClicked() {
@@ -172,7 +182,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     interface MVPView {
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
-        fun showErrorDialog(title: String, message: String)
+        fun showDialog(title: String, message: String)
         fun clearList()
         fun addMatch(match: Match)
         fun hideSoftKeyboard()
