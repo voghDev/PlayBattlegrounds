@@ -43,7 +43,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     var player = Player()
     var matchesFrom = 0
 
-    override suspend fun initialize() {
+    suspend override fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
         if (account is Ok && account.b.isNotEmpty())
             view?.fillPlayerAccount(account.b)
