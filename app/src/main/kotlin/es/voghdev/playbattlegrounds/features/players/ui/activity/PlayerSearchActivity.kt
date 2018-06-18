@@ -106,9 +106,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_player_search
-    }
+    override fun getLayoutId(): Int = R.layout.activity_player_search
 
     override fun showPlayerFoundMessage(message: String) = ui {
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
