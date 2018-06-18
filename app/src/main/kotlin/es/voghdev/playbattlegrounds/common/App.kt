@@ -40,6 +40,8 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
+import es.voghdev.playbattlegrounds.features.players.sharedpreference.IsContentAvailableSharedPrefDataSource
+import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.api.GetPlayerSeasonInfoApiDataSource
 import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
 import es.voghdev.playbattlegrounds.features.season.sharedpref.GetCurrentSeasonSharedPrefDataSource
@@ -81,6 +83,7 @@ class App : Application(), KodeinAware {
             )
         }
         bind<IsAppExpired>() with singleton { IsAppExpiredImpl(System.currentTimeMillis(), Limit) }
+        bind<IsContentAvailableForPlayer>() with singleton { IsContentAvailableSharedPrefDataSource(applicationContext) }
     }
 
     override fun onCreate() {

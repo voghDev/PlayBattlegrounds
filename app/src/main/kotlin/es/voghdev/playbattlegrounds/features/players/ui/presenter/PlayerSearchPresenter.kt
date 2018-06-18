@@ -25,6 +25,7 @@ import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
+import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
@@ -36,7 +37,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                             val matchRepository: MatchRepository,
                             val getPlayerAccount: GetPlayerAccount,
                             val getCurrentSeason: GetCurrentSeason,
-                            val getPlayerSeasonInfo: GetPlayerSeasonInfo) :
+                            val getPlayerSeasonInfo: GetPlayerSeasonInfo,
+                            val isContentAvailableForPlayer: IsContentAvailableForPlayer) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     val RED = "#ff9900"
@@ -192,6 +194,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo)
         fun addLoadMoreItem()
         fun removeLoadMoreItem()
+        fun hideContentAvailableButton()
+        fun showContentAvailableButton()
     }
 
     interface Navigator

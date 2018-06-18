@@ -39,6 +39,7 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
+import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
@@ -60,6 +61,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getPlayerAccount: GetPlayerAccount by instance()
     val getCurrentSeason: GetCurrentSeason by instance()
     val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
+    val isContentAvailable: IsContentAvailableForPlayer by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<ListEntity>? = null
 
@@ -85,7 +87,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
                 matchRepository,
                 getPlayerAccount,
                 getCurrentSeason,
-                getPlayerSeasonInfo)
+                getPlayerSeasonInfo,
+                isContentAvailable)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -195,5 +198,13 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         adapter?.remove(LoadMore("matches"))
 
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun hideContentAvailableButton() = ui {
+
+    }
+
+    override fun showContentAvailableButton() = ui {
+
     }
 }
