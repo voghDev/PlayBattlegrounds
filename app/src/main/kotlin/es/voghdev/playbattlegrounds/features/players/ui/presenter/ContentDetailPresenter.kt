@@ -9,6 +9,8 @@ class ContentDetailPresenter(val resLocator: ResLocator, val getContentById: Get
 
     suspend override fun initialize() = Unit
 
+    suspend fun onInitialData(data: InitialData) = Unit
+
     interface MVPView {
         fun showContentTitle(title: String)
         fun showContentText(text: String)
@@ -17,5 +19,9 @@ class ContentDetailPresenter(val resLocator: ResLocator, val getContentById: Get
 
     interface Navigator {
         fun close()
+    }
+
+    interface InitialData {
+        fun getContentId(): Long
     }
 }
