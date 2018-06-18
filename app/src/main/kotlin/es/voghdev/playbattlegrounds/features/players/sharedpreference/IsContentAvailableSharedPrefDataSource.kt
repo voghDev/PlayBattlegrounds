@@ -14,13 +14,9 @@ class IsContentAvailableSharedPrefDataSource(val appContext: Context?) : IsConte
     override fun isContentAvailableForPlayer(player: Player): Either<AbsError, Boolean> {
         val count = appContext?.getIntPreference(REQUEST_COUNTER) ?: 0
 
-        if (count == 3) {
-            appContext?.putPreference(REQUEST_COUNTER, 0)
-            return Either.right(true)
-        } else {
-            appContext?.putPreference(REQUEST_COUNTER, count.plus(1))
-        }
+        val lessThanThreeAttempts = count <= 1
+        appContext?.putPreference(REQUEST_COUNTER, if (lessThanThreeAttempts) count.plus(1) else 0)
 
-        return Either.right(false)
+        return Either.right(!lessThanThreeAttempts)
     }
 }

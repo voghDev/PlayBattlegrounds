@@ -69,6 +69,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     private suspend fun requestPlayerData(playerName: String) {
         view?.showLoading()
+        view?.hideContentAvailableButton()
 
         val task = async(CommonPool) {
             playerRepository.getPlayerByName(playerName)
@@ -128,6 +129,10 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
             }
 
             view?.hideLoading()
+
+            val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
+            if (contentResult is Ok && contentResult.b)
+                view?.showContentAvailableButton()
 
             if (errors > 0)
                 view?.showError("Could not load $errors matches")

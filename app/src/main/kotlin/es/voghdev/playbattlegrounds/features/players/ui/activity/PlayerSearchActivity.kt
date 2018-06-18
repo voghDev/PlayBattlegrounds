@@ -19,6 +19,8 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -64,6 +66,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val isContentAvailable: IsContentAvailableForPlayer by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<ListEntity>? = null
+    var contentAvailableItem: MenuItem? = null
 
     var presenter: PlayerSearchPresenter? = null
 
@@ -111,6 +114,12 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun getLayoutId(): Int {
         return R.layout.activity_player_search
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        contentAvailableItem = menu?.findItem(R.id.action_content_available)
+        return true
     }
 
     override fun showPlayerFoundMessage(message: String) = ui {
@@ -201,10 +210,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun hideContentAvailableButton() = ui {
-
+        contentAvailableItem?.isVisible = false
     }
 
     override fun showContentAvailableButton() = ui {
-
+        contentAvailableItem?.isVisible = true
     }
 }

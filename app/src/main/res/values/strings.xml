@@ -31,6 +31,7 @@
     <string name="error">Error</string>
     <string name="too_many_requests_msg">Too many requests, try again later</string>
     <string name="no_teammates_info">No info available</string>
+    <string name="content_available">See available content</string>
 
     <plurals name="kills">
         <item quantity="one">%d kill</item>
