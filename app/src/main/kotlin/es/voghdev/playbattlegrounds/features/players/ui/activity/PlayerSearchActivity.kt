@@ -112,9 +112,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_player_search
-    }
+    override fun getLayoutId(): Int = R.layout.activity_player_search
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
