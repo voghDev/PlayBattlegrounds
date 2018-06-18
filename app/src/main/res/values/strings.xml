@@ -37,4 +37,9 @@
         <item quantity="one">%d kill</item>
         <item quantity="other">%d kills</item>
     </plurals>
+
+    <string-array name="sample_contents">
+        <item>You are ranked as tier 0</item>
+        <item>You have lost many matches recently</item>
+    </string-array>
 </resources>
