@@ -23,7 +23,6 @@ android {
 
     flavorDimensions "isPaid"
 
-
     productFlavors {
         prod {
             applicationId "es.voghdev.playbattlegrounds"
