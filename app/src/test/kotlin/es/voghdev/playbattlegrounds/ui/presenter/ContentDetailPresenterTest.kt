@@ -26,7 +26,7 @@ class ContentDetailPresenterTest {
     }
 
     private fun createMockedPresenter(): ContentDetailPresenter {
-        val presenter = ContentDetailPresenter(mockResLocator, mockGetContentById)
+        val presenter = ContentDetailPresenter(mockGetContentById)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter
