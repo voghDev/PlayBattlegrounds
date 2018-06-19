@@ -22,13 +22,33 @@ import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 
-class GetContentByIdStubDataSource(val appContext: Context) : GetContentById {
+class GetContentByIdStubDataSource(private val appContext: Context) : GetContentById {
     override fun getContentById(id: Long): Either<AbsError, Content> {
+        val links = appContext
+                .resources
+                .getStringArray(R.array.sample_links)
+                .map { it }
+
+        val buttonTexts = appContext
+                .resources
+                .getStringArray(R.array.sample_button_texts)
+                .map { it }
+
+        val titles = appContext
+                .resources
+                .getStringArray(R.array.sample_titles)
+                .map { it }
+
         val content = appContext
                 .resources
                 .getStringArray(R.array.sample_contents)
                 .mapIndexed { i, it ->
-                    Content(i.toLong(), it)
+                    Content(
+                            i.toLong(),
+                            titles[i],
+                            it,
+                            buttonText = buttonTexts[i],
+                            link = links[i])
                 }.firstOrNull { it.id == id }
 
         return if (content != null) Either.right(content)

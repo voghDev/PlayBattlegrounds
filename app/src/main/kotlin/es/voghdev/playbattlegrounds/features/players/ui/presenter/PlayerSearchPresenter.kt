@@ -24,6 +24,7 @@ import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
@@ -186,6 +187,16 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         /* Should navigate to a screen with all your KDRs and Ratings */
     }
 
+    fun onContentButtonClicked() {
+        val content: Content = getContentForPlayer(player)
+
+        navigator?.launchContentDetailScreen(content)
+    }
+
+    private fun getContentForPlayer(player: Player): Content {
+        return Content(id = 1L)
+    }
+
     interface MVPView {
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
@@ -203,7 +214,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showContentAvailableButton()
     }
 
-    interface Navigator
+    interface Navigator {
+        fun launchContentDetailScreen(content: Content)
+    }
 
     interface InitialData {
         fun getPlayerName(): String
