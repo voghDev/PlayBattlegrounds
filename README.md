@@ -9,7 +9,7 @@ This is a small App that tries to work on the following aspects:
 
 - Dependency Injection in Kotlin using [Kodein 5.x][1]
 - Basic usage of Monads such as *Either* or *Try*, using [arrow-kt][2]
-- a testable Kotlin architecture where all requirements can be covered with Unit Tests
+- a testable Kotlin architecture where requirements can be covered with Unit Tests. [You can see some examples][12]
 - Kotlin Code style & formatting check using [ktlint][3]
 - Android UI Design using [ConstraintLayout][5]
 - Elegant & comfortable *RecyclerView* management using [Renderers 3.x][11]
@@ -43,5 +43,6 @@ All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast
 [9]: https://github.com/voghDev/PlayBattlegrounds/pull/9
 [10]: https://github.com/Raizlabs/DBFlow
 [11]: https://github.com/pedrovgs/Renderers
+[12]: https://github.com/voghDev/PlayBattlegrounds/blob/master/app/src/test/kotlin/es/voghdev/playbattlegrounds/features/players/ui/presenter/PlayerSearchPresenterTest.kt
 
 [appSample]: ./img/sample.gif
