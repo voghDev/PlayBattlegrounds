@@ -186,6 +186,10 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         /* Should navigate to a screen with all your KDRs and Ratings */
     }
 
+    fun onContentButtonClicked() {
+
+    }
+
     interface MVPView {
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)

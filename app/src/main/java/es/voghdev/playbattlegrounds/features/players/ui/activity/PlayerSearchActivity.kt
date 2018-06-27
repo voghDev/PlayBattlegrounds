@@ -120,6 +120,14 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_content_available -> presenter?.onContentButtonClicked()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun showPlayerFoundMessage(message: String) = ui {
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
