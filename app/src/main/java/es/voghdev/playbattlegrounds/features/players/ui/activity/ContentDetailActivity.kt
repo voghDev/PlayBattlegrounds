@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
-import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
+import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.ui
@@ -24,20 +24,24 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ContentDetailPresenter(AndroidResLocator(this), getContentById)
+        presenter = ContentDetailPresenter(getContentById)
         presenter?.view = this
         presenter?.navigator = this
 
         launch(CommonPool) {
             presenter?.initialize()
+
+            presenter?.onInitialData(ContentDetailInitialData(intent))
         }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_content_detail
 
+    override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }
+
     override fun showContentTitle(title: String) = ui { tv_title.text = title }
 
-    override fun showContentText(text: String) = ui { tv_text.text = title }
+    override fun showContentText(text: String) = ui { tv_text.text = text }
 
     override fun showButtonText(text: String) = ui { btn_read_more.text = text }
 

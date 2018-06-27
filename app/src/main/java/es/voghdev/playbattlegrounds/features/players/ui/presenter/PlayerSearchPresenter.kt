@@ -24,8 +24,10 @@ import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
+import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeStats
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
@@ -43,6 +45,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     val RED = "#ff9900"
     var player = Player()
+    var seasonInfo = createEmptyPlayerSeasonInfo()
     var matchesFrom = 0
 
     suspend override fun initialize() {
@@ -149,10 +152,11 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 getPlayerSeasonInfo.getPlayerSeasonInfo(player, currentSeasonResult.b)
             }
 
-            val seasonInfo = seasonInfoTask.await()
+            val seasonInfoResult = seasonInfoTask.await()
 
-            if (seasonInfo is Ok) {
-                view?.addPlayerStatsRow(seasonInfo.b)
+            if (seasonInfoResult is Ok) {
+                seasonInfo = seasonInfoResult.b
+                view?.addPlayerStatsRow(seasonInfoResult.b)
             }
         }
     }
@@ -187,8 +191,56 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun onContentButtonClicked() {
+        val content: Content = getContentForPlayer(player)
 
+        navigator?.launchContentDetailScreen(content)
     }
+
+    private fun getContentForPlayer(player: Player): Content {
+        val bestKDR = seasonInfo.getKillDeathRatioForGameModeStats(seasonInfo.getBestKDRStats())
+
+        if (player.hasMatchesWithZeroKills(3))
+            return Content(id = 0L)
+
+        if (player.hasMostlyTPPMatches())
+            return Content(id = 1L)
+
+        if (player.hasWins())
+            return Content(id = 4L)
+
+        if (player.hasTop10Matches(5))
+            return Content(id = 5L)
+
+        if (bestKDR > 5f)
+            return Content(id = 6L)
+
+        return Content(id = listOf(2L, 3L).shuffled().first())
+    }
+
+    fun Player.hasMostlyTPPMatches(): Boolean {
+        val tpp = matches.count { it.gameMode in listOf("solo", "squad", "duo") }
+        val rest = matches.size - tpp
+
+        return tpp > rest
+    }
+
+    fun Player.hasMatchesWithZeroKills(n: Int): Boolean =
+            matches.takeLast(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
+
+    fun Player.hasWins(): Boolean =
+            matches.count { it.placeForCurrentPlayer == 1 } > 0
+
+    fun Player.hasTop10Matches(n: Int) =
+            matches.take(10).count { it.placeForCurrentPlayer <= 10 } > n
+
+    private fun createEmptyPlayerSeasonInfo() = PlayerSeasonInfo(
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats()
+    )
 
     interface MVPView {
         fun showPlayerFoundMessage(message: String)
@@ -207,7 +259,9 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showContentAvailableButton()
     }
 
-    interface Navigator
+    interface Navigator {
+        fun launchContentDetailScreen(content: Content)
+    }
 
     interface InitialData {
         fun getPlayerName(): String

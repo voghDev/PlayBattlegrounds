@@ -39,6 +39,8 @@ import es.voghdev.playbattlegrounds.features.matches.ui.LoadMoreRenderer
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.model.Content
+import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData.Companion.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
@@ -51,6 +53,7 @@ import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -221,5 +224,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun showContentAvailableButton() = ui {
         contentAvailableItem?.isVisible = true
+    }
+
+    override fun launchContentDetailScreen(content: Content) = ui {
+        startActivity<ContentDetailActivity>(EXTRA_CONTENT_ID to content.id)
     }
 }
