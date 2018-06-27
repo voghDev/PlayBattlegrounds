@@ -1,6 +1,7 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import arrow.core.Either
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -11,6 +12,7 @@ import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
+import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import kotlinx.coroutines.experimental.runBlocking
@@ -42,6 +44,9 @@ class PlayerSearchPresenterTest {
 
     @Mock
     lateinit var mockMatchRepository: MatchRepository
+
+    @Mock
+    lateinit var mockIsContentAvailableForPlayer: IsContentAvailableForPlayer
 
     @Mock
     lateinit var mockView: PlayerSearchPresenter.MVPView
@@ -173,13 +178,143 @@ class PlayerSearchPresenterTest {
         verify(mockView, times(1)).addLoadMoreItem()
     }
 
+    @Test
+    fun `should show "content available" button if there is content available for current player`() {
+        val data = givenThatInitialDataIsEmpty()
+
+        givenThereIsContentAvailableForAllPlayers()
+        givenThatQueryingForAnyPlayerReturns(Player(
+                name = "DiabloVT",
+                matches = someMatches
+        ))
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onSendButtonClicked("DiabloVT")
+        }
+
+        verify(mockView).showContentAvailableButton()
+    }
+
+    @Test
+    fun `should hide "content available" button when a new request is performed`() {
+        val data = givenThatInitialDataIsEmpty()
+
+        givenThereIsContentAvailableForAllPlayers()
+        givenThatQueryingForAnyPlayerReturns(Player(
+                name = "DiabloVT",
+                matches = someMatches
+        ))
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onSendButtonClicked("DiabloVT")
+        }
+
+        verify(mockView).hideContentAvailableButton()
+    }
+
+    @Test
+    fun `should not show content available button if there is no content available for player`() {
+        val data = givenThatInitialDataIsEmpty()
+
+        givenThereIsNoContentAvailableForAnyPlayer()
+        givenThatQueryingForAnyPlayerReturns(Player(
+                name = "DiabloVT",
+                matches = someMatches
+        ))
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onSendButtonClicked("DiabloVT")
+        }
+
+        verify(mockView, never()).showContentAvailableButton()
+    }
+
+    @Test
+    fun `should query "is content available" once and only once when a request is performed`() {
+        val data = givenThatInitialDataIsEmpty()
+
+        givenThereIsNoContentAvailableForAnyPlayer()
+        givenThatQueryingForAnyPlayerReturns(Player(
+                name = "DiabloVT",
+                matches = someMatches
+        ))
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onSendButtonClicked("DiabloVT")
+        }
+
+        verify(mockIsContentAvailableForPlayer).isContentAvailableForPlayer(anyPlayer())
+    }
+
+    @Test
+    fun `should not show content available button if there are no matches for player`() {
+        val data = givenThatInitialDataIsEmpty()
+
+        givenThereIsContentAvailableForAllPlayers()
+        givenThatQueryingForAnyPlayerReturns(Player(
+                name = "DiabloVT",
+                matches = emptyList()
+        ))
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onSendButtonClicked("DiabloVT")
+        }
+
+        verify(mockView, never()).showContentAvailableButton()
+    }
+
+    private fun givenThatQueryingForAnyPlayerReturns(player: Player) {
+        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+                Either.right(player)
+        )
+    }
+
+    private fun anyPlayer(): Player = any()
+
+    private fun givenThereIsContentAvailableForAllPlayers() {
+        whenever(mockIsContentAvailableForPlayer.isContentAvailableForPlayer(anyPlayer()))
+                .thenReturn(Either.right(true))
+    }
+
+    private fun givenThereIsNoContentAvailableForAnyPlayer() {
+        whenever(mockIsContentAvailableForPlayer.isContentAvailableForPlayer(anyPlayer()))
+                .thenReturn(Either.right(false))
+    }
+
+    private fun givenThatInitialDataIsEmpty(): PlayerSearchPresenter.InitialData {
+        return object : PlayerSearchPresenter.InitialData {
+            override fun getPlayerName(): String = ""
+        }
+    }
+
     private fun createPresenterWithMocks(playerRepository: PlayerRepository, matchRepository: MatchRepository): PlayerSearchPresenter {
         val presenter = PlayerSearchPresenter(mockResLocator,
                 playerRepository,
                 matchRepository,
                 mockGetPlayerAccount,
                 mockGetCurrentSeason,
-                mockGetPlayerSeasonInfo)
+                mockGetPlayerSeasonInfo,
+                mockIsContentAvailableForPlayer)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter

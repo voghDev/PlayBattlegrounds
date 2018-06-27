@@ -24,7 +24,10 @@ import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
+import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
+import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeStats
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
@@ -36,11 +39,13 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                             val matchRepository: MatchRepository,
                             val getPlayerAccount: GetPlayerAccount,
                             val getCurrentSeason: GetCurrentSeason,
-                            val getPlayerSeasonInfo: GetPlayerSeasonInfo) :
+                            val getPlayerSeasonInfo: GetPlayerSeasonInfo,
+                            val isContentAvailableForPlayer: IsContentAvailableForPlayer) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     val RED = "#ff9900"
     var player = Player()
+    var seasonInfo = createEmptyPlayerSeasonInfo()
     var matchesFrom = 0
 
     suspend override fun initialize() {
@@ -67,6 +72,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     private suspend fun requestPlayerData(playerName: String) {
         view?.showLoading()
+        view?.hideContentAvailableButton()
 
         val task = async(CommonPool) {
             playerRepository.getPlayerByName(playerName)
@@ -98,8 +104,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
         if (player.matches.isNotEmpty()) {
-
             var errors = 0
+
             player.matches.subList(from, player.matches.size).take(n).forEach {
                 val task = async(CommonPool) {
                     matchRepository.getMatchById(it.id)
@@ -112,13 +118,13 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                         val name = player.name
                         val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
                         val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
-                        val copy = result.b.copy(
-                                numberOfKillsForCurrentPlayer = kills,
-                                placeForCurrentPlayer = place)
 
-                        matchRepository.insertMatch(copy)
+                        it.numberOfKillsForCurrentPlayer = kills
+                        it.placeForCurrentPlayer = place
 
-                        view?.addMatch(copy)
+                        matchRepository.insertMatch(result.b)
+
+                        view?.addMatch(result.b)
                     }
                     is Fail ->
                         ++errors
@@ -126,6 +132,10 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
             }
 
             view?.hideLoading()
+
+            val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
+            if (contentResult is Ok && contentResult.b)
+                view?.showContentAvailableButton()
 
             if (errors > 0)
                 view?.showError("Could not load $errors matches")
@@ -142,10 +152,11 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 getPlayerSeasonInfo.getPlayerSeasonInfo(player, currentSeasonResult.b)
             }
 
-            val seasonInfo = seasonInfoTask.await()
+            val seasonInfoResult = seasonInfoTask.await()
 
-            if (seasonInfo is Ok) {
-                view?.addPlayerStatsRow(seasonInfo.b)
+            if (seasonInfoResult is Ok) {
+                seasonInfo = seasonInfoResult.b
+                view?.addPlayerStatsRow(seasonInfoResult.b)
             }
         }
     }
@@ -179,6 +190,58 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         /* Should navigate to a screen with all your KDRs and Ratings */
     }
 
+    fun onContentButtonClicked() {
+        val content: Content = getContentForPlayer(player)
+
+        navigator?.launchContentDetailScreen(content)
+    }
+
+    private fun getContentForPlayer(player: Player): Content {
+        val bestKDR = seasonInfo.getKillDeathRatioForGameModeStats(seasonInfo.getBestKDRStats())
+
+        if (player.hasMatchesWithZeroKills(3))
+            return Content(id = 0L)
+
+        if (bestKDR > 5f)
+            return Content(id = 6L)
+
+        if (player.hasWins())
+            return Content(id = 4L)
+
+        if (player.hasTop10Matches(5))
+            return Content(id = 5L)
+
+        if (player.hasMostlyTPPMatches())
+            return Content(id = 1L)
+
+        return Content(id = listOf(2L, 3L).shuffled().first())
+    }
+
+    fun Player.hasMostlyTPPMatches(): Boolean {
+        val tpp = matches.count { it.gameMode in listOf("solo", "squad", "duo") }
+        val rest = matches.size - tpp
+
+        return tpp > rest
+    }
+
+    fun Player.hasMatchesWithZeroKills(n: Int): Boolean =
+            matches.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
+
+    fun Player.hasWins(): Boolean =
+            matches.count { it.placeForCurrentPlayer == 1 } > 0
+
+    fun Player.hasTop10Matches(n: Int) =
+            matches.take(10).count { it.placeForCurrentPlayer <= 10 } > n
+
+    private fun createEmptyPlayerSeasonInfo() = PlayerSeasonInfo(
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats()
+    )
+
     interface MVPView {
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
@@ -192,9 +255,13 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo)
         fun addLoadMoreItem()
         fun removeLoadMoreItem()
+        fun hideContentAvailableButton()
+        fun showContentAvailableButton()
     }
 
-    interface Navigator
+    interface Navigator {
+        fun launchContentDetailScreen(content: Content)
+    }
 
     interface InitialData {
         fun getPlayerName(): String

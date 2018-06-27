@@ -19,6 +19,8 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -37,8 +39,11 @@ import es.voghdev.playbattlegrounds.features.matches.ui.LoadMoreRenderer
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.model.Content
+import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData.Companion.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
+import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
@@ -48,6 +53,7 @@ import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -60,8 +66,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getPlayerAccount: GetPlayerAccount by instance()
     val getCurrentSeason: GetCurrentSeason by instance()
     val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
+    val isContentAvailable: IsContentAvailableForPlayer by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<ListEntity>? = null
+    var contentAvailableItem: MenuItem? = null
 
     var presenter: PlayerSearchPresenter? = null
 
@@ -85,7 +93,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
                 matchRepository,
                 getPlayerAccount,
                 getCurrentSeason,
-                getPlayerSeasonInfo)
+                getPlayerSeasonInfo,
+                isContentAvailable)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -107,6 +116,20 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun getLayoutId(): Int = R.layout.activity_player_search
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        contentAvailableItem = menu?.findItem(R.id.action_content_available)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_content_available -> presenter?.onContentButtonClicked()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun showPlayerFoundMessage(message: String) = ui {
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
@@ -193,5 +216,17 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         adapter?.remove(LoadMore("matches"))
 
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun hideContentAvailableButton() = ui {
+        contentAvailableItem?.isVisible = false
+    }
+
+    override fun showContentAvailableButton() = ui {
+        contentAvailableItem?.isVisible = true
+    }
+
+    override fun launchContentDetailScreen(content: Content) = ui {
+        startActivity<ContentDetailActivity>(EXTRA_CONTENT_ID to content.id)
     }
 }
