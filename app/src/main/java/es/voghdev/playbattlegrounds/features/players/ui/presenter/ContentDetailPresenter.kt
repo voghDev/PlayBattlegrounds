@@ -27,6 +27,10 @@ class ContentDetailPresenter(val getContentById: GetContentById) :
         }
     }
 
+    fun onLinkButtonClicked() {
+        navigator?.launchBrowser(content.link)
+    }
+
     interface MVPView {
         fun showContentTitle(title: String)
         fun showContentText(text: String)
@@ -36,6 +40,7 @@ class ContentDetailPresenter(val getContentById: GetContentById) :
 
     interface Navigator {
         fun close()
+        fun launchBrowser(link: String)
     }
 
     interface InitialData {

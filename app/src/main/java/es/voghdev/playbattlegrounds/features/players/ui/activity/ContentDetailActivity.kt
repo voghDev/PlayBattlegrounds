@@ -1,5 +1,8 @@
 package es.voghdev.playbattlegrounds.features.players.ui.activity
 
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import android.os.Bundle
 import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
@@ -33,6 +36,10 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
 
             presenter?.onInitialData(ContentDetailInitialData(intent))
         }
+
+        btn_read_more.setOnClickListener {
+            presenter?.onLinkButtonClicked()
+        }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_content_detail
@@ -46,4 +53,7 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override fun showButtonText(text: String) = ui { btn_read_more.text = text }
 
     override fun close() = finish()
+
+    override fun launchBrowser(link: String) =
+            startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
 }

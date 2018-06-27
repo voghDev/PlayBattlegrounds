@@ -208,7 +208,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         if (player.hasWins())
             return Content(id = 4L)
 
-        if (player.hasTop10Matches(5))
+        if (player.hasTop10MatchesWithLessThan(5, 15))
             return Content(id = 5L)
 
         if (player.hasMostlyTPPMatches())
@@ -230,8 +230,11 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     fun Player.hasWins(): Boolean =
             matches.count { it.placeForCurrentPlayer == 1 } > 0
 
-    fun Player.hasTop10Matches(n: Int) =
-            matches.take(10).count { it.placeForCurrentPlayer <= 10 } > n
+    fun Player.hasTop10MatchesWithLessThan(n: Int, kills: Int): Boolean {
+        val lastMatches = matches.take(10)
+        return lastMatches.count { it.placeForCurrentPlayer <= 10 } > n &&
+                lastMatches.sumBy { it.numberOfKillsForCurrentPlayer } < kills
+    }
 
     private fun createEmptyPlayerSeasonInfo() = PlayerSeasonInfo(
             PlayerSeasonGameModeStats(),
