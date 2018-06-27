@@ -118,13 +118,13 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                         val name = player.name
                         val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
                         val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
-                        val copy = result.b.copy(
-                                numberOfKillsForCurrentPlayer = kills,
-                                placeForCurrentPlayer = place)
 
-                        matchRepository.insertMatch(copy)
+                        it.numberOfKillsForCurrentPlayer = kills
+                        it.placeForCurrentPlayer = place
 
-                        view?.addMatch(copy)
+                        matchRepository.insertMatch(result.b)
+
+                        view?.addMatch(result.b)
                     }
                     is Fail ->
                         ++errors
@@ -202,8 +202,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         if (player.hasMatchesWithZeroKills(3))
             return Content(id = 0L)
 
-        if (player.hasMostlyTPPMatches())
-            return Content(id = 1L)
+        if (bestKDR > 5f)
+            return Content(id = 6L)
 
         if (player.hasWins())
             return Content(id = 4L)
@@ -211,8 +211,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         if (player.hasTop10Matches(5))
             return Content(id = 5L)
 
-        if (bestKDR > 5f)
-            return Content(id = 6L)
+        if (player.hasMostlyTPPMatches())
+            return Content(id = 1L)
 
         return Content(id = listOf(2L, 3L).shuffled().first())
     }
@@ -225,7 +225,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun Player.hasMatchesWithZeroKills(n: Int): Boolean =
-            matches.takeLast(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
+            matches.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
 
     fun Player.hasWins(): Boolean =
             matches.count { it.placeForCurrentPlayer == 1 } > 0
