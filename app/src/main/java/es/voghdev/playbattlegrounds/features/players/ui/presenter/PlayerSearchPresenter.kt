@@ -104,8 +104,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
         if (player.matches.isNotEmpty()) {
-
             var errors = 0
+
             player.matches.subList(from, player.matches.size).take(n).forEach {
                 val task = async(CommonPool) {
                     matchRepository.getMatchById(it.id)
