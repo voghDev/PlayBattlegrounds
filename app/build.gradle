@@ -58,7 +58,7 @@ android {
             dimension "isPaid"
         }
 
-        coldReality {
+        coldreality {
             applicationId "es.voghdev.playbattlegrounds.cr"
             versionName "1.0.0"
             versionCode 1
