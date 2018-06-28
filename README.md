@@ -32,6 +32,11 @@ Icons
 
 All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast-chicken_889702#term=chicken&page=1&position=36) were downloaded from [flaticon.com][4]
 
+Supporting sites
+----------------
+
+Thanks to [sokogames][13] for their contribution to support this project
+
 [1]: https://github.com/Kodein-Framework/Kodein-DI/
 [2]: https://github.com/arrow-kt/arrow
 [3]: https://github.com/shyiko/ktlint
@@ -44,5 +49,6 @@ All icons, such as the [Chicken dinner](https://www.flaticon.com/free-icon/roast
 [10]: https://github.com/Raizlabs/DBFlow
 [11]: https://github.com/pedrovgs/Renderers
 [12]: https://github.com/voghDev/PlayBattlegrounds/blob/master/app/src/test/kotlin/es/voghdev/playbattlegrounds/features/players/ui/presenter/PlayerSearchPresenterTest.kt
+[13]: http://www.sokogames.com
 
 [appSample]: ./img/sample.gif
