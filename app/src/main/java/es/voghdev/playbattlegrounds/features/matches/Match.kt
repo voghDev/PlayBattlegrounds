@@ -19,8 +19,8 @@ import es.voghdev.playbattlegrounds.common.ui.ListEntity
 
 data class Match(
         val id: String = "",
-        val date: Long = 0L,
-        val gameMode: String = "",
+        var date: Long = 0L,
+        var gameMode: String = "",
         val map: String = "",
         val durationInSeconds: Int = 0,
         var participants: List<MatchParticipant> = emptyList(),

@@ -122,8 +122,12 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                                 numberOfKillsForCurrentPlayer = kills,
                                 placeForCurrentPlayer = place)
 
-                        it.numberOfKillsForCurrentPlayer = kills
-                        it.placeForCurrentPlayer = place
+                        with(it) {
+                            numberOfKillsForCurrentPlayer = kills
+                            placeForCurrentPlayer = place
+                            date = result.b.date
+                            gameMode = result.b.gameMode
+                        }
 
                         matchRepository.insertMatch(copy)
 
@@ -228,13 +232,13 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun Player.hasMatchesWithZeroKills(n: Int): Boolean =
-            matches.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
+            matches.sortedByDescending { it.date }.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
 
     fun Player.hasWins(): Boolean =
             matches.count { it.placeForCurrentPlayer == 1 } > 0
 
     fun Player.hasTop10MatchesWithLessThan(n: Int, kills: Int): Boolean {
-        val lastMatches = matches.take(10)
+        val lastMatches = matches.sortedByDescending { it.date }.take(10)
         return lastMatches.count { it.placeForCurrentPlayer <= 10 } > n &&
                 lastMatches.sumBy { it.numberOfKillsForCurrentPlayer } < kills
     }
