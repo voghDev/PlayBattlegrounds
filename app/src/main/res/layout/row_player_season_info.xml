@@ -19,7 +19,7 @@
         android:layout_below="@+id/tv_title"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="8dp"
-        android:text="Best Kill/Death ratio:"
+        android:text="@string/best_kdr"
         android:textSize="18sp"
         android:textStyle="italic" />
 
@@ -40,7 +40,7 @@
         android:layout_height="24dp"
         android:layout_alignLeft="@+id/tv_kdr_title"
         android:layout_below="@+id/tv_kdr_title"
-        android:text="Best Rating:"
+        android:text="@string/best_rating"
         android:textSize="18sp"
         android:textStyle="italic" />
 
