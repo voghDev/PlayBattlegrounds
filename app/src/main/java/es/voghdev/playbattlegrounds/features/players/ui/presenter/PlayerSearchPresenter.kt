@@ -83,7 +83,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         when (result) {
             is Ok -> {
                 player = result.b
-                view?.showPlayerFoundMessage("Found: ${result.b.name}. Loading matches...")
+                view?.showPlayerFoundMessage(resLocator.getString(R.string.player_found_param, player.name))
                 view?.hideSoftKeyboard()
 
                 view?.clearList()
