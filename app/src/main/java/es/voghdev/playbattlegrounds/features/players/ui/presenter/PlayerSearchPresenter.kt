@@ -47,6 +47,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     var player = Player()
     var seasonInfo = createEmptyPlayerSeasonInfo()
     var matchesFrom = 0
+    var enableAdditionalContents = true
 
     suspend override fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
@@ -55,6 +56,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     suspend fun onInitialData(data: InitialData) {
+        enableAdditionalContents = data.additionalContentsEnabled()
+
         if (data.getPlayerName().isNotEmpty()) {
             view?.fillPlayerAccount(data.getPlayerName())
 
@@ -141,7 +144,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
             view?.hideLoading()
 
             val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
-            if (contentResult is Ok && contentResult.b)
+            if (contentResult is Ok && contentResult.b && enableAdditionalContents)
                 view?.showContentAvailableButton()
 
             if (errors > 0)
@@ -275,5 +278,6 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     interface InitialData {
         fun getPlayerName(): String
+        fun additionalContentsEnabled(): Boolean
     }
 }

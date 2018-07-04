@@ -69,6 +69,7 @@ class PlayerSearchPresenterTest {
     @Test
     fun `should request player by name on start`() {
         val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
         }
 
@@ -84,6 +85,7 @@ class PlayerSearchPresenterTest {
     @Test
     fun `should load matches 1 to 5 when search button is clicked`() {
         val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
         }
 
@@ -111,6 +113,7 @@ class PlayerSearchPresenterTest {
     @Test
     fun `should show a "load more" icon if there are more matches`() {
         val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
         }
 
@@ -133,6 +136,7 @@ class PlayerSearchPresenterTest {
     @Test
     fun `should not show a "load more" icon if there are no more matches`() {
         val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
         }
 
@@ -155,6 +159,7 @@ class PlayerSearchPresenterTest {
     @Test
     fun `should show "load more" only once if there are ten matches`() {
         val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
         }
 
@@ -197,6 +202,30 @@ class PlayerSearchPresenterTest {
         }
 
         verify(mockView).showContentAvailableButton()
+    }
+
+    @Test
+    fun `should not show "content available" button if this feature is disabled by extras`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = false
+            override fun getPlayerName(): String = "DiabloVT"
+        }
+
+        givenThereIsContentAvailableForAllPlayers()
+        givenThatQueryingForAnyPlayerReturns(Player(
+                name = "DiabloVT",
+                matches = someMatches
+        ))
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onSendButtonClicked("DiabloVT")
+        }
+
+        verify(mockView, never()).showContentAvailableButton()
     }
 
     @Test
@@ -303,6 +332,7 @@ class PlayerSearchPresenterTest {
 
     private fun givenThatInitialDataIsEmpty(): PlayerSearchPresenter.InitialData {
         return object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = ""
         }
     }
