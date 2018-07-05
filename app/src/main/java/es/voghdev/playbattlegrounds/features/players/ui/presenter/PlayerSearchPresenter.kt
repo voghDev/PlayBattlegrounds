@@ -23,6 +23,7 @@ import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
@@ -40,14 +41,16 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                             val getPlayerAccount: GetPlayerAccount,
                             val getCurrentSeason: GetCurrentSeason,
                             val getPlayerSeasonInfo: GetPlayerSeasonInfo,
-                            val isContentAvailableForPlayer: IsContentAvailableForPlayer) :
+                            val isContentAvailableForPlayer: IsContentAvailableForPlayer,
+                            val getPlayerRegion: GetPlayerRegion) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
-    val RED = "#ff9900"
+    val DEFAULT_REGION = "pc-eu"
     var player = Player()
     var seasonInfo = createEmptyPlayerSeasonInfo()
     var matchesFrom = 0
     var enableAdditionalContents = true
+    var region = DEFAULT_REGION
 
     suspend override fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
@@ -57,6 +60,12 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     suspend fun onInitialData(data: InitialData) {
         enableAdditionalContents = data.additionalContentsEnabled()
+
+        region = if (data.getRegion().isNotEmpty()) {
+            data.getRegion()
+        } else {
+            (getPlayerRegion.getPlayerRegion() as? Ok)?.b?.name ?: DEFAULT_REGION
+        }
 
         if (data.getPlayerName().isNotEmpty()) {
             view?.fillPlayerAccount(data.getPlayerName())
@@ -78,7 +87,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         view?.hideContentAvailableButton()
 
         val task = async(CommonPool) {
-            playerRepository.getPlayerByName(playerName)
+            playerRepository.getPlayerByName(playerName, region)
         }
 
         val result = task.await()
@@ -108,6 +117,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
         if (player.matches.isNotEmpty()) {
             var errors = 0
+
+            view?.hideEmptyCase()
 
             player.matches.subList(from, player.matches.size).take(n).forEach {
                 val task = async(CommonPool) {
@@ -141,15 +152,17 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                 }
             }
 
-            view?.hideLoading()
-
             val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
             if (contentResult is Ok && contentResult.b && enableAdditionalContents)
                 view?.showContentAvailableButton()
 
             if (errors > 0)
                 view?.showError("Could not load $errors matches")
+        } else {
+            view?.showEmptyCase()
         }
+
+        view?.hideLoading()
     }
 
     private suspend fun requestPlayerSeasonStats(player: Player) {
@@ -270,6 +283,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun removeLoadMoreItem()
         fun hideContentAvailableButton()
         fun showContentAvailableButton()
+        fun showEmptyCase()
+        fun hideEmptyCase()
     }
 
     interface Navigator {
@@ -279,5 +294,6 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     interface InitialData {
         fun getPlayerName(): String
         fun additionalContentsEnabled(): Boolean
+        fun getRegion(): String
     }
 }
