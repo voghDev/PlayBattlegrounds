@@ -8,7 +8,7 @@
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline1"
-        android:layout_width="wrap_content"
+        android:layout_width="1px"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.8"
@@ -18,7 +18,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_username"
-        android:layout_width="280dp"
+        android:layout_width="@dimen/match_parent_is_not_supported_in_constraintlayout"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -51,8 +51,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="448dp"
+        android:layout_width="@dimen/match_parent_is_not_supported_in_constraintlayout"
+        android:layout_height="@dimen/match_parent_is_not_supported_in_constraintlayout"
         android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
