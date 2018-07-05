@@ -20,5 +20,5 @@ import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.features.players.model.Player
 
 interface GetPlayerByName {
-    fun getPlayerByName(name: String): Either<AbsError, Player>
+    fun getPlayerByName(name: String, region: String): Either<AbsError, Player>
 }

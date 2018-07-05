@@ -24,7 +24,6 @@ import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
 import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
 import es.voghdev.playbattlegrounds.datasource.api.model.PlayerService
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
@@ -36,8 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
-class GetPlayerByNameApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPlayerByName, ApiRequest {
-    override fun getPlayerByName(name: String): Either<AbsError, Player> {
+class GetPlayerByNameApiDataSource() : GetPlayerByName, ApiRequest {
+    override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG)
             builder.addInterceptor(LogJsonInterceptor())
@@ -54,12 +53,10 @@ class GetPlayerByNameApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPl
 
         val service: PlayerService = retrofit.create(PlayerService::class.java)
 
-        val region = getPlayerRegion.getPlayerRegion()
-
         val call: Call<PlayerByIdApiResponse> = service.getPlayerByName(
                 "Bearer ${BuildConfig.PUBGApiKey}",
                 "application/vnd.api+json",
-                (region as? Either.Right)?.b?.name ?: getDefaultRegion(),
+                region,
                 name
         )
 

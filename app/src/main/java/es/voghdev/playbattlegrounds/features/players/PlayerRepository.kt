@@ -17,8 +17,8 @@ class PlayerRepository(
     var start = 0L
     var count = 0
 
-    override fun getPlayerByName(name: String): Either<AbsError, Player> {
-        val result = getPlayerByNameApiDataSource.getPlayerByName(name)
+    override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
+        val result = getPlayerByNameApiDataSource.getPlayerByName(name, region)
 
         return if (userCanRequest(System.currentTimeMillis())) result
         else Either.left(AbsError(tooManyRequestsError))
