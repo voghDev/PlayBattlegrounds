@@ -38,6 +38,7 @@ import es.voghdev.playbattlegrounds.features.matches.ui.LoadMore
 import es.voghdev.playbattlegrounds.features.matches.ui.LoadMoreRenderer
 import es.voghdev.playbattlegrounds.features.matches.ui.MatchRenderer
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData.Companion.EXTRA_CONTENT_ID
@@ -66,6 +67,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getPlayerAccount: GetPlayerAccount by instance()
     val getCurrentSeason: GetCurrentSeason by instance()
     val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
+    val getPlayerRegion: GetPlayerRegion by instance()
     val isContentAvailable: IsContentAvailableForPlayer by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<ListEntity>? = null
@@ -94,7 +96,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
                 getPlayerAccount,
                 getCurrentSeason,
                 getPlayerSeasonInfo,
-                isContentAvailable)
+                isContentAvailable,
+                getPlayerRegion)
         presenter?.view = this
         presenter?.navigator = this
 

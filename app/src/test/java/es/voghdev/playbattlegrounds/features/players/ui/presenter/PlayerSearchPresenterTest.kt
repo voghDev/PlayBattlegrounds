@@ -9,7 +9,9 @@ import com.nhaarman.mockito_kotlin.whenever
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
+import es.voghdev.playbattlegrounds.features.onboarding.model.Region
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
+import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
@@ -49,6 +51,9 @@ class PlayerSearchPresenterTest {
     lateinit var mockIsContentAvailableForPlayer: IsContentAvailableForPlayer
 
     @Mock
+    lateinit var mockGetPlayerRegion: GetPlayerRegion
+
+    @Mock
     lateinit var mockView: PlayerSearchPresenter.MVPView
 
     lateinit var presenter: PlayerSearchPresenter
@@ -71,6 +76,7 @@ class PlayerSearchPresenterTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
         }
 
         runBlocking {
@@ -79,7 +85,26 @@ class PlayerSearchPresenterTest {
             presenter.onInitialData(data)
         }
 
-        verify(mockPlayerRepository).getPlayerByName("DiabloVT")
+        verify(mockPlayerRepository).getPlayerByName("DiabloVT", "pc-na")
+    }
+
+    @Test
+    fun `should request player from current region if no region is passed in InitialData`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
+            override fun getPlayerName(): String = "Nobunaga"
+            override fun getRegion(): String = ""
+        }
+
+        givenTheStoredPlayerRegionIs("pc-jp")
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockPlayerRepository).getPlayerByName("Nobunaga", "pc-jp")
     }
 
     @Test
@@ -87,13 +112,13 @@ class PlayerSearchPresenterTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
                 Either.right(Player(
                         name = "DiabloVT",
                         matches = someMatches
-
                 ))
         )
 
@@ -115,9 +140,10 @@ class PlayerSearchPresenterTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
                 Either.right(Player(
                         name = "DiabloVT",
                         matches = someMatches.apply { add(oneMoreMatch) }
@@ -138,9 +164,10 @@ class PlayerSearchPresenterTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
                 Either.right(Player(
                         name = "DiabloVT",
                         matches = someMatches
@@ -161,9 +188,10 @@ class PlayerSearchPresenterTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
                 Either.right(Player(
                         name = "DiabloVT",
                         matches = (1..10).map {
@@ -209,6 +237,7 @@ class PlayerSearchPresenterTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = false
             override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
         }
 
         givenThereIsContentAvailableForAllPlayers()
@@ -313,7 +342,7 @@ class PlayerSearchPresenterTest {
     }
 
     private fun givenThatQueryingForAnyPlayerReturns(player: Player) {
-        whenever(mockPlayerRepository.getPlayerByName(anyString())).thenReturn(
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
                 Either.right(player)
         )
     }
@@ -330,10 +359,15 @@ class PlayerSearchPresenterTest {
                 .thenReturn(Either.right(false))
     }
 
+    private fun givenTheStoredPlayerRegionIs(region: String) {
+        whenever(mockGetPlayerRegion.getPlayerRegion()).thenReturn(Either.right(Region(region)))
+    }
+
     private fun givenThatInitialDataIsEmpty(): PlayerSearchPresenter.InitialData {
         return object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = ""
+            override fun getRegion(): String = ""
         }
     }
 
@@ -344,7 +378,8 @@ class PlayerSearchPresenterTest {
                 mockGetPlayerAccount,
                 mockGetCurrentSeason,
                 mockGetPlayerSeasonInfo,
-                mockIsContentAvailableForPlayer)
+                mockIsContentAvailableForPlayer,
+                mockGetPlayerRegion)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter

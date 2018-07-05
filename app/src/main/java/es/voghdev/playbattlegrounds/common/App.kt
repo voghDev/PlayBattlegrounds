@@ -62,7 +62,7 @@ class App : Application(), KodeinAware {
         bind<PlayerRepository>() with singleton {
             PlayerRepository(
                     GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
-                    GetPlayerByNameApiDataSource(PlayerRegionPreferences(applicationContext)),
+                    GetPlayerByNameApiDataSource(),
                     getString(R.string.too_many_requests_msg)
             )
         }
