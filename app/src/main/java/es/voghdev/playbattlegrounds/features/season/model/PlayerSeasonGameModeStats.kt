@@ -18,8 +18,12 @@ package es.voghdev.playbattlegrounds.features.season.model
 data class PlayerSeasonGameModeStats(
         val killPoints: Float = 0f,
         val kills: Int = 0,
+        val losses: Int = 0,
         val top10s: Int = 0,
         val winPoints: Float = 0f,
         val roundsPlayed: Int = 0,
         val wins: Int = 0
-)
+) {
+    fun isEmpty(): Boolean =
+            kills == 0 && losses == 0
+}

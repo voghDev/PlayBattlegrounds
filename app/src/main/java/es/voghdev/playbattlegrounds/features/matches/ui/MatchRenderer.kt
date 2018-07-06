@@ -107,8 +107,8 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
         iv_map?.setImageResource(
                 when {
                     content.map.toLowerCase().contains("erangel") -> R.mipmap.erangel_xsmall
-                    content.map.toLowerCase().contentEquals("desert") -> R.mipmap.miramar_xsmall
-                    content.map.toLowerCase().contentEquals("sanhok") -> R.mipmap.sanhok_xsmall
+                    content.map.toLowerCase().contains("desert") -> R.mipmap.miramar_xsmall
+                    content.map.toLowerCase().contains("savage") -> R.mipmap.sanhok_xsmall
                     else -> R.mipmap.miramar_xsmall
                 })
     }
