@@ -63,6 +63,7 @@ class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSea
     }
 
     private fun renderPlayerKillDeathRatio() {
+        val emptyText = context.getString(R.string.no_matches_found)
         val bestKdrStats = content.getBestKDRStats()
         val kdr = content.getKillDeathRatioForGameModeStats(bestKdrStats)
 

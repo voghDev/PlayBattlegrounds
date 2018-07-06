@@ -180,6 +180,11 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
             if (seasonInfoResult is Ok) {
                 seasonInfo = seasonInfoResult.b
                 view?.addPlayerStatsRow(seasonInfoResult.b)
+
+                if (seasonInfo.isEmpty()) {
+                    view?.showNoMatchesInSeasonMessage(
+                            resLocator.getString(R.string.no_matches_in_season_param, player.name))
+                }
             }
         }
     }
@@ -285,6 +290,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showContentAvailableButton()
         fun showEmptyCase()
         fun hideEmptyCase()
+        fun showNoMatchesInSeasonMessage(message: String)
     }
 
     interface Navigator {

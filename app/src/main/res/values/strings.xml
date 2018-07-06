@@ -39,6 +39,7 @@
     <string name="sample_title">Sed ut perspiciatis unde omnis iste</string>
     <string name="player_found_param">Found: %1$s. Loading matches...</string>
     <string name="no_matches_found">No matches found</string>
+    <string name="no_matches_in_season_param">%1$s has no matches this season</string>
 
     <plurals name="kills">
         <item quantity="one">%d kill</item>

@@ -242,4 +242,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun launchContentDetailScreen(content: Content) = ui {
         startActivity<ContentDetailActivity>(EXTRA_CONTENT_ID to content.id)
     }
+
+    override fun showNoMatchesInSeasonMessage(message: String) = ui {
+        val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+
+        ColoredSnackbar.warningBold(snackbar).show()
+    }
 }

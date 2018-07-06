@@ -5,6 +5,7 @@ import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeSt
 class GameModeStatsApiEntry(
         val killPoints: Float? = 0f,
         val kills: Int? = 0,
+        val losses: Int? = 0,
         val top10s: Int? = 0,
         val roundsPlayed: Int? = 0,
         val winPoints: Float? = 0f,
@@ -14,6 +15,7 @@ class GameModeStatsApiEntry(
         return PlayerSeasonGameModeStats(
                 killPoints ?: 0f,
                 kills ?: 0,
+                losses ?: 0,
                 top10s ?: 0,
                 winPoints ?: 0f,
                 roundsPlayed ?: 0,

@@ -73,4 +73,9 @@ data class PlayerSeasonInfo(
 
         return (winPoints + .2f * killPoints).roundToInt()
     }
+
+    fun isEmpty(): Boolean =
+            statsDuo.isEmpty() && statsDuoFPP.isEmpty() &&
+                    statsSolo.isEmpty() && statsSoloFPP.isEmpty() &&
+                    statsSquad.isEmpty() && statsSquadFPP.isEmpty()
 }
