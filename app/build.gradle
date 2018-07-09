@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply from: 'src/season1/build.gradle'
+apply from: 'src/coldreality/build.gradle'
 
 android {
     compileSdkVersion 27
@@ -37,40 +39,6 @@ android {
 
             buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
             buildConfigField("long", "Limit", "0L")
-
-            dimension "isPaid"
-        }
-
-        season1 {
-            applicationId "es.voghdev.playbattlegrounds.season1"
-            versionName "1.0.0"
-            versionCode 1
-
-            Properties prop = new Properties();
-            prop.load(project.rootProject.file('pubg-api.properties').newDataInputStream())
-            def apiKey = prop.get("apiKey", null)
-            if (apiKey == null)
-                throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
-
-            buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
-            buildConfigField("long", "Limit", "1545914513000L")
-
-            dimension "isPaid"
-        }
-
-        coldreality {
-            applicationId "es.voghdev.playbattlegrounds.cr"
-            versionName "1.0.0"
-            versionCode 1
-
-            Properties prop = new Properties();
-            prop.load(project.rootProject.file('pubg-api.properties').newDataInputStream())
-            def apiKey = prop.get("apiKey", null)
-            if (apiKey == null)
-                throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key");
-
-            buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
-            buildConfigField("long", "Limit", "1545914513000L")
 
             dimension "isPaid"
         }
