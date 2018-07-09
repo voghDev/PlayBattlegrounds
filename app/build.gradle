@@ -2,8 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply from: 'src/season1/build.gradle'
-apply from: 'src/coldreality/build.gradle'
+
+if (new File('src/season1/build.gradle').exists()
+        && new File('src/coldreality/build.gradle').exists()) {
+    apply from: 'src/season1/build.gradle'
+    apply from: 'src/coldreality/build.gradle'
+}
 
 android {
     compileSdkVersion 27
