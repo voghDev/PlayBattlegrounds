@@ -107,3 +107,9 @@ fun Context.getLongPreference(key: String): Long {
 fun Context.removePreference(key: String) {
     return getPreferences().edit().remove(key).apply()
 }
+
+fun Context.screenWidth() = resources.displayMetrics.widthPixels
+
+fun Context.screenHeight() = resources.displayMetrics.heightPixels
+
+fun Context.screenDensity() = resources.displayMetrics.density
