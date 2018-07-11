@@ -10,6 +10,7 @@ This is a small App that tries to work on the following aspects:
 - Dependency Injection in Kotlin using [Kodein 5.x][1]
 - Basic usage of Monads such as *Either* or *Try*, using [arrow-kt][2]
 - a testable Kotlin architecture where requirements can be covered with Unit Tests. [You can see some examples][12]
+- Asynchronous requests using [kotlinx.coroutines][14]
 - Kotlin Code style & formatting check using [ktlint][3]
 - Android UI Design using [ConstraintLayout][5]
 - Elegant & comfortable *RecyclerView* management using [Renderers 3.x][11]
@@ -50,5 +51,6 @@ Thanks to [sokogames][13] for their contribution to support this project
 [11]: https://github.com/pedrovgs/Renderers
 [12]: https://github.com/voghDev/PlayBattlegrounds/blob/master/app/src/test/kotlin/es/voghdev/playbattlegrounds/features/players/ui/presenter/PlayerSearchPresenterTest.kt
 [13]: http://www.sokogames.com
+[14]: https://github.com/Kotlin/kotlinx.coroutines
 
 [appSample]: ./img/sample.gif
