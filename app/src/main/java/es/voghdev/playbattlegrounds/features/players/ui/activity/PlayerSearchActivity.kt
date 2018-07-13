@@ -28,6 +28,7 @@ import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.common.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
@@ -41,7 +42,6 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
-import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData.Companion.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer

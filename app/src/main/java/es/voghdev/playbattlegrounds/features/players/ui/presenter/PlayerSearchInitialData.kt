@@ -16,12 +16,15 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import android.content.Intent
+import es.voghdev.playbattlegrounds.common.EXTRA_ADDITIONAL_CONTENTS
+import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
+import es.voghdev.playbattlegrounds.common.EXTRA_REGION
 
 class PlayerSearchInitialData(val intent: Intent?) : PlayerSearchPresenter.InitialData {
-    override fun getPlayerName(): String = intent?.getStringExtra("playerName") ?: ""
+    override fun getPlayerName(): String = intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
 
     override fun additionalContentsEnabled(): Boolean =
-            intent?.getBooleanExtra("additionalContents", true) ?: true
+            intent?.getBooleanExtra(EXTRA_ADDITIONAL_CONTENTS, true) ?: true
 
-    override fun getRegion(): String = intent?.getStringExtra("region") ?: ""
+    override fun getRegion(): String = intent?.getStringExtra(EXTRA_REGION) ?: ""
 }

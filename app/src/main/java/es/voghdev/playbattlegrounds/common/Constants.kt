@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.features.players.ui.presenter
+/**
+ * We could use @file:JvmName("Constants") if we need to call these constants from Java
+ */
+package es.voghdev.playbattlegrounds.common
 
-import android.content.Intent
-import es.voghdev.playbattlegrounds.common.EXTRA_CONTENT_ID
-
-class ContentDetailInitialData(val intent: Intent?) : ContentDetailPresenter.InitialData {
-    override fun getContentId(): Long = intent?.getLongExtra(EXTRA_CONTENT_ID, 0L) ?: 0L
-}
+val EXTRA_REGION = "region"
+val EXTRA_ADDITIONAL_CONTENTS = "additionalContents"
+val EXTRA_PLAYER_NAME = "playerName"
+val EXTRA_CONTENT_ID = "contentId"
