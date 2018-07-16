@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="image_files" path="Android/data/es.voghdev.playbattlegrounds/files/img"/>
+    <external-path name="image_files" path="Android/data/es.voghdev.playbattlegrounds.season1/files/img"/>
+    <external-path name="image_files" path="Android/data/es.voghdev.playbattlegrounds.cr/files/img"/>
+</paths>

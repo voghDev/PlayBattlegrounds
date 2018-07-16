@@ -17,6 +17,7 @@ import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
+import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -52,6 +53,9 @@ class PlayerSearchPresenterTest {
 
     @Mock
     lateinit var mockGetPlayerRegion: GetPlayerRegion
+
+    @Mock
+    lateinit var mockGetImagesPath: GetImagesPath
 
     @Mock
     lateinit var mockView: PlayerSearchPresenter.MVPView
@@ -437,6 +441,78 @@ class PlayerSearchPresenterTest {
         verify(mockView).hideLoading()
     }
 
+    @Test
+    fun `should show "share" button once player matches have been loaded`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
+            override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = someMatches
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockView).showShareButton()
+    }
+
+    @Test
+    fun `should hide "share" button if player has no matches`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
+            override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = emptyList()
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockView).hideShareButton()
+    }
+
+    @Test
+    fun `should not show "share" button if player has no matches`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
+            override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
+                Either.right(Player(
+                        name = "DiabloVT",
+                        matches = emptyList()
+                ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+        }
+
+        verify(mockView, never()).showShareButton()
+    }
+
     private fun givenThatQueryingForAnyPlayerReturns(player: Player) {
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
                 Either.right(player)
@@ -475,7 +551,8 @@ class PlayerSearchPresenterTest {
                 mockGetCurrentSeason,
                 mockGetPlayerSeasonInfo,
                 mockIsContentAvailableForPlayer,
-                mockGetPlayerRegion)
+                mockGetPlayerRegion,
+                mockGetImagesPath)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter
