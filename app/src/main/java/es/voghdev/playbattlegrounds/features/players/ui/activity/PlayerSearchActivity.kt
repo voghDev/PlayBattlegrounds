@@ -15,8 +15,14 @@
  */
 package es.voghdev.playbattlegrounds.features.players.ui.activity
 
+import android.content.Intent
+import android.content.Intent.ACTION_SEND
+import android.content.Intent.EXTRA_STREAM
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -27,6 +33,7 @@ import android.view.View.VISIBLE
 import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
+import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.common.asApp
@@ -49,6 +56,7 @@ import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
+import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
@@ -58,6 +66,8 @@ import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import java.io.File
+import java.io.FileOutputStream
 
 class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked, LoadMoreRenderer.OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
@@ -69,9 +79,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
     val getPlayerRegion: GetPlayerRegion by instance()
     val isContentAvailable: IsContentAvailableForPlayer by instance()
+    val getImagesPath: GetImagesPath by instance()
     val resLocator: ResLocator by instance()
     var adapter: RVRendererAdapter<ListEntity>? = null
     var contentAvailableItem: MenuItem? = null
+    var shareItem: MenuItem? = null
 
     var presenter: PlayerSearchPresenter? = null
 
@@ -97,7 +109,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
                 getCurrentSeason,
                 getPlayerSeasonInfo,
                 isContentAvailable,
-                getPlayerRegion)
+                getPlayerRegion,
+                getImagesPath)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -123,12 +136,14 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         contentAvailableItem = menu?.findItem(R.id.action_content_available)
+        shareItem = menu?.findItem(R.id.action_share)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_content_available -> presenter?.onContentButtonClicked()
+            R.id.action_share -> presenter?.onShareStatsButtonClicked(System.currentTimeMillis())
         }
 
         return super.onOptionsItemSelected(item)
@@ -247,5 +262,42 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
         ColoredSnackbar.warningBold(snackbar).show()
+    }
+
+    override fun showShareButton() = ui {
+        shareItem?.isVisible = true
+    }
+
+    override fun hideShareButton() = ui {
+        shareItem?.isVisible = false
+    }
+
+    override fun takeScreenshot(path: String) = ui {
+        try {
+            val imageFile = File(path)
+            imageFile.createNewFile()
+            with(window.decorView.rootView) {
+                isDrawingCacheEnabled = true
+                val bitmap = Bitmap.createBitmap(drawingCache)
+                isDrawingCacheEnabled = false
+
+                val outputStream = FileOutputStream(imageFile)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+
+                outputStream.close()
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun sharePlayerStats(path: String) = ui {
+        val uri: Uri = FileProvider.getUriForFile(this, "${BuildConfig.APPLICATION_ID}.provider", File(path))
+        val intent = Intent(ACTION_SEND).apply {
+            setDataAndType(uri, "image/*")
+            putExtra(EXTRA_STREAM, uri)
+        }
+
+        startActivity(Intent.createChooser(intent, getString(R.string.share)))
     }
 }

@@ -52,6 +52,8 @@ import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
+import es.voghdev.playbattlegrounds.features.share.GetImagesPath
+import es.voghdev.playbattlegrounds.features.share.GetImagesPathAndroidDataSource
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.bind
@@ -87,6 +89,7 @@ class App : Application(), KodeinAware {
         bind<IsAppExpired>() with singleton { IsAppExpiredImpl(System.currentTimeMillis(), Limit) }
         bind<IsContentAvailableForPlayer>() with singleton { IsContentAvailableSharedPrefDataSource(applicationContext) }
         bind<GetContentById>() with singleton { GetContentByIdStubDataSource(applicationContext) }
+        bind<GetImagesPath>() with singleton { GetImagesPathAndroidDataSource(applicationContext) }
     }
 
     override fun onCreate() {

@@ -15,6 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
+import android.text.format.DateFormat
 import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.Fail
@@ -32,8 +33,11 @@ import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeSt
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
+import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
+import java.io.File
+import java.util.Date
 
 class PlayerSearchPresenter(val resLocator: ResLocator,
                             val playerRepository: PlayerRepository,
@@ -42,7 +46,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                             val getCurrentSeason: GetCurrentSeason,
                             val getPlayerSeasonInfo: GetPlayerSeasonInfo,
                             val isContentAvailableForPlayer: IsContentAvailableForPlayer,
-                            val getPlayerRegion: GetPlayerRegion) :
+                            val getPlayerRegion: GetPlayerRegion,
+                            val getImagesPath: GetImagesPath) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     val DEFAULT_REGION = "pc-eu"
@@ -84,6 +89,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     private suspend fun requestPlayerData(playerName: String) {
         view?.showLoading()
+        view?.hideShareButton()
         view?.hideContentAvailableButton()
 
         val task = async(CommonPool) {
@@ -156,6 +162,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
             if (contentResult is Ok && contentResult.b && enableAdditionalContents)
                 view?.showContentAvailableButton()
 
+            view?.showShareButton()
+
             if (errors > 0)
                 view?.showError("Could not load $errors matches")
         } else {
@@ -222,6 +230,17 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         val content: Content = getContentForPlayer(player)
 
         navigator?.launchContentDetailScreen(content)
+    }
+
+    fun onShareStatsButtonClicked(ms: Long) {
+        val now = Date(ms)
+        DateFormat.format("yyyyMMdd_hhmmss", now)
+        val pathResult = getImagesPath.getImagesPath()
+        if (pathResult is Ok) {
+            val imageFile = File(pathResult.b, "$now.png")
+            view?.takeScreenshot(imageFile.absolutePath)
+            view?.sharePlayerStats(imageFile.absolutePath)
+        }
     }
 
     private fun getContentForPlayer(player: Player): Content {
@@ -291,6 +310,10 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showEmptyCase()
         fun hideEmptyCase()
         fun showNoMatchesInSeasonMessage(message: String)
+        fun sharePlayerStats(path: String)
+        fun takeScreenshot(path: String)
+        fun showShareButton()
+        fun hideShareButton()
     }
 
     interface Navigator {
