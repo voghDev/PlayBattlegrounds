@@ -15,6 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
+import android.os.Build
 import android.text.format.DateFormat
 import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.R
@@ -47,7 +48,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                             val getPlayerSeasonInfo: GetPlayerSeasonInfo,
                             val isContentAvailableForPlayer: IsContentAvailableForPlayer,
                             val getPlayerRegion: GetPlayerRegion,
-                            val getImagesPath: GetImagesPath) :
+                            val getImagesPath: GetImagesPath,
+                            var sdkVersion: Int) :
         Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     val DEFAULT_REGION = "pc-eu"
@@ -239,7 +241,11 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         if (pathResult is Ok) {
             val imageFile = File(pathResult.b, "$now.png")
             view?.takeScreenshot(imageFile.absolutePath)
-            view?.sharePlayerStats(imageFile.absolutePath)
+            if (sdkVersion >= Build.VERSION_CODES.N) {
+                view?.sharePlayerStatsNougat(imageFile.absolutePath)
+            } else {
+                view?.sharePlayerStatsPreNougat(imageFile.absolutePath)
+            }
         }
     }
 
@@ -310,7 +316,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
         fun showEmptyCase()
         fun hideEmptyCase()
         fun showNoMatchesInSeasonMessage(message: String)
-        fun sharePlayerStats(path: String)
+        fun sharePlayerStatsNougat(path: String)
+        fun sharePlayerStatsPreNougat(path: String)
         fun takeScreenshot(path: String)
         fun showShareButton()
         fun hideShareButton()

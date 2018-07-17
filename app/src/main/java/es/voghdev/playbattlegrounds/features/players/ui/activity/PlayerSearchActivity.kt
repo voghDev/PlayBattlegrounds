@@ -20,6 +20,7 @@ import android.content.Intent.ACTION_SEND
 import android.content.Intent.EXTRA_STREAM
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.FileProvider
@@ -110,7 +111,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
                 getPlayerSeasonInfo,
                 isContentAvailable,
                 getPlayerRegion,
-                getImagesPath)
+                getImagesPath,
+                Build.VERSION.SDK_INT)
         presenter?.view = this
         presenter?.navigator = this
 
@@ -291,8 +293,18 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         }
     }
 
-    override fun sharePlayerStats(path: String) = ui {
+    override fun sharePlayerStatsNougat(path: String) = ui {
         val uri: Uri = FileProvider.getUriForFile(this, "${BuildConfig.APPLICATION_ID}.provider", File(path))
+        val intent = Intent(ACTION_SEND).apply {
+            setDataAndType(uri, "image/*")
+            putExtra(EXTRA_STREAM, uri)
+        }
+
+        startActivity(Intent.createChooser(intent, getString(R.string.share)))
+    }
+
+    override fun sharePlayerStatsPreNougat(path: String) = ui {
+        val uri: Uri = Uri.fromFile(File(path))
         val intent = Intent(ACTION_SEND).apply {
             setDataAndType(uri, "image/*")
             putExtra(EXTRA_STREAM, uri)
