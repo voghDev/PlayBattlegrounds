@@ -1,5 +1,6 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import arrow.core.Either
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.never
@@ -552,7 +553,8 @@ class PlayerSearchPresenterTest {
                 mockGetPlayerSeasonInfo,
                 mockIsContentAvailableForPlayer,
                 mockGetPlayerRegion,
-                mockGetImagesPath)
+                mockGetImagesPath,
+                LOLLIPOP)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter
