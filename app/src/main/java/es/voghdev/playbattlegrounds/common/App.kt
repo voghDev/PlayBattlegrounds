@@ -49,7 +49,6 @@ import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
 import es.voghdev.playbattlegrounds.features.season.sharedpref.GetCurrentSeasonSharedPrefDataSource
 import es.voghdev.playbattlegrounds.features.season.sharedpref.SetCurrentSeasonSharedPrefDataSource
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
-import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
@@ -65,7 +64,8 @@ class App : Application(), KodeinAware {
             PlayerRepository(
                     GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
                     GetPlayerByNameApiDataSource(),
-                    getString(R.string.too_many_requests_msg)
+                    getString(R.string.too_many_requests_msg),
+                    GetPlayerSeasonInfoApiDataSource()
             )
         }
         bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
@@ -78,7 +78,6 @@ class App : Application(), KodeinAware {
         bind<GetPlayerRegion>() with singleton { PlayerRegionPreferences(applicationContext) }
         bind<SetCurrentSeason>() with singleton { SetCurrentSeasonSharedPrefDataSource(applicationContext) }
         bind<GetCurrentSeason>() with singleton { GetCurrentSeasonSharedPrefDataSource(applicationContext) }
-        bind<GetPlayerSeasonInfo>() with singleton { GetPlayerSeasonInfoApiDataSource() }
         bind<MatchRepository>() with singleton {
             MatchRepository(
                     GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),

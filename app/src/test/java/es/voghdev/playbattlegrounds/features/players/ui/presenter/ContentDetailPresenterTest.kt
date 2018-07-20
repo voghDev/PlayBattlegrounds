@@ -1,7 +1,6 @@
-package es.voghdev.playbattlegrounds.ui.presenter
+package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
-import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import org.junit.Before
 import org.mockito.Mock

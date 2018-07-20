@@ -55,8 +55,8 @@ import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPr
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
+import es.voghdev.playbattlegrounds.features.season.ui.activity.SeasonStatsDetailActivity
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
-import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.ui
@@ -77,7 +77,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     val matchRepository: MatchRepository by instance()
     val getPlayerAccount: GetPlayerAccount by instance()
     val getCurrentSeason: GetCurrentSeason by instance()
-    val getPlayerSeasonInfo: GetPlayerSeasonInfo by instance()
     val getPlayerRegion: GetPlayerRegion by instance()
     val isContentAvailable: IsContentAvailableForPlayer by instance()
     val getImagesPath: GetImagesPath by instance()
@@ -108,7 +107,6 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
                 matchRepository,
                 getPlayerAccount,
                 getCurrentSeason,
-                getPlayerSeasonInfo,
                 isContentAvailable,
                 getPlayerRegion,
                 getImagesPath,
@@ -264,6 +262,10 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         val snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
 
         ColoredSnackbar.warningBold(snackbar).show()
+    }
+
+    override fun launchPlayerSeasonInfoScreen(playerSeasonInfo: PlayerSeasonInfo) {
+        startActivity<SeasonStatsDetailActivity>()
     }
 
     override fun showShareButton() = ui {

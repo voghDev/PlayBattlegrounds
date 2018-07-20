@@ -2,6 +2,7 @@ package es.voghdev.playbattlegrounds.features.players
 
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -16,6 +17,8 @@ class PlayerRepositoryTest {
     @Mock
     lateinit var mockGetPlayerByName: GetPlayerByName
 
+    @Mock lateinit var mockGetPlayerSeasonInfo: GetPlayerSeasonInfo
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -25,7 +28,8 @@ class PlayerRepositoryTest {
     fun `should not throttle anymore if requested six times in less than five minutes`() {
         val repo = PlayerRepository(mockGetPlayerById,
                 mockGetPlayerByName,
-                "Too many requests")
+                "Too many requests",
+                mockGetPlayerSeasonInfo)
 
         repo.userCanRequest(1)
         repo.userCanRequest(2)
@@ -41,7 +45,8 @@ class PlayerRepositoryTest {
         var result = true
         val repo = PlayerRepository(mockGetPlayerById,
                 mockGetPlayerByName,
-                "Too many requests")
+                "Too many requests",
+                mockGetPlayerSeasonInfo)
 
         result = result && repo.userCanRequest(1)
         result = result && repo.userCanRequest(2)
@@ -56,7 +61,8 @@ class PlayerRepositoryTest {
     fun `should not throttle six requests spaced five minutes`() {
         val repo = PlayerRepository(mockGetPlayerById,
                 mockGetPlayerByName,
-                "Too many requests")
+                "Too many requests",
+                mockGetPlayerSeasonInfo)
 
         repo.userCanRequest(1)
         repo.userCanRequest(2)

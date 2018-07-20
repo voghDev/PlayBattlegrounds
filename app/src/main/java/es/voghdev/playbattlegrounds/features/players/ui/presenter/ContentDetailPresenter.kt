@@ -1,7 +1,7 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
-import com.appandweb.weevento.ui.presenter.Presenter
 import es.voghdev.playbattlegrounds.common.Ok
+import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 

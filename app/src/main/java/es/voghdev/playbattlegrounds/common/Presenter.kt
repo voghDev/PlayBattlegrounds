@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.appandweb.weevento.ui.presenter
+package es.voghdev.playbattlegrounds.common
 
 abstract class Presenter<T1, T2>() {
     open suspend fun initialize() { /* Empty */
