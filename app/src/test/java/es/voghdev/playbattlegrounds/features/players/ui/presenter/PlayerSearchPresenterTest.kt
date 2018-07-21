@@ -77,7 +77,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should request player by name on start`() {
+    fun `should request a player by name to the API on start`() {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -94,7 +94,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should request player from current region if no region is passed in InitialData`() {
+    fun `should request a player from current region if no region is passed in InitialData`() {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "Nobunaga"
@@ -165,7 +165,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should show a "load more" icon if there are more matches`() {
+    fun `should show a "load more" icon if there are more matches to load`() {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -189,7 +189,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should not show a "load more" icon if there are no more matches`() {
+    fun `should not show a "load more" icon if there are no more matches to load`() {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -213,7 +213,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should show "load more" only once if there are ten matches`() {
+    fun `should show "load more" only once if there are exactly ten matches`() {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -262,7 +262,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should not show "content available" button if this feature is disabled by extras`() {
+    fun `should not show "content available" button if this feature is disabled by InitialData`() {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = false
             override fun getPlayerName(): String = "DiabloVT"
@@ -308,7 +308,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should not show content available button if there is no content available for player`() {
+    fun `should not show "content available" button if there is no content available for current player`() {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsNoContentAvailableForAnyPlayer()
@@ -350,7 +350,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should not show content available button if there are no matches for player`() {
+    fun `should not show "content available" button if there are no matches for player`() {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsContentAvailableForAllPlayers()
