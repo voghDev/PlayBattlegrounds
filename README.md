@@ -49,7 +49,7 @@ Thanks to [sokogames][13] for their contribution to support this project
 [9]: https://github.com/voghDev/PlayBattlegrounds/pull/9
 [10]: https://github.com/Raizlabs/DBFlow
 [11]: https://github.com/pedrovgs/Renderers
-[12]: https://github.com/voghDev/PlayBattlegrounds/blob/master/app/src/test/kotlin/es/voghdev/playbattlegrounds/features/players/ui/presenter/PlayerSearchPresenterTest.kt
+[12]: https://github.com/voghDev/PlayBattlegrounds/blob/master/app/src/test/java/es/voghdev/playbattlegrounds/features/players/ui/presenter/PlayerSearchPresenterTest.kt
 [13]: http://www.sokogames.com
 [14]: https://github.com/Kotlin/kotlinx.coroutines
 
