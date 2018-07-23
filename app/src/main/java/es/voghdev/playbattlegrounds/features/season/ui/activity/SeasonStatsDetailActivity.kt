@@ -81,5 +81,7 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
         tv_squad_fpp_rating.text = text
     }
 
+    override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }
+
     override fun getLayoutId(): Int = R.layout.activity_season_stats_detail
 }

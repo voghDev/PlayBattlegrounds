@@ -15,6 +15,8 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
         Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>() {
 
     suspend override fun initialize() {
+        view?.configureToolbar()
+
         val task = async(CommonPool) {
             playerRepository.getPlayerSeasonInfo(anyPlayer(), anySeason(), System.currentTimeMillis())
         }
@@ -51,6 +53,8 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
     private fun anySeason() = Season("", true, false)
 
     interface MVPView {
+        fun configureToolbar()
+
         fun showSoloKDR(text: String)
         fun showSoloFPPKDR(text: String)
         fun showDuoKDR(text: String)
