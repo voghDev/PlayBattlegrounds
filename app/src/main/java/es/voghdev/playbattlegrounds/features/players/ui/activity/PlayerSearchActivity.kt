@@ -37,6 +37,8 @@ import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.EXTRA_CONTENT_ID
+import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
+import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.common.ui.ColoredSnackbar
@@ -50,10 +52,12 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
+import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.PlayerSearchPresenter
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.PlayerSeasonInfoRenderer
+import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.ui.activity.SeasonStatsDetailActivity
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
@@ -94,23 +98,25 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         val seasonRenderer = PlayerSeasonInfoRenderer(this)
         val loadMoreRenderer = LoadMoreRenderer(this)
         val rendererBuilder = RendererBuilder<ListEntity>()
-                .bind(Match::class.java, matchRenderer)
-                .bind(PlayerSeasonInfo::class.java, seasonRenderer)
-                .bind(LoadMore::class.java, loadMoreRenderer)
+            .bind(Match::class.java, matchRenderer)
+            .bind(PlayerSeasonInfo::class.java, seasonRenderer)
+            .bind(LoadMore::class.java, loadMoreRenderer)
         adapter = RVRendererAdapter<ListEntity>(rendererBuilder)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        presenter = PlayerSearchPresenter(resLocator,
-                playerRepository,
-                matchRepository,
-                getPlayerAccount,
-                getCurrentSeason,
-                isContentAvailable,
-                getPlayerRegion,
-                getImagesPath,
-                Build.VERSION.SDK_INT)
+        presenter = PlayerSearchPresenter(
+            resLocator,
+            playerRepository,
+            matchRepository,
+            getPlayerAccount,
+            getCurrentSeason,
+            isContentAvailable,
+            getPlayerRegion,
+            getImagesPath,
+            Build.VERSION.SDK_INT
+        )
         presenter?.view = this
         presenter?.navigator = this
 
@@ -163,11 +169,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun showDialog(title: String, message: String) = ui {
         val dialog = AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .setCancelable(false)
-                .create()
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
+            .setCancelable(false)
+            .create()
 
         dialog.show()
     }
@@ -264,8 +270,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         ColoredSnackbar.warningBold(snackbar).show()
     }
 
-    override fun launchPlayerSeasonInfoScreen(playerSeasonInfo: PlayerSeasonInfo) {
-        startActivity<SeasonStatsDetailActivity>()
+    override fun launchPlayerSeasonInfoScreen(player: Player, season: Season?) {
+        startActivity<SeasonStatsDetailActivity>(
+            EXTRA_PLAYER_ID to player.id,
+            EXTRA_SEASON to (season?.id ?: "")
+        )
     }
 
     override fun showShareButton() = ui {

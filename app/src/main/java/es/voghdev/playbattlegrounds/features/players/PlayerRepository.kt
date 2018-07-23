@@ -40,7 +40,7 @@ class PlayerRepository(
     }
 
     fun getPlayerSeasonInfo(player: Player, season: Season, ms: Long): Either<AbsError, PlayerSeasonInfo> {
-        return if (playerSeasonInfo.isEmpty() || ms > seasonInfoClock.plus(5000)) {
+        return if (playerSeasonInfo.isEmpty() || ms > seasonInfoClock.plus(10000)) {
             val result = getPlayerSeasonInfo.getPlayerSeasonInfo(player, season)
             playerSeasonInfo = (result as? Ok)?.b ?: emptyPlayerSeasonInfo()
             seasonInfoClock = ms

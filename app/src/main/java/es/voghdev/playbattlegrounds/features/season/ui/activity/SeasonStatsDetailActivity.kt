@@ -1,6 +1,12 @@
 package es.voghdev.playbattlegrounds.features.season.ui.activity
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.text.SpannableString
+import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.widget.TextView
 import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.asApp
@@ -30,55 +36,110 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
         launch(CommonPool) {
             presenter?.initialize()
+
+            presenter?.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
         }
     }
 
-    override fun showSoloKDR(text: String) = ui {
+    fun TextView.highlightCharsAfter(separator: String = ": ", highlightColorResId: Int) {
+        val start = maxOf(1, text.indexOf(": "))
+        val end = text.length
+
+        text = SpannableString(text).apply {
+            setSpan(ForegroundColorSpan(
+                ContextCompat.getColor(applicationContext, highlightColorResId)),
+                    start,
+                    end,
+                    SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(RelativeSizeSpan(1.2f),
+                    start,
+                    end,
+                    SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
+
+    override fun showSoloKDR(text: String, statColorResId: Int) = ui {
         tv_solo_kdr.text = text
+        tv_solo_kdr.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSoloFPPKDR(text: String) = ui {
+    override fun showSoloFPPKDR(text: String, statColorResId: Int) = ui {
         tv_solo_fpp_kdr.text = text
+        tv_solo_fpp_kdr.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showDuoKDR(text: String) = ui {
+    override fun showDuoKDR(text: String, statColorResId: Int) = ui {
         tv_duo_kdr.text = text
+        tv_duo_kdr.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showDuoFPPKDR(text: String) = ui {
+    override fun showDuoFPPKDR(text: String, statColorResId: Int) = ui {
         tv_duo_fpp_kdr.text = text
+        tv_duo_fpp_kdr.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSquadKDR(text: String) = ui {
+    override fun showSquadKDR(text: String, statColorResId: Int) = ui {
         tv_squad_kdr.text = text
+        tv_squad_kdr.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSquadFPPKDR(text: String) = ui {
+    override fun showSquadFPPKDR(text: String, statColorResId: Int) = ui {
         tv_squad_fpp_kdr.text = text
+        tv_squad_fpp_kdr.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSoloRating(text: String) = ui {
+    override fun showSoloSummary(text: String) = ui {
+        tv_solo_kills.text = text
+    }
+
+    override fun showSoloFPPSummary(text: String) = ui {
+        tv_solo_fpp_kills.text = text
+    }
+
+    override fun showDuoSummary(text: String) = ui {
+        tv_duo_kills.text = text
+    }
+
+    override fun showDuoFPPSummary(text: String) = ui {
+        tv_duo_fpp_kills.text = text
+    }
+
+    override fun showSquadSummary(text: String) = ui {
+        tv_squad_kills.text = text
+    }
+
+    override fun showSquadFPPSummary(text: String) = ui {
+        tv_squad_fpp_kills.text = text
+    }
+
+    override fun showSoloRating(text: String, statColorResId: Int) = ui {
         tv_solo_rating.text = text
+        tv_solo_rating.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSoloFPPRating(text: String) = ui {
+    override fun showSoloFPPRating(text: String, statColorResId: Int) = ui {
         tv_solo_fpp_rating.text = text
+        tv_solo_fpp_rating.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showDuoRating(text: String) = ui {
+    override fun showDuoRating(text: String, statColorResId: Int) = ui {
         tv_duo_rating.text = text
+        tv_duo_rating.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showDuoFPPRating(text: String) = ui {
+    override fun showDuoFPPRating(text: String, statColorResId: Int) = ui {
         tv_duo_fpp_rating.text = text
+        tv_duo_fpp_rating.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSquadRating(text: String) = ui {
+    override fun showSquadRating(text: String, statColorResId: Int) = ui {
         tv_squad_rating.text = text
+        tv_squad_rating.highlightCharsAfter(": ", statColorResId)
     }
 
-    override fun showSquadFPPRating(text: String) = ui {
+    override fun showSquadFPPRating(text: String, statColorResId: Int) = ui {
         tv_squad_fpp_rating.text = text
+        tv_squad_fpp_rating.highlightCharsAfter(": ", statColorResId)
     }
 
     override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }
