@@ -1,8 +1,11 @@
 package es.voghdev.playbattlegrounds.features.season.ui.presenter
 
 import android.content.Intent
+import android.os.Build
+import android.text.format.DateFormat
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
+import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
 import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
@@ -11,15 +14,22 @@ import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
+import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.format
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
+import java.io.File
 
-class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepository: PlayerRepository) :
+class SeasonStatsDetailPresenter(val resLocator: ResLocator,
+    val playerRepository: PlayerRepository,
+    val getImagesPath: GetImagesPath) :
     Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>() {
+
+    var sdkVersion: Int = Build.VERSION.SDK_INT
 
     suspend override fun initialize() {
         view?.configureToolbar()
+        view?.hideShareButton()
     }
 
     suspend fun onInitialData(data: InitialData) {
@@ -34,7 +44,14 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
             showKillDeathRatios(stats)
             showSummaries(stats)
             showRatings(stats)
+
+            view?.showShareButton()
+            view?.showToolbarTitle(data.getPlayerName())
         }
+    }
+
+    fun onSdkVersionReceived(sdk: Int) {
+        sdkVersion = sdk
     }
 
     private fun showKillDeathRatios(stats: PlayerSeasonInfo) {
@@ -64,6 +81,20 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
         view?.showSquadFPPRating("Squad FPP Rating: ${stats.statsSquadFPP.rating()}", getRatingColor(stats.statsSquadFPP.rating()))
     }
 
+    fun onShareSeasonStatsButtonClicked(ms: Long) {
+        val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
+        val pathResult = getImagesPath.getImagesPath()
+        if (pathResult is Ok) {
+            val imageFile = File(pathResult.b, "$now.png")
+            view?.takeScreenshot(imageFile.absolutePath)
+            if (sdkVersion >= Build.VERSION_CODES.N) {
+                view?.sharePlayerStatsNougat(imageFile.absolutePath)
+            } else {
+                view?.sharePlayerStatsPreNougat(imageFile.absolutePath)
+            }
+        }
+    }
+
     fun getRatingColor(rating: Int): Int =
         when {
             rating > 2200 -> R.color.blue
@@ -80,12 +111,9 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
             else -> R.color.light_red
         }
 
-    private fun anyPlayer() = Player()
-
-    private fun anySeason() = Season("", true, false)
-
     interface InitialData {
         fun getPlayerId(): String
+        fun getPlayerName(): String
         fun getSeason(): String
     }
 
@@ -93,12 +121,16 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
         override fun getPlayerId(): String =
             intent?.getStringExtra(EXTRA_PLAYER_ID) ?: ""
 
+        override fun getPlayerName(): String =
+            intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
+
         override fun getSeason(): String =
             intent?.getStringExtra(EXTRA_SEASON) ?: ""
     }
 
     interface MVPView {
         fun configureToolbar()
+        fun showToolbarTitle(title: String)
 
         fun showSoloKDR(text: String, statColorResId: Int = R.color.colorPrimary)
         fun showSoloFPPKDR(text: String, statColorResId: Int = R.color.colorPrimary)
@@ -120,6 +152,12 @@ class SeasonStatsDetailPresenter(val resLocator: ResLocator, val playerRepositor
         fun showDuoFPPRating(text: String, statColorResId: Int = R.color.colorPrimary)
         fun showSquadRating(text: String, statColorResId: Int = R.color.colorPrimary)
         fun showSquadFPPRating(text: String, statColorResId: Int = R.color.colorPrimary)
+
+        fun takeScreenshot(path: String)
+        fun sharePlayerStatsNougat(path: String)
+        fun sharePlayerStatsPreNougat(path: String)
+        fun showShareButton()
+        fun hideShareButton()
     }
 
     interface Navigator

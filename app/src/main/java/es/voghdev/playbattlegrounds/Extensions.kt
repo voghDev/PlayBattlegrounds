@@ -2,14 +2,64 @@ package es.voghdev.playbattlegrounds
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_SEND
+import android.content.Intent.EXTRA_STREAM
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.net.Uri
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import java.io.File
+import java.io.FileOutputStream
 import java.text.ParseException
 import java.text.SimpleDateFormat
+
+fun Activity.takeAScreenshot(path: String) {
+    try {
+        val imageFile = File(path)
+        imageFile.createNewFile()
+        with(window.decorView.rootView) {
+            isDrawingCacheEnabled = true
+            val bitmap = Bitmap.createBitmap(drawingCache)
+            isDrawingCacheEnabled = false
+
+            val outputStream = FileOutputStream(imageFile)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+
+            outputStream.close()
+        }
+    } catch (e: Throwable) {
+        e.printStackTrace()
+    }
+}
+
+fun Activity.shareFileNougat(message: String, path: String) {
+    val uri: Uri = FileProvider.getUriForFile(
+        this,
+        "${BuildConfig.APPLICATION_ID}.provider",
+        File(path))
+    val intent = Intent(ACTION_SEND).apply {
+        setDataAndType(uri, "image/*")
+        putExtra(EXTRA_STREAM, uri)
+    }
+
+    startActivity(Intent.createChooser(intent, message))
+}
+
+fun Activity.shareFilePreNougat(message: String, path: String) {
+    val uri: Uri = Uri.fromFile(File(path))
+    val intent = Intent(ACTION_SEND).apply {
+        setDataAndType(uri, "image/*")
+        putExtra(EXTRA_STREAM, uri)
+    }
+
+    startActivity(Intent.createChooser(intent, message))
+}
 
 fun Activity.ui(action: () -> Unit) {
     runOnUiThread {

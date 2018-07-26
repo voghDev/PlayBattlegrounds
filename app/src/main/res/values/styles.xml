@@ -115,6 +115,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">17sp</item>
     </style>
+
     <style name="SeasonStatsLabel.Left">
         <item name="layout_constraintHorizontal_bias">0</item>
     </style>
@@ -129,11 +130,8 @@
         <item name="android:textStyle">italic</item>
     </style>
 
-<<<<<<< HEAD
     <style name="SeasonStatsLabel.Kills.Right">
         <item name="layout_constraintHorizontal_bias">1</item>
     </style>
 
-=======
->>>>>>> c1b0a3f5bc18b8d324bae66756cbc45453e88540
 </resources>

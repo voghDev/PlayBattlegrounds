@@ -15,15 +15,9 @@
  */
 package es.voghdev.playbattlegrounds.features.players.ui.activity
 
-import android.content.Intent
-import android.content.Intent.ACTION_SEND
-import android.content.Intent.EXTRA_STREAM
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -34,10 +28,10 @@ import android.view.View.VISIBLE
 import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
-import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
+import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
 import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
@@ -63,6 +57,9 @@ import es.voghdev.playbattlegrounds.features.season.ui.activity.SeasonStatsDetai
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
+import es.voghdev.playbattlegrounds.shareFileNougat
+import es.voghdev.playbattlegrounds.shareFilePreNougat
+import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -71,8 +68,6 @@ import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
-import java.io.File
-import java.io.FileOutputStream
 
 class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked, LoadMoreRenderer.OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
@@ -273,6 +268,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun launchPlayerSeasonInfoScreen(player: Player, season: Season?) {
         startActivity<SeasonStatsDetailActivity>(
             EXTRA_PLAYER_ID to player.id,
+            EXTRA_PLAYER_NAME to player.name,
             EXTRA_SEASON to (season?.id ?: "")
         )
     }
@@ -286,41 +282,14 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun takeScreenshot(path: String) = ui {
-        try {
-            val imageFile = File(path)
-            imageFile.createNewFile()
-            with(window.decorView.rootView) {
-                isDrawingCacheEnabled = true
-                val bitmap = Bitmap.createBitmap(drawingCache)
-                isDrawingCacheEnabled = false
-
-                val outputStream = FileOutputStream(imageFile)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-
-                outputStream.close()
-            }
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
+        takeAScreenshot(path)
     }
 
-    override fun sharePlayerStatsNougat(path: String) = ui {
-        val uri: Uri = FileProvider.getUriForFile(this, "${BuildConfig.APPLICATION_ID}.provider", File(path))
-        val intent = Intent(ACTION_SEND).apply {
-            setDataAndType(uri, "image/*")
-            putExtra(EXTRA_STREAM, uri)
-        }
-
-        startActivity(Intent.createChooser(intent, getString(R.string.share)))
+    override fun sharePlayerStatsNougat(screenshotPath: String) = ui {
+        shareFileNougat(getString(R.string.share), screenshotPath)
     }
 
-    override fun sharePlayerStatsPreNougat(path: String) = ui {
-        val uri: Uri = Uri.fromFile(File(path))
-        val intent = Intent(ACTION_SEND).apply {
-            setDataAndType(uri, "image/*")
-            putExtra(EXTRA_STREAM, uri)
-        }
-
-        startActivity(Intent.createChooser(intent, getString(R.string.share)))
+    override fun sharePlayerStatsPreNougat(screenshotPath: String) = ui {
+        shareFilePreNougat(getString(R.string.share), screenshotPath)
     }
 }
