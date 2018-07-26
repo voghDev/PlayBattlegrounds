@@ -17,10 +17,11 @@ package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import android.os.Build
 import android.text.format.DateFormat
-import com.appandweb.weevento.ui.presenter.Presenter
+import arrow.core.Either
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.Fail
 import es.voghdev.playbattlegrounds.common.Ok
+import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
@@ -30,27 +31,25 @@ import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
+import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeStats
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
-import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import java.io.File
-import java.util.Date
 
 class PlayerSearchPresenter(val resLocator: ResLocator,
-                            val playerRepository: PlayerRepository,
-                            val matchRepository: MatchRepository,
-                            val getPlayerAccount: GetPlayerAccount,
-                            val getCurrentSeason: GetCurrentSeason,
-                            val getPlayerSeasonInfo: GetPlayerSeasonInfo,
-                            val isContentAvailableForPlayer: IsContentAvailableForPlayer,
-                            val getPlayerRegion: GetPlayerRegion,
-                            val getImagesPath: GetImagesPath,
-                            var sdkVersion: Int) :
-        Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
+    val playerRepository: PlayerRepository,
+    val matchRepository: MatchRepository,
+    val getPlayerAccount: GetPlayerAccount,
+    val getCurrentSeason: GetCurrentSeason,
+    val isContentAvailableForPlayer: IsContentAvailableForPlayer,
+    val getPlayerRegion: GetPlayerRegion,
+    val getImagesPath: GetImagesPath,
+    var sdkVersion: Int) :
+    Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     val DEFAULT_REGION = "pc-eu"
     var player = Player()
@@ -141,8 +140,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
                         val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
                         val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
                         val copy = result.b.copy(
-                                numberOfKillsForCurrentPlayer = kills,
-                                placeForCurrentPlayer = place)
+                            numberOfKillsForCurrentPlayer = kills,
+                            placeForCurrentPlayer = place)
 
                         with(it) {
                             numberOfKillsForCurrentPlayer = kills
@@ -182,7 +181,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
         if (currentSeasonResult is Ok) {
             val seasonInfoTask = async(CommonPool) {
-                getPlayerSeasonInfo.getPlayerSeasonInfo(player, currentSeasonResult.b)
+                playerRepository.getPlayerSeasonInfo(player, currentSeasonResult.b, System.currentTimeMillis())
             }
 
             val seasonInfoResult = seasonInfoTask.await()
@@ -193,7 +192,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
                 if (seasonInfo.isEmpty()) {
                     view?.showNoMatchesInSeasonMessage(
-                            resLocator.getString(R.string.no_matches_in_season_param, player.name))
+                        resLocator.getString(R.string.no_matches_in_season_param, player.name))
                 }
             }
         }
@@ -202,14 +201,14 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     fun onMatchClicked(match: Match) {
         if (match.isDuoOrSquad()) {
             val teammates = match.participants
-                    .filter { it.place == match.placeForCurrentPlayer }
-                    .map { "${it.name} (${it.kills} kills)" }
-                    .joinToString("\n")
+                .filter { it.place == match.placeForCurrentPlayer }
+                .map { "${it.name} (${it.kills} kills)" }
+                .joinToString("\n")
 
             view?.showDialog(
-                    "#${match.placeForCurrentPlayer}",
-                    if (teammates.isNotEmpty()) teammates
-                    else resLocator.getString(R.string.no_teammates_info))
+                "#${match.placeForCurrentPlayer}",
+                if (teammates.isNotEmpty()) teammates
+                else resLocator.getString(R.string.no_teammates_info))
         }
     }
 
@@ -225,7 +224,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {
-        /* Should navigate to a screen with all your KDRs and Ratings */
+        val season = (getCurrentSeason.getCurrentSeason() as? Either.Right)?.b
+        navigator?.launchPlayerSeasonInfoScreen(player, season)
     }
 
     fun onContentButtonClicked() {
@@ -235,8 +235,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun onShareStatsButtonClicked(ms: Long) {
-        val now = Date(ms)
-        DateFormat.format("yyyyMMdd_hhmmss", now)
+        val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
         val pathResult = getImagesPath.getImagesPath()
         if (pathResult is Ok) {
             val imageFile = File(pathResult.b, "$now.png")
@@ -278,24 +277,24 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     }
 
     fun Player.hasMatchesWithZeroKills(n: Int): Boolean =
-            matches.sortedByDescending { it.date }.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
+        matches.sortedByDescending { it.date }.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
 
     fun Player.hasWins(): Boolean =
-            matches.count { it.placeForCurrentPlayer == 1 } > 0
+        matches.count { it.placeForCurrentPlayer == 1 } > 0
 
     fun Player.hasTop10MatchesWithLessThan(n: Int, kills: Int): Boolean {
         val lastMatches = matches.sortedByDescending { it.date }.take(10)
         return lastMatches.count { it.placeForCurrentPlayer <= 10 } > n &&
-                lastMatches.sumBy { it.numberOfKillsForCurrentPlayer } < kills
+            lastMatches.sumBy { it.numberOfKillsForCurrentPlayer } < kills
     }
 
     private fun createEmptyPlayerSeasonInfo() = PlayerSeasonInfo(
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats()
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats()
     )
 
     interface MVPView {
@@ -325,6 +324,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
 
     interface Navigator {
         fun launchContentDetailScreen(content: Content)
+        fun launchPlayerSeasonInfoScreen(player: Player, season: Season?)
     }
 
     interface InitialData {

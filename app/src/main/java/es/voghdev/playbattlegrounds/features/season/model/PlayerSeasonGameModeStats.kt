@@ -15,15 +15,29 @@
  */
 package es.voghdev.playbattlegrounds.features.season.model
 
+import kotlin.math.roundToInt
+
 data class PlayerSeasonGameModeStats(
-        val killPoints: Float = 0f,
-        val kills: Int = 0,
-        val losses: Int = 0,
-        val top10s: Int = 0,
-        val winPoints: Float = 0f,
-        val roundsPlayed: Int = 0,
-        val wins: Int = 0
+    val killPoints: Float = 0f,
+    val kills: Int = 0,
+    val losses: Int = 0,
+    val top10s: Int = 0,
+    val winPoints: Float = 0f,
+    val roundsPlayed: Int = 0,
+    val wins: Int = 0
 ) {
     fun isEmpty(): Boolean =
-            kills == 0 && losses == 0
+        kills == 0 && losses == 0
+
+    fun kdr(): Float {
+        val deaths: Int = roundsPlayed.minus(wins)
+        return kills?.toFloat()?.div(maxOf(deaths, 1))
+    }
+
+    fun rating(): Int {
+        val winPoints = winPoints ?: 0f
+        val killPoints = killPoints ?: 0f
+
+        return (winPoints + .2f * killPoints).roundToInt()
+    }
 }

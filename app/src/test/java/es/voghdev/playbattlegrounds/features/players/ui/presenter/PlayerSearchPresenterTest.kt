@@ -550,7 +550,6 @@ class PlayerSearchPresenterTest {
                 matchRepository,
                 mockGetPlayerAccount,
                 mockGetCurrentSeason,
-                mockGetPlayerSeasonInfo,
                 mockIsContentAvailableForPlayer,
                 mockGetPlayerRegion,
                 mockGetImagesPath,

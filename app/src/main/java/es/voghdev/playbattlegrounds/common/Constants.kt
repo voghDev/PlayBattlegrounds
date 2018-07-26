@@ -21,4 +21,6 @@ package es.voghdev.playbattlegrounds.common
 val EXTRA_REGION = "region"
 val EXTRA_ADDITIONAL_CONTENTS = "additionalContents"
 val EXTRA_PLAYER_NAME = "playerName"
+val EXTRA_PLAYER_ID = "playerId"
+val EXTRA_SEASON = "season"
 val EXTRA_CONTENT_ID = "contentId"
