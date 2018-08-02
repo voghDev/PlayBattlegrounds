@@ -12,17 +12,17 @@ import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 
 class PlayerRepository(
-        val getPlayerByIdApiDataSource: GetPlayerById,
-        val getPlayerByNameApiDataSource: GetPlayerByName,
-        val tooManyRequestsError: String,
-        val getPlayerSeasonInfo: GetPlayerSeasonInfo
+    val getPlayerByIdApiDataSource: GetPlayerById,
+    val getPlayerByNameApiDataSource: GetPlayerByName,
+    val tooManyRequestsError: String,
+    val getPlayerSeasonInfo: GetPlayerSeasonInfo
 ) :
-        GetPlayerByName,
-        GetPlayerById by getPlayerByIdApiDataSource {
+    GetPlayerByName,
+    GetPlayerById by getPlayerByIdApiDataSource {
 
     var start = 0L
     var seasonInfoClock = 0L
-    var playerSeasonInfo = emptyPlayerSeasonInfo()
+    var seasonInfoMap = mutableMapOf<String, PlayerSeasonInfo>()
 
     override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
         val result = getPlayerByNameApiDataSource.getPlayerByName(name, region)
@@ -40,22 +40,25 @@ class PlayerRepository(
     }
 
     fun getPlayerSeasonInfo(player: Player, season: Season, ms: Long): Either<AbsError, PlayerSeasonInfo> {
-        return if (playerSeasonInfo.isEmpty() || ms > seasonInfoClock.plus(10000)) {
+        if(ms > seasonInfoClock.plus(10000))
+            seasonInfoMap.clear()
+
+        return if (!seasonInfoMap.containsKey(player.name)) {
             val result = getPlayerSeasonInfo.getPlayerSeasonInfo(player, season)
-            playerSeasonInfo = (result as? Ok)?.b ?: emptyPlayerSeasonInfo()
+            seasonInfoMap[player.name] = (result as? Ok)?.b ?: emptyPlayerSeasonInfo()
             seasonInfoClock = ms
             result
         } else {
-            Either.right(playerSeasonInfo)
+            Either.right(seasonInfoMap[player.name] ?: emptyPlayerSeasonInfo())
         }
     }
 
     private fun emptyPlayerSeasonInfo() = PlayerSeasonInfo(
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats()
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats()
     )
 }
