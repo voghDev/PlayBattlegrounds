@@ -40,7 +40,7 @@ class PlayerRepository(
     }
 
     fun getPlayerSeasonInfo(player: Player, season: Season, ms: Long): Either<AbsError, PlayerSeasonInfo> {
-        if(ms > seasonInfoClock.plus(10000))
+        if (ms > seasonInfoClock.plus(10000))
             seasonInfoMap.clear()
 
         return if (!seasonInfoMap.containsKey(player.name)) {
