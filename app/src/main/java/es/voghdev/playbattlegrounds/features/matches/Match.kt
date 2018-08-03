@@ -36,5 +36,6 @@ data class Match(
     }
 
     fun isDuoOrSquad(): Boolean =
-        gameMode.contains("duo") || gameMode.contains("squad") || gameMode.contains("warmode")
+        gameMode.contains("duo") || gameMode.contains("squad") ||
+            gameMode.contains("warmode") || gameMode.contains("pgi")
 }
