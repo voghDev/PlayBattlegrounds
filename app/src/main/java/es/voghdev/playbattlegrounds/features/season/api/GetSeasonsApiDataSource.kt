@@ -19,9 +19,9 @@ import arrow.core.Either
 import com.google.gson.JsonSyntaxException
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.common.api.ApiRequest
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
-import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
 import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.api.model.SeasonsApiResponse
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
@@ -40,21 +40,21 @@ class GetSeasonsApiDataSource : GetSeasons, ApiRequest {
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(getEndPoint())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(builder.build())
-                .build()
+            .baseUrl(getEndPoint())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(builder.build())
+            .build()
 
         val service: SeasonService = retrofit.create(SeasonService::class.java)
 
         val call: Call<SeasonsApiResponse>? = service.getSeasons(
-                "Bearer ${BuildConfig.PUBGApiKey}",
-                "application/vnd.api+json",
-                "pc-eu")
+            "Bearer ${BuildConfig.PUBGApiKey}",
+            "application/vnd.api+json",
+            "pc-eu")
 
         try {
             val rsp: Response<SeasonsApiResponse>? = call?.execute()

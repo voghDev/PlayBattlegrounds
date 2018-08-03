@@ -16,6 +16,6 @@
 package es.voghdev.playbattlegrounds.features.season.api.model
 
 class SeasonIdApiEntry(
-        val type: String,
-        val id: String
+    val type: String,
+    val id: String
 )

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.onboarding
+package es.voghdev.playbattlegrounds.features.onboarding.ui
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -111,22 +111,22 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-                        setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
+                    setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
             })
         }
     }
 
     private fun showAppExpiredDialog() {
         val dialog = AlertDialog.Builder(this)
-                .setTitle(getString(R.string.expired_title))
-                .setMessage(getString(R.string.expired_msg))
-                .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                        finish()
-                    }
-                })
-                .setCancelable(false)
-                .create()
+            .setTitle(getString(R.string.expired_title))
+            .setMessage(getString(R.string.expired_msg))
+            .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    finish()
+                }
+            })
+            .setCancelable(false)
+            .create()
 
         dialog.show()
     }

@@ -24,7 +24,7 @@ class PlayerSearchInitialData(val intent: Intent?) : PlayerSearchPresenter.Initi
     override fun getPlayerName(): String = intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
 
     override fun additionalContentsEnabled(): Boolean =
-            intent?.getBooleanExtra(EXTRA_ADDITIONAL_CONTENTS, true) ?: true
+        intent?.getBooleanExtra(EXTRA_ADDITIONAL_CONTENTS, true) ?: true
 
     override fun getRegion(): String = intent?.getStringExtra(EXTRA_REGION) ?: ""
 }

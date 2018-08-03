@@ -19,10 +19,9 @@ import arrow.core.Either
 import com.google.gson.JsonSyntaxException
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.common.api.ApiRequest
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
-import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
-import es.voghdev.playbattlegrounds.datasource.api.model.PlayerService
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
 import es.voghdev.playbattlegrounds.features.players.model.Player
@@ -42,24 +41,24 @@ class GetPlayerByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetPlay
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(getEndPoint())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(builder.build())
-                .build()
+            .baseUrl(getEndPoint())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(builder.build())
+            .build()
 
         val service: PlayerService = retrofit.create(PlayerService::class.java)
 
         val region = getPlayerRegion.getPlayerRegion()
 
         val call: Call<PlayerByIdApiResponse> = service.getPlayerById(
-                "Bearer ${BuildConfig.PUBGApiKey}",
-                "application/vnd.api+json",
-                (region as? Either.Right)?.b?.name ?: getDefaultRegion(),
-                id
+            "Bearer ${BuildConfig.PUBGApiKey}",
+            "application/vnd.api+json",
+            (region as? Either.Right)?.b?.name ?: getDefaultRegion(),
+            id
         )
 
         try {

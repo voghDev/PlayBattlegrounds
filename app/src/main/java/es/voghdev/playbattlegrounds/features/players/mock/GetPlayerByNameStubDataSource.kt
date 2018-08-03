@@ -22,14 +22,14 @@ import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 
 class GetPlayerByNameStubDataSource : GetPlayerByName {
     override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> =
-            Either.right(
-                    Player(
-                            "account.afbb96044b3b4e888e3cef65fcdaf898",
-                            "eqs_insanity",
-                            "",
-                            "bluehole-pubg",
-                            "https://api.playbattlegrounds.com/shards/pc-eu/players/account.afbb96044b3b4e888e3cef65fcdaf898",
-                            "pc-eu"
-                    )
+        Either.right(
+            Player(
+                "account.afbb96044b3b4e888e3cef65fcdaf898",
+                "eqs_insanity",
+                "",
+                "bluehole-pubg",
+                "https://api.playbattlegrounds.com/shards/pc-eu/players/account.afbb96044b3b4e888e3cef65fcdaf898",
+                "pc-eu"
             )
+        )
 }

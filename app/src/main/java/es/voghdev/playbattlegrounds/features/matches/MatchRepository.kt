@@ -21,11 +21,13 @@ import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
 
-class MatchRepository(val getMatchByIdApiDataSource: GetMatchById,
-                      val getMatchByIdDBDataSource: GetMatchById,
-                      val insertMatchDBDataSource: InsertMatch) :
-        GetMatchById,
-        InsertMatch {
+class MatchRepository(
+    val getMatchByIdApiDataSource: GetMatchById,
+    val getMatchByIdDBDataSource: GetMatchById,
+    val insertMatchDBDataSource: InsertMatch
+) :
+    GetMatchById,
+    InsertMatch {
 
     override fun getMatchById(id: String): Either<AbsError, Match> {
         val dbResult = getMatchByIdDBDataSource.getMatchById(id)

@@ -25,17 +25,17 @@ import retrofit2.http.Path
 interface SeasonService {
     @GET("shards/{region}/seasons")
     fun getSeasons(
-            @Header("Authorization") apiKey: String,
-            @Header("accept") mediaType: String,
-            @Path("region") region: String
+        @Header("Authorization") apiKey: String,
+        @Header("accept") mediaType: String,
+        @Path("region") region: String
     ): Call<SeasonsApiResponse>
 
     @GET("shards/{region}/players/{account}/seasons/{season}")
     fun getPlayerSeasonInfo(
-            @Header("Authorization") apiKey: String,
-            @Header("accept") mediaType: String,
-            @Path("region") region: String,
-            @Path("account") account: String,
-            @Path("season") season: String
+        @Header("Authorization") apiKey: String,
+        @Header("accept") mediaType: String,
+        @Path("region") region: String,
+        @Path("account") account: String,
+        @Path("season") season: String
     ): Call<SeasonInfoApiResponse>
 }

@@ -19,20 +19,20 @@ import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeSt
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 
 class PlayerSeasonApiEntry(
-        val type: String,
-        val attributes: PlayerSeasonAttributesApiEntry,
-        val relationships: PlayerSeasonRelationshipsApiEntry
+    val type: String,
+    val attributes: PlayerSeasonAttributesApiEntry,
+    val relationships: PlayerSeasonRelationshipsApiEntry
 ) {
     fun toDomain(): PlayerSeasonInfo {
         val emptyStats = PlayerSeasonGameModeStats()
 
         return PlayerSeasonInfo(
-                attributes.gameModeStats.duo?.toDomain() ?: emptyStats,
-                attributes.gameModeStats.duoFPP?.toDomain() ?: emptyStats,
-                attributes.gameModeStats.solo?.toDomain() ?: emptyStats,
-                attributes.gameModeStats.soloFPP?.toDomain() ?: emptyStats,
-                attributes.gameModeStats.squad?.toDomain() ?: emptyStats,
-                attributes.gameModeStats.squadFPP?.toDomain() ?: emptyStats
+            attributes.gameModeStats.duo?.toDomain() ?: emptyStats,
+            attributes.gameModeStats.duoFPP?.toDomain() ?: emptyStats,
+            attributes.gameModeStats.solo?.toDomain() ?: emptyStats,
+            attributes.gameModeStats.soloFPP?.toDomain() ?: emptyStats,
+            attributes.gameModeStats.squad?.toDomain() ?: emptyStats,
+            attributes.gameModeStats.squadFPP?.toDomain() ?: emptyStats
         )
     }
 }

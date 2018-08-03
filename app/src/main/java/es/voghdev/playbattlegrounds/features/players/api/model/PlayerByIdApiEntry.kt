@@ -18,21 +18,21 @@ package es.voghdev.playbattlegrounds.features.players.api.model
 import es.voghdev.playbattlegrounds.features.players.model.Player
 
 class PlayerByIdApiEntry(
-        val type: String,
-        val id: String,
-        val attributes: PlayerAttributesApiEntry,
-        val relationships: PlayerRelationshipsApiEntry?,
-        val links: PlayerLinksApiEntry
+    val type: String,
+    val id: String,
+    val attributes: PlayerAttributesApiEntry,
+    val relationships: PlayerRelationshipsApiEntry?,
+    val links: PlayerLinksApiEntry
 ) {
     fun toDomain(): Player {
         return Player(
-                id = id,
-                name = attributes.name,
-                patchVersion = attributes.patchVersion,
-                titleId = attributes.titleId,
-                matches = relationships?.matches?.data?.map { it.toDomain() } ?: emptyList(),
-                shardId = attributes.shardId,
-                link = links.self
+            id = id,
+            name = attributes.name,
+            patchVersion = attributes.patchVersion,
+            titleId = attributes.titleId,
+            matches = relationships?.matches?.data?.map { it.toDomain() } ?: emptyList(),
+            shardId = attributes.shardId,
+            link = links.self
         )
     }
 }

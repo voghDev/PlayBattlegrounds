@@ -28,10 +28,10 @@ class GetRegionsAndroidResDataSource(val appContext: Context) : GetRegions {
             return Either.left(AbsError("You must pass a non-null Application Context"))
 
         return Either.right(
-                appContext
-                        .resources
-                        .getStringArray(R.array.servers)
-                        .map { Region(it) }
+            appContext
+                .resources
+                .getStringArray(R.array.servers)
+                .map { Region(it) }
         )
     }
 }

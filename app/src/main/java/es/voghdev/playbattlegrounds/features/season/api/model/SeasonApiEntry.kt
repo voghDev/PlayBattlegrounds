@@ -18,12 +18,14 @@ package es.voghdev.playbattlegrounds.features.season.api.model
 import es.voghdev.playbattlegrounds.features.season.Season
 
 class SeasonApiEntry(
-        val type: String,
-        val id: String,
-        val attributes: SeasonAttributesApiEntry
+    val type: String,
+    val id: String,
+    val attributes: SeasonAttributesApiEntry
 ) {
     fun toDomain(): Season =
-            Season(id,
-                    attributes.isCurrentSeason,
-                    attributes.isOffSeason)
+        Season(
+            id,
+            attributes.isCurrentSeason,
+            attributes.isOffSeason
+        )
 }

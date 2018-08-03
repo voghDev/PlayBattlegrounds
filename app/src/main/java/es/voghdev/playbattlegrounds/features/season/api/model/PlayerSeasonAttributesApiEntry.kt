@@ -16,5 +16,5 @@
 package es.voghdev.playbattlegrounds.features.season.api.model
 
 class PlayerSeasonAttributesApiEntry(
-        val gameModeStats: GameModeStatsSetApiEntry
+    val gameModeStats: GameModeStatsSetApiEntry
 )

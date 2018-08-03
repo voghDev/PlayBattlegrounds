@@ -6,11 +6,11 @@ import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 
 class ContentDetailPresenter(val getContentById: GetContentById) :
-        Presenter<ContentDetailPresenter.MVPView, ContentDetailPresenter.Navigator>() {
+    Presenter<ContentDetailPresenter.MVPView, ContentDetailPresenter.Navigator>() {
 
     var content: Content = Content()
 
-    suspend override fun initialize() {
+    override suspend fun initialize() {
         view?.configureToolbar()
     }
 

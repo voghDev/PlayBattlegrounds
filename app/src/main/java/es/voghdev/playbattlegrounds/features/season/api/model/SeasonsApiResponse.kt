@@ -20,9 +20,9 @@ import es.voghdev.playbattlegrounds.features.players.api.model.MetaApiEntry
 import es.voghdev.playbattlegrounds.features.season.Season
 
 class SeasonsApiResponse(
-        val data: List<SeasonApiEntry>,
-        val links: LinksApiEntry,
-        val meta: MetaApiEntry
+    val data: List<SeasonApiEntry>,
+    val links: LinksApiEntry,
+    val meta: MetaApiEntry
 ) {
     fun hasData(): Boolean {
         return data != null

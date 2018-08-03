@@ -16,7 +16,7 @@
 package es.voghdev.playbattlegrounds.features.matches.api.model
 
 class ParticipantAttributesApiEntry(
-        val stats: ParticipantStatsApiEntry?,
-        val actor: String,
-        val shardId: String
+    val stats: ParticipantStatsApiEntry?,
+    val actor: String,
+    val shardId: String
 )

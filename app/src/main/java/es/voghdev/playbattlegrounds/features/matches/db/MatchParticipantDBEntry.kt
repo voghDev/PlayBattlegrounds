@@ -57,11 +57,11 @@ class MatchParticipantDBEntry : BaseModel {
 
     fun toDomain(): MatchParticipant {
         return MatchParticipant(
-                id,
-                name,
-                kills,
-                place,
-                matchId
+            id,
+            name,
+            kills,
+            place,
+            matchId
         )
     }
 }

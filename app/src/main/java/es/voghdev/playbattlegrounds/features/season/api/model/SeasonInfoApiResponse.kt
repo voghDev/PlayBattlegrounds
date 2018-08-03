@@ -18,7 +18,7 @@ package es.voghdev.playbattlegrounds.features.season.api.model
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 
 class SeasonInfoApiResponse(
-        val data: PlayerSeasonApiEntry
+    val data: PlayerSeasonApiEntry
 ) {
     fun hasData(): Boolean {
         return data != null

@@ -19,12 +19,12 @@ import es.voghdev.playbattlegrounds.common.ui.ListEntity
 import kotlin.math.roundToInt
 
 data class PlayerSeasonInfo(
-        val statsDuo: PlayerSeasonGameModeStats,
-        val statsDuoFPP: PlayerSeasonGameModeStats,
-        val statsSolo: PlayerSeasonGameModeStats,
-        val statsSoloFPP: PlayerSeasonGameModeStats,
-        val statsSquad: PlayerSeasonGameModeStats,
-        val statsSquadFPP: PlayerSeasonGameModeStats
+    val statsDuo: PlayerSeasonGameModeStats,
+    val statsDuoFPP: PlayerSeasonGameModeStats,
+    val statsSolo: PlayerSeasonGameModeStats,
+    val statsSoloFPP: PlayerSeasonGameModeStats,
+    val statsSquad: PlayerSeasonGameModeStats,
+    val statsSquadFPP: PlayerSeasonGameModeStats
 ) : ListEntity() {
     fun getMaximumRating(): Int {
         return getRatingForGameModeStats(getBestRatingStats())
@@ -40,25 +40,25 @@ data class PlayerSeasonInfo(
 
     fun getBestRatingStats(): PlayerSeasonGameModeStats? {
         val allStats = listOf(
-                statsDuo, statsDuoFPP,
-                statsSolo, statsSoloFPP,
-                statsSquad, statsSquadFPP
+            statsDuo, statsDuoFPP,
+            statsSolo, statsSoloFPP,
+            statsSquad, statsSquadFPP
         )
 
         val bestStats: PlayerSeasonGameModeStats? =
-                allStats.maxBy { getRatingForGameModeStats(it) }
+            allStats.maxBy { getRatingForGameModeStats(it) }
         return bestStats
     }
 
     fun getBestKDRStats(): PlayerSeasonGameModeStats? {
         val allStats = listOf(
-                statsDuo, statsDuoFPP,
-                statsSolo, statsSoloFPP,
-                statsSquad, statsSquadFPP
+            statsDuo, statsDuoFPP,
+            statsSolo, statsSoloFPP,
+            statsSquad, statsSquadFPP
         )
 
         val bestStats: PlayerSeasonGameModeStats? =
-                allStats.maxBy { getKillDeathRatioForGameModeStats(it) }
+            allStats.maxBy { getKillDeathRatioForGameModeStats(it) }
         return bestStats
     }
 
@@ -75,7 +75,7 @@ data class PlayerSeasonInfo(
     }
 
     fun isEmpty(): Boolean =
-            statsDuo.isEmpty() && statsDuoFPP.isEmpty() &&
-                    statsSolo.isEmpty() && statsSoloFPP.isEmpty() &&
-                    statsSquad.isEmpty() && statsSquadFPP.isEmpty()
+        statsDuo.isEmpty() && statsDuoFPP.isEmpty() &&
+            statsSolo.isEmpty() && statsSoloFPP.isEmpty() &&
+            statsSquad.isEmpty() && statsSquadFPP.isEmpty()
 }

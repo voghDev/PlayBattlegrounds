@@ -20,14 +20,15 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import java.io.File
 
-class SeasonStatsDetailPresenter(val resLocator: ResLocator,
+class SeasonStatsDetailPresenter(
+    val resLocator: ResLocator,
     val playerRepository: PlayerRepository,
-    val getImagesPath: GetImagesPath) :
-    Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>() {
+    val getImagesPath: GetImagesPath
+) : Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>() {
 
     var sdkVersion: Int = Build.VERSION.SDK_INT
 
-    suspend override fun initialize() {
+    override suspend fun initialize() {
         view?.configureToolbar()
         view?.hideShareButton()
     }

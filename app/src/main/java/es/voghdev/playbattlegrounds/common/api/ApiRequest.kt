@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.datasource.api
+package es.voghdev.playbattlegrounds.common.api
 
 interface ApiRequest {
     fun getDefaultRegion() = "pc-eu"

@@ -40,7 +40,8 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import java.io.File
 
-class PlayerSearchPresenter(val resLocator: ResLocator,
+class PlayerSearchPresenter(
+    val resLocator: ResLocator,
     val playerRepository: PlayerRepository,
     val matchRepository: MatchRepository,
     val getPlayerAccount: GetPlayerAccount,
@@ -48,7 +49,8 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     val isContentAvailableForPlayer: IsContentAvailableForPlayer,
     val getPlayerRegion: GetPlayerRegion,
     val getImagesPath: GetImagesPath,
-    var sdkVersion: Int) :
+    var sdkVersion: Int
+) :
     Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
 
     val DEFAULT_REGION = "pc-eu"
@@ -58,7 +60,7 @@ class PlayerSearchPresenter(val resLocator: ResLocator,
     var enableAdditionalContents = true
     var region = DEFAULT_REGION
 
-    suspend override fun initialize() {
+    override suspend fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
         if (account is Ok && account.b.isNotEmpty())
             view?.fillPlayerAccount(account.b)

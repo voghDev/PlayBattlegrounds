@@ -61,14 +61,14 @@ class MatchDBEntry : BaseModel {
 
     fun toDomain(): Match {
         return Match(
-                id,
-                date,
-                gameMode,
-                map,
-                durationInSeconds,
-                emptyList(),
-                numberOfKillsForCurrentPlayer,
-                placeForCurrentPlayer
+            id,
+            date,
+            gameMode,
+            map,
+            durationInSeconds,
+            emptyList(),
+            numberOfKillsForCurrentPlayer,
+            placeForCurrentPlayer
         )
     }
 }

@@ -16,5 +16,5 @@
 package es.voghdev.playbattlegrounds.common.api.model
 
 class DataApiEntry(
-        val data: List<ResourceIdApiEntry>
+    val data: List<ResourceIdApiEntry>
 )
