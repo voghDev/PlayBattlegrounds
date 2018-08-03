@@ -20,10 +20,9 @@ import arrow.core.Try
 import arrow.core.getOrElse
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.common.api.ApiRequest
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
-import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
-import es.voghdev.playbattlegrounds.datasource.api.model.PlayerService
 import es.voghdev.playbattlegrounds.features.players.api.model.PlayerByIdApiResponse
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
@@ -42,22 +41,22 @@ class GetPlayerByNameApiDataSource() : GetPlayerByName, ApiRequest {
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(getEndPoint())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(builder.build())
-                .build()
+            .baseUrl(getEndPoint())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(builder.build())
+            .build()
 
         val service: PlayerService = retrofit.create(PlayerService::class.java)
 
         val call: Call<PlayerByIdApiResponse> = service.getPlayerByName(
-                "Bearer ${BuildConfig.PUBGApiKey}",
-                "application/vnd.api+json",
-                region,
-                name
+            "Bearer ${BuildConfig.PUBGApiKey}",
+            "application/vnd.api+json",
+            region,
+            name
         )
 
         val request = Try {
@@ -72,9 +71,9 @@ class GetPlayerByNameApiDataSource() : GetPlayerByName, ApiRequest {
 
         return request.getOrElse {
             Either.left(AbsError(
-                    if (it is UnknownHostException)
-                        "Please check your Internet connection"
-                    else it.message ?: "Unknown Error"))
+                if (it is UnknownHostException)
+                    "Please check your Internet connection"
+                else it.message ?: "Unknown Error"))
         }
     }
 }

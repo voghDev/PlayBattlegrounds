@@ -16,11 +16,11 @@
 package es.voghdev.playbattlegrounds.features.matches.api.model
 
 class MatchAttributesApiEntry(
-        val shardId: String,
-        val tags: String?,
-        val mapName: String,
-        val createdAt: String,
-        val gameMode: String,
-        val titleId: String,
-        val duration: Int
+    val shardId: String,
+    val tags: String?,
+    val mapName: String,
+    val createdAt: String,
+    val gameMode: String,
+    val titleId: String,
+    val duration: Int
 )

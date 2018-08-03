@@ -27,8 +27,8 @@ class PlayerAccountPreferences(val appContext: Context) : GetPlayerAccount, SetP
     val PLAYER_ACCOUNT = "player_account"
 
     override fun setPlayerAccount(name: String) =
-            appContext.putPreference(PLAYER_ACCOUNT, name)
+        appContext.putPreference(PLAYER_ACCOUNT, name)
 
     override fun getPlayerAccount(): Either<AbsError, String> =
-            Either.Right(appContext.getStringPreference(PLAYER_ACCOUNT))
+        Either.Right(appContext.getStringPreference(PLAYER_ACCOUNT))
 }

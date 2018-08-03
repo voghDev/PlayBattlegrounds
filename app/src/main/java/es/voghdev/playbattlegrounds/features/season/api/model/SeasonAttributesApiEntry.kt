@@ -16,6 +16,6 @@
 package es.voghdev.playbattlegrounds.features.season.api.model
 
 class SeasonAttributesApiEntry(
-        val isCurrentSeason: Boolean,
-        val isOffSeason: Boolean
+    val isCurrentSeason: Boolean,
+    val isOffSeason: Boolean
 )

@@ -9,8 +9,9 @@ import retrofit2.http.Path
 interface MatchService {
     @GET("shards/{region}/matches/{id}")
     fun getMatchById(
-            @Header("Authorization") apiKey: String,
-            @Header("accept") mediaType: String,
-            @Path("region") region: String,
-            @Path("id") matchId: String): Call<MatchByIdApiResponse>
+        @Header("Authorization") apiKey: String,
+        @Header("accept") mediaType: String,
+        @Path("region") region: String,
+        @Path("id") matchId: String
+    ): Call<MatchByIdApiResponse>
 }

@@ -19,12 +19,12 @@ import es.voghdev.playbattlegrounds.features.players.api.model.PlayerIdApiEntry
 import es.voghdev.playbattlegrounds.features.players.api.model.PlayerMatchesApiEntry
 
 class PlayerSeasonRelationshipsApiEntry(
-        val matchesSolo: PlayerMatchesApiEntry,
-        val matchesSoloFPP: PlayerMatchesApiEntry,
-        val matchesDuo: PlayerMatchesApiEntry,
-        val matchesDuoFPP: PlayerMatchesApiEntry,
-        val matchesSquad: PlayerMatchesApiEntry,
-        val matchesSquadFPP: PlayerMatchesApiEntry,
-        val season: SeasonIdApiEntry,
-        val player: PlayerIdApiEntry
+    val matchesSolo: PlayerMatchesApiEntry,
+    val matchesSoloFPP: PlayerMatchesApiEntry,
+    val matchesDuo: PlayerMatchesApiEntry,
+    val matchesDuoFPP: PlayerMatchesApiEntry,
+    val matchesSquad: PlayerMatchesApiEntry,
+    val matchesSquadFPP: PlayerMatchesApiEntry,
+    val season: SeasonIdApiEntry,
+    val player: PlayerIdApiEntry
 )

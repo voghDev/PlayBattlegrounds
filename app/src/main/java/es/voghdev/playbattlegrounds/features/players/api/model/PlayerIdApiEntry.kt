@@ -16,6 +16,6 @@
 package es.voghdev.playbattlegrounds.features.players.api.model
 
 class PlayerIdApiEntry(
-        val type: String,
-        val id: String
+    val type: String,
+    val id: String
 )

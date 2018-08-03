@@ -71,28 +71,37 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
     private fun renderGameMode(content: Match) {
         tv_game_mode?.text = content.gameMode
 
-        tv_game_mode?.backgroundTintList = context.colorStateList(when (content.gameMode) {
-            "solo-fpp" -> R.color.green
-            "solo" -> R.color.dark_green
-            "squad-fpp" -> R.color.red
-            "squad" -> R.color.light_red
-            "duo-fpp" -> R.color.blue
-            "duo" -> R.color.dark_blue
-            else -> R.color.colorPrimary
-        })
+        tv_game_mode?.backgroundTintList = context.colorStateList(
+            when (content.gameMode) {
+                "solo-fpp" -> R.color.green
+                "solo" -> R.color.dark_green
+                "squad-fpp" -> R.color.red
+                "squad" -> R.color.light_red
+                "duo-fpp" -> R.color.blue
+                "duo" -> R.color.dark_blue
+                else -> R.color.colorPrimary
+            }
+        )
     }
 
     private fun renderNumberOfKills(content: Match?) {
-        tv_kills?.text = context.resources.getQuantityString(R.plurals.kills,
-                content?.numberOfKillsForCurrentPlayer ?: 0,
-                content?.numberOfKillsForCurrentPlayer ?: 0)
+        tv_kills?.text = context.resources.getQuantityString(
+            R.plurals.kills,
+            content?.numberOfKillsForCurrentPlayer
+                ?: 0,
+            content?.numberOfKillsForCurrentPlayer
+                ?: 0)
 
-        tv_kills?.setTextColor(context.colorStateList(when (content?.numberOfKillsForCurrentPlayer) {
-            0, 1 -> R.color.red
-            2 -> R.color.colorPrimary
-            3, 4, 5 -> R.color.green
-            else -> R.color.blue
-        }))
+        tv_kills?.setTextColor(
+            context.colorStateList(
+                when (content?.numberOfKillsForCurrentPlayer) {
+                    0, 1 -> R.color.red
+                    2 -> R.color.colorPrimary
+                    3, 4, 5 -> R.color.green
+                    else -> R.color.blue
+                }
+            )
+        )
     }
 
     private fun renderWinPlace(content: Match?) {
@@ -105,12 +114,12 @@ class MatchRenderer(val listener: OnRowClicked?) : Renderer<Match>() {
 
     private fun renderMap(content: Match) {
         iv_map?.setImageResource(
-                when {
-                    content.map.toLowerCase().contains("erangel") -> R.mipmap.erangel_xsmall
-                    content.map.toLowerCase().contains("desert") -> R.mipmap.miramar_xsmall
-                    content.map.toLowerCase().contains("savage") -> R.mipmap.sanhok_xsmall
-                    else -> R.mipmap.miramar_xsmall
-                })
+            when {
+                content.map.toLowerCase().contains("erangel") -> R.mipmap.erangel_xsmall
+                content.map.toLowerCase().contains("desert") -> R.mipmap.miramar_xsmall
+                content.map.toLowerCase().contains("savage") -> R.mipmap.sanhok_xsmall
+                else -> R.mipmap.miramar_xsmall
+            })
     }
 
     interface OnRowClicked {

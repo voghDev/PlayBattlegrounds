@@ -18,14 +18,14 @@ package es.voghdev.playbattlegrounds.features.matches
 import es.voghdev.playbattlegrounds.common.ui.ListEntity
 
 data class Match(
-        val id: String = "",
-        var date: Long = 0L,
-        var gameMode: String = "",
-        val map: String = "",
-        val durationInSeconds: Int = 0,
-        var participants: List<MatchParticipant> = emptyList(),
-        var numberOfKillsForCurrentPlayer: Int = 0,
-        var placeForCurrentPlayer: Int = 0
+    val id: String = "",
+    var date: Long = 0L,
+    var gameMode: String = "",
+    val map: String = "",
+    val durationInSeconds: Int = 0,
+    var participants: List<MatchParticipant> = emptyList(),
+    var numberOfKillsForCurrentPlayer: Int = 0,
+    var placeForCurrentPlayer: Int = 0
 ) : ListEntity() {
     fun getNumberOfKills(participantName: String): Int {
         return participants.filter { it.name == participantName }.firstOrNull()?.kills ?: 0
@@ -36,7 +36,5 @@ data class Match(
     }
 
     fun isDuoOrSquad(): Boolean =
-            gameMode.contains("duo")
-                    || gameMode.contains("squad")
-                    || gameMode.contains("warmode")
+        gameMode.contains("duo") || gameMode.contains("squad") || gameMode.contains("warmode")
 }

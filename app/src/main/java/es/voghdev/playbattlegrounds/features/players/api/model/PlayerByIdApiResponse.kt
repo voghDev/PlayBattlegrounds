@@ -16,9 +16,9 @@
 package es.voghdev.playbattlegrounds.features.players.api.model
 
 class PlayerByIdApiResponse(
-        val data: List<PlayerByIdApiEntry>?,
-        val links: LinksApiEntry,
-        val meta: MetaApiEntry?
+    val data: List<PlayerByIdApiEntry>?,
+    val links: LinksApiEntry,
+    val meta: MetaApiEntry?
 ) {
     fun hasData(): Boolean = data?.size ?: 0 > 0
 }

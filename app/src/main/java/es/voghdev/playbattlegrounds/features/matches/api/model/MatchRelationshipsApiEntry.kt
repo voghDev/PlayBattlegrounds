@@ -18,6 +18,6 @@ package es.voghdev.playbattlegrounds.features.matches.api.model
 import es.voghdev.playbattlegrounds.common.api.model.DataApiEntry
 
 class MatchRelationshipsApiEntry(
-        val rosters: DataApiEntry?,
-        val assets: DataApiEntry?
+    val rosters: DataApiEntry?,
+    val assets: DataApiEntry?
 )

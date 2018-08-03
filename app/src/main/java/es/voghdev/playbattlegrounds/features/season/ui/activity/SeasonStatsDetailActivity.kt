@@ -10,8 +10,8 @@ import android.text.style.RelativeSizeSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.common.BaseActivity
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository

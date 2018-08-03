@@ -15,11 +15,11 @@ class InsertMatchDBDataSource : InsertMatch {
     private fun insertParticipants(match: Match) {
         if (match.participants.isNotEmpty())
             FlowManager.getDatabase(AppDatabase.javaClass)
-                    .beginTransactionAsync {
-                        match.participants.forEach {
-                            it.matchId = match.id
-                            MatchParticipantDBEntry(it).save()
-                        }
+                .beginTransactionAsync {
+                    match.participants.forEach {
+                        it.matchId = match.id
+                        MatchParticipantDBEntry(it).save()
                     }
+                }
     }
 }

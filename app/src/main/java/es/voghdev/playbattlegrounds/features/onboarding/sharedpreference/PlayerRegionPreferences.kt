@@ -28,7 +28,7 @@ class PlayerRegionPreferences(val appContext: Context) : SetPlayerRegion, GetPla
     val PLAYER_REGION = "player_region"
 
     override fun setCurrentRegion(region: Region) =
-            appContext.putPreference(PLAYER_REGION, region.name)
+        appContext.putPreference(PLAYER_REGION, region.name)
 
     override fun getPlayerRegion(): Either<AbsError, Region> {
         if (appContext == null)

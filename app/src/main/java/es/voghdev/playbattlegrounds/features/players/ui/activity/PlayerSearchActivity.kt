@@ -25,10 +25,10 @@ import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import com.appandweb.peep.ui.activity.BaseActivity
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.common.BaseActivity
 import es.voghdev.playbattlegrounds.common.EXTRA_CONTENT_ID
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
@@ -61,10 +61,10 @@ import es.voghdev.playbattlegrounds.shareFileNougat
 import es.voghdev.playbattlegrounds.shareFilePreNougat
 import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
-import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivity
+import kotlinx.android.synthetic.main.activity_player_search.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance

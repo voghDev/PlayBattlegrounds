@@ -22,5 +22,5 @@ import es.voghdev.playbattlegrounds.features.players.usecase.InsertPlayer
 
 class InsertPlayerDBImpl : InsertPlayer {
     override fun insertPlayer(player: Player): Either<AbsError, Boolean> =
-            Either.right(PlayerDBEntry(player).save())
+        Either.right(PlayerDBEntry(player).save())
 }

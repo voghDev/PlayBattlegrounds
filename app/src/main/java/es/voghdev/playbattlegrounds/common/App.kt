@@ -62,10 +62,10 @@ class App : Application(), KodeinAware {
     override val kodein = Kodein {
         bind<PlayerRepository>() with singleton {
             PlayerRepository(
-                    GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
-                    GetPlayerByNameApiDataSource(),
-                    getString(R.string.too_many_requests_msg),
-                    GetPlayerSeasonInfoApiDataSource()
+                GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
+                GetPlayerByNameApiDataSource(),
+                getString(R.string.too_many_requests_msg),
+                GetPlayerSeasonInfoApiDataSource()
             )
         }
         bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
@@ -80,9 +80,9 @@ class App : Application(), KodeinAware {
         bind<GetCurrentSeason>() with singleton { GetCurrentSeasonSharedPrefDataSource(applicationContext) }
         bind<MatchRepository>() with singleton {
             MatchRepository(
-                    GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
-                    GetMatchByIdDBDataSource(),
-                    InsertMatchDBDataSource()
+                GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
+                GetMatchByIdDBDataSource(),
+                InsertMatchDBDataSource()
             )
         }
         bind<IsAppExpired>() with singleton { IsAppExpiredImpl(System.currentTimeMillis(), Limit) }

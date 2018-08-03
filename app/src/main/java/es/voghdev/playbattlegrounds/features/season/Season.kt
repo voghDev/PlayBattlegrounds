@@ -16,7 +16,7 @@
 package es.voghdev.playbattlegrounds.features.season
 
 class Season(
-        val id: String,
-        val isCurrentSeason: Boolean,
-        val isOffSeason: Boolean
+    val id: String,
+    val isCurrentSeason: Boolean,
+    val isOffSeason: Boolean
 )

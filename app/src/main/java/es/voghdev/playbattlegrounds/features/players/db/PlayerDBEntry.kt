@@ -58,13 +58,13 @@ class PlayerDBEntry : BaseModel {
 
     fun toDomain(): Player {
         return Player(
-                id,
-                name,
-                patchVersion,
-                titleId,
-                link,
-                shardId,
-                emptyList()
+            id,
+            name,
+            patchVersion,
+            titleId,
+            link,
+            shardId,
+            emptyList()
         )
     }
 }

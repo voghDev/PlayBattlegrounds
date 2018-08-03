@@ -16,6 +16,6 @@
 package es.voghdev.playbattlegrounds.common.api.model
 
 class ResourceIdApiEntry(
-        val type: String,
-        val id: String
+    val type: String,
+    val id: String
 )

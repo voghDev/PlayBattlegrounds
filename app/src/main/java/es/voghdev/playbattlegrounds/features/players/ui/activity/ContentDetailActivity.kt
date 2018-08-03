@@ -4,8 +4,8 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import com.appandweb.peep.ui.activity.BaseActivity
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.common.BaseActivity
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailPresenter
@@ -55,5 +55,5 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override fun close() = finish()
 
     override fun launchBrowser(link: String) =
-            startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
+        startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
 }

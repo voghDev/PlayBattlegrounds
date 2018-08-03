@@ -54,12 +54,14 @@ class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSea
         val rating = content.getRatingForGameModeStats(bestRatingStats)
         tv_rating?.text = "$rating"
 
-        tv_rating?.setTextColor(when {
-            rating > 2200 -> ContextCompat.getColor(context, R.color.blue)
-            rating > 1900 -> ContextCompat.getColor(context, R.color.green)
-            rating > 1700 -> ContextCompat.getColor(context, R.color.colorPrimary)
-            else -> ContextCompat.getColor(context, R.color.light_red)
-        })
+        tv_rating?.setTextColor(
+            when {
+                rating > 2200 -> ContextCompat.getColor(context, R.color.blue)
+                rating > 1900 -> ContextCompat.getColor(context, R.color.green)
+                rating > 1700 -> ContextCompat.getColor(context, R.color.colorPrimary)
+                else -> ContextCompat.getColor(context, R.color.light_red)
+            }
+        )
     }
 
     private fun renderPlayerKillDeathRatio() {
@@ -69,12 +71,14 @@ class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSea
 
         tv_kdr?.text = "${kdr.format(2)}"
 
-        tv_kdr?.setTextColor(when {
-            kdr > 2f -> ContextCompat.getColor(context, R.color.blue)
-            kdr > 1f -> ContextCompat.getColor(context, R.color.green)
-            kdr > 0.75f -> ContextCompat.getColor(context, R.color.colorPrimary)
-            else -> ContextCompat.getColor(context, R.color.light_red)
-        })
+        tv_kdr?.setTextColor(
+            when {
+                kdr > 2f -> ContextCompat.getColor(context, R.color.blue)
+                kdr > 1f -> ContextCompat.getColor(context, R.color.green)
+                kdr > 0.75f -> ContextCompat.getColor(context, R.color.colorPrimary)
+                else -> ContextCompat.getColor(context, R.color.light_red)
+            }
+        )
     }
 
     interface OnRowClicked {

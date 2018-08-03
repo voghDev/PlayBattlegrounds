@@ -19,9 +19,9 @@ import arrow.core.Either
 import com.google.gson.JsonSyntaxException
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.common.api.ApiRequest
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
-import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.api.model.SeasonInfoApiResponse
@@ -43,23 +43,23 @@ class GetPlayerSeasonInfoApiDataSource : GetPlayerSeasonInfo, ApiRequest {
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(getEndPoint())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(builder.build())
-                .build()
+            .baseUrl(getEndPoint())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(builder.build())
+            .build()
 
         val service: SeasonService = retrofit.create(SeasonService::class.java)
 
         val call: Call<SeasonInfoApiResponse> = service.getPlayerSeasonInfo(
-                "Bearer ${BuildConfig.PUBGApiKey}",
-                "application/vnd.api+json",
-                getDefaultRegion(),
-                player.id,
-                season.id)
+            "Bearer ${BuildConfig.PUBGApiKey}",
+            "application/vnd.api+json",
+            getDefaultRegion(),
+            player.id,
+            season.id)
 
         try {
             val rsp: Response<SeasonInfoApiResponse>? = call.execute()
@@ -80,11 +80,11 @@ class GetPlayerSeasonInfoApiDataSource : GetPlayerSeasonInfo, ApiRequest {
     }
 
     private fun emptySeasonInfo() = PlayerSeasonInfo(
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats(),
-            PlayerSeasonGameModeStats()
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats(),
+        PlayerSeasonGameModeStats()
     )
 }

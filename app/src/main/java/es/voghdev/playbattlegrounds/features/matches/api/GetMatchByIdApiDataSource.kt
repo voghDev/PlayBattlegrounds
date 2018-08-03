@@ -20,9 +20,9 @@ import arrow.core.Try
 import arrow.core.getOrElse
 import es.voghdev.playbattlegrounds.BuildConfig
 import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.common.api.ApiRequest
 import es.voghdev.playbattlegrounds.common.api.AuthInterceptor
 import es.voghdev.playbattlegrounds.common.api.LogJsonInterceptor
-import es.voghdev.playbattlegrounds.datasource.api.ApiRequest
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.api.model.MatchByIdApiResponse
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
@@ -42,24 +42,24 @@ class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatch
             builder.addInterceptor(LogJsonInterceptor())
 
         builder.addNetworkInterceptor(AuthInterceptor(BuildConfig.PUBGApiKey))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
 
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(getEndPoint())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(builder.build())
-                .build()
+            .baseUrl(getEndPoint())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(builder.build())
+            .build()
 
         val service: MatchService = retrofit.create(MatchService::class.java)
 
         val region = getPlayerRegion.getPlayerRegion()
 
         val call: Call<MatchByIdApiResponse> = service.getMatchById(
-                "Bearer ${BuildConfig.PUBGApiKey}",
-                "application/vnd.api+json",
-                (region as? Either.Right)?.b?.name ?: getDefaultRegion(),
-                id
+            "Bearer ${BuildConfig.PUBGApiKey}",
+            "application/vnd.api+json",
+            (region as? Either.Right)?.b?.name ?: getDefaultRegion(),
+            id
         )
 
         val request = Try {
@@ -73,9 +73,9 @@ class GetMatchByIdApiDataSource(val getPlayerRegion: GetPlayerRegion) : GetMatch
 
         return request.getOrElse {
             Either.left(AbsError(
-                    if (it is UnknownHostException)
-                        "Please check your Internet connection"
-                    else it.message ?: "Unknown Error"))
+                if (it is UnknownHostException)
+                    "Please check your Internet connection"
+                else it.message ?: "Unknown Error"))
         }
     }
 }

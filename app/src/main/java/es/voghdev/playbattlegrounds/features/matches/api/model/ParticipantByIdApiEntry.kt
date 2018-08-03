@@ -18,9 +18,9 @@ package es.voghdev.playbattlegrounds.features.matches.api.model
 import es.voghdev.playbattlegrounds.features.matches.MatchParticipant
 
 class ParticipantByIdApiEntry(
-        val id: String,
-        val type: String,
-        val attributes: ParticipantAttributesApiEntry?
+    val id: String,
+    val type: String,
+    val attributes: ParticipantAttributesApiEntry?
 ) {
     fun getName(): String = attributes?.stats?.name ?: ""
     fun getPlace(): Int = attributes?.stats?.winPlace ?: 0
