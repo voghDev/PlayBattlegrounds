@@ -7,9 +7,9 @@ import android.os.Bundle
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.BaseActivity
 import es.voghdev.playbattlegrounds.common.asApp
+import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailInitialData
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailPresenter
-import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_content_detail.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -22,12 +22,12 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
     var presenter: ContentDetailPresenter? = null
-    val getContentById: GetContentById by instance()
+    val playerRepository: PlayerRepository by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ContentDetailPresenter(getContentById)
+        presenter = ContentDetailPresenter(playerRepository)
         presenter?.view = this
         presenter?.navigator = this
 

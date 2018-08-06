@@ -2,10 +2,10 @@ package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
+import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
-import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 
-class ContentDetailPresenter(val getContentById: GetContentById) :
+class ContentDetailPresenter(val playerRepository: PlayerRepository) :
     Presenter<ContentDetailPresenter.MVPView, ContentDetailPresenter.Navigator>() {
 
     var content: Content = Content()
@@ -15,7 +15,7 @@ class ContentDetailPresenter(val getContentById: GetContentById) :
     }
 
     suspend fun onInitialData(data: InitialData) {
-        val result = getContentById.getContentById(data.getContentId())
+        val result = playerRepository.getContentById(data.getContentId())
 
         if (result is Ok) {
             content = result.b

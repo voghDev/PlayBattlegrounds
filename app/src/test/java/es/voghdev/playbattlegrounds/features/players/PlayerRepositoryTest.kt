@@ -6,6 +6,7 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import es.voghdev.playbattlegrounds.features.players.model.Player
+import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.Season
@@ -29,6 +30,9 @@ class PlayerRepositoryTest {
 
     @Mock
     lateinit var mockGetPlayerSeasonInfo: GetPlayerSeasonInfo
+
+    @Mock
+    lateinit var mockGetContentById: GetContentById
 
     lateinit var playerRepository: PlayerRepository
 
@@ -136,6 +140,7 @@ class PlayerRepositoryTest {
         return PlayerRepository(mockGetPlayerById,
                                 mockGetPlayerByName,
                                 "Too many requests",
-                                mockGetPlayerSeasonInfo)
+                                mockGetPlayerSeasonInfo,
+                                mockGetContentById)
     }
 }

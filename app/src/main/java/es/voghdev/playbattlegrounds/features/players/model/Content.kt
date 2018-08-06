@@ -7,6 +7,7 @@ class Content(
     val imageUrl: String = "",
     val embeddedVideoUrl: String = "",
     val buttonText: String = "",
+    val type: String = "",
     val link: String = ""
 ) {
     val isButtonVisible: Boolean = link.isNotEmpty()

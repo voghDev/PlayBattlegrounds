@@ -42,7 +42,6 @@ import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdAp
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
 import es.voghdev.playbattlegrounds.features.players.mock.GetContentByIdStubDataSource
 import es.voghdev.playbattlegrounds.features.players.sharedpreference.IsContentAvailableSharedPrefDataSource
-import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.api.GetPlayerSeasonInfoApiDataSource
 import es.voghdev.playbattlegrounds.features.season.api.GetSeasonsApiDataSource
@@ -65,7 +64,8 @@ class App : Application(), KodeinAware {
                 GetPlayerByIdApiDataSource(PlayerRegionPreferences(applicationContext)),
                 GetPlayerByNameApiDataSource(),
                 getString(R.string.too_many_requests_msg),
-                GetPlayerSeasonInfoApiDataSource()
+                GetPlayerSeasonInfoApiDataSource(),
+                GetContentByIdStubDataSource(applicationContext)
             )
         }
         bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }
@@ -87,7 +87,6 @@ class App : Application(), KodeinAware {
         }
         bind<IsAppExpired>() with singleton { IsAppExpiredImpl(System.currentTimeMillis(), Limit) }
         bind<IsContentAvailableForPlayer>() with singleton { IsContentAvailableSharedPrefDataSource(applicationContext) }
-        bind<GetContentById>() with singleton { GetContentByIdStubDataSource(applicationContext) }
         bind<GetImagesPath>() with singleton { GetImagesPathAndroidDataSource(applicationContext) }
     }
 

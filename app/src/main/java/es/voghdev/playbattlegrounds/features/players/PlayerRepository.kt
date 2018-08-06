@@ -3,7 +3,9 @@ package es.voghdev.playbattlegrounds.features.players
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.Ok
+import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
+import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 import es.voghdev.playbattlegrounds.features.season.Season
@@ -15,14 +17,17 @@ class PlayerRepository(
     val getPlayerByIdApiDataSource: GetPlayerById,
     val getPlayerByNameApiDataSource: GetPlayerByName,
     val tooManyRequestsError: String,
-    val getPlayerSeasonInfo: GetPlayerSeasonInfo
+    val getPlayerSeasonInfo: GetPlayerSeasonInfo,
+    val getContentByIdDataSource: GetContentById
 ) :
     GetPlayerByName,
-    GetPlayerById by getPlayerByIdApiDataSource {
+    GetPlayerById by getPlayerByIdApiDataSource,
+    GetContentById {
 
     var start = 0L
     var seasonInfoClock = 0L
     var seasonInfoMap = mutableMapOf<String, PlayerSeasonInfo>()
+    var contents = mutableMapOf<Long, Content>()
 
     override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
         val result = getPlayerByNameApiDataSource.getPlayerByName(name, region)
@@ -51,6 +56,19 @@ class PlayerRepository(
         } else {
             Either.right(seasonInfoMap[player.name] ?: emptyPlayerSeasonInfo())
         }
+    }
+
+    override fun getContentById(id: Long): Either<AbsError, Content> {
+        if (contents.containsKey(id))
+            return Either.right(contents[id] ?: Content())
+
+        val result = getContentByIdDataSource.getContentById(id)
+
+        if (result is Ok) {
+            contents[result.b.id] = result.b
+        }
+
+        return result
     }
 
     private fun emptyPlayerSeasonInfo() = PlayerSeasonInfo(
