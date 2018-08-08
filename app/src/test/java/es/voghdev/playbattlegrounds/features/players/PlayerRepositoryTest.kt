@@ -2,13 +2,17 @@ package es.voghdev.playbattlegrounds.features.players
 
 import arrow.core.Either
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.players.usecase.InsertContent
 import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeStats
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
@@ -17,6 +21,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
@@ -34,7 +39,25 @@ class PlayerRepositoryTest {
     @Mock
     lateinit var mockGetContentById: GetContentById
 
+    @Mock
+    lateinit var mockGetContentByIdDB: GetContentById
+
+    @Mock
+    lateinit var mockInsertContentDB: InsertContent
+
     lateinit var playerRepository: PlayerRepository
+
+    val aContent = Content(
+        id = 1L,
+        title = "Example content",
+        text = "This is an example content"
+    )
+
+    val anotherContent = Content(
+        id = 1L,
+        title = "Another content",
+        text = "This is an example content #2"
+    )
 
     @Before
     fun setUp() {
@@ -122,6 +145,59 @@ class PlayerRepositoryTest {
         verify(mockGetPlayerSeasonInfo, times(2)).getPlayerSeasonInfo(any(), any())
     }
 
+    @Test
+    fun `should not request a content twice to the Api if it has been cached`() {
+        givenThatGettingAContentByIdReturns(aContent)
+
+        playerRepository.getContentById(1L)
+        playerRepository.getContentById(1L)
+
+        verify(mockGetContentById, times(1)).getContentById(anyLong())
+    }
+
+    @Test
+    fun `should not request a content twice to the DB if it has been cached`() {
+        givenThatGettingAContentFromDatabaseReturns(aContent)
+
+        playerRepository.getContentById(1L)
+        playerRepository.getContentById(1L)
+
+        verify(mockGetContentByIdDB, times(1)).getContentById(anyLong())
+    }
+
+    @Test
+    fun `should not request the default DataSource if DB already contains a result`() {
+        givenThatGettingAContentFromDatabaseReturns(aContent)
+        givenThatGettingAContentByIdReturns(anotherContent)
+
+        playerRepository.getContentById(1L)
+        playerRepository.getContentById(1L)
+
+        verify(mockGetContentById, never()).getContentById(anyLong())
+    }
+
+    @Test
+    fun `should request the default DataSource if DB returns an error`() {
+        givenThatGettingAContentFromDatabaseReturns(AbsError("File not found"))
+        givenThatGettingAContentByIdReturns(anotherContent)
+
+        playerRepository.getContentById(5L)
+
+        verify(mockGetContentById).getContentById(5L)
+    }
+
+    private fun givenThatGettingAContentByIdReturns(c: Content) {
+        whenever(mockGetContentById.getContentById(anyLong())).thenReturn(Either.right(c))
+    }
+
+    private fun givenThatGettingAContentFromDatabaseReturns(anError: AbsError) {
+        whenever(mockGetContentByIdDB.getContentById(anyLong())).thenReturn(Either.left(anError))
+    }
+
+    private fun givenThatGettingAContentFromDatabaseReturns(content: Content) {
+        whenever(mockGetContentByIdDB.getContentById(anyLong())).thenReturn(Either.right(content))
+    }
+
     private fun givenThatPlayerSeasonInfoIs(s: PlayerSeasonInfo) {
         whenever(mockGetPlayerSeasonInfo.getPlayerSeasonInfo(any(), any())).thenReturn(Either.right(s))
     }
@@ -137,10 +213,14 @@ class PlayerRepositoryTest {
         )
 
     private fun createRepositoryWithMocks(): PlayerRepository {
-        return PlayerRepository(mockGetPlayerById,
-                                mockGetPlayerByName,
-                                "Too many requests",
-                                mockGetPlayerSeasonInfo,
-                                mockGetContentById)
+        return PlayerRepository(
+            mockGetPlayerById,
+            mockGetPlayerByName,
+            "Too many requests",
+            mockGetPlayerSeasonInfo,
+            mockGetContentById,
+            mockGetContentByIdDB,
+            mockInsertContentDB
+        )
     }
 }

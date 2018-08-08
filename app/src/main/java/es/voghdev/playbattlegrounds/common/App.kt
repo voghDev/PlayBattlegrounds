@@ -40,6 +40,8 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByIdApiDataSource
 import es.voghdev.playbattlegrounds.features.players.api.request.GetPlayerByNameApiDataSource
+import es.voghdev.playbattlegrounds.features.players.db.GetContentByIdDBDataSource
+import es.voghdev.playbattlegrounds.features.players.db.InsertContentDBDataSource
 import es.voghdev.playbattlegrounds.features.players.mock.GetContentByIdStubDataSource
 import es.voghdev.playbattlegrounds.features.players.sharedpreference.IsContentAvailableSharedPrefDataSource
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
@@ -65,7 +67,9 @@ class App : Application(), KodeinAware {
                 GetPlayerByNameApiDataSource(),
                 getString(R.string.too_many_requests_msg),
                 GetPlayerSeasonInfoApiDataSource(),
-                GetContentByIdStubDataSource(applicationContext)
+                GetContentByIdStubDataSource(applicationContext),
+                GetContentByIdDBDataSource(),
+                InsertContentDBDataSource()
             )
         }
         bind<GetMatchById>() with singleton { GetMatchByIdApiDataSource(PlayerRegionPreferences(applicationContext)) }

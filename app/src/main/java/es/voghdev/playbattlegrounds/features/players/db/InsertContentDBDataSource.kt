@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.voghdev.playbattlegrounds.common.db
+package es.voghdev.playbattlegrounds.features.players.db
 
-import com.raizlabs.android.dbflow.annotation.Database
+import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.AbsError
+import es.voghdev.playbattlegrounds.features.players.model.Content
+import es.voghdev.playbattlegrounds.features.players.usecase.InsertContent
 
-@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, generatedClassSeparator = "_")
-object AppDatabase {
-    const val NAME: String = "BattlegroundsDB"
-    const val VERSION: Int = 2
+class InsertContentDBDataSource : InsertContent {
+    override fun insertContent(content: Content): Either<AbsError, Boolean> =
+        Either.right(ContentDBEntry(content).save())
 }

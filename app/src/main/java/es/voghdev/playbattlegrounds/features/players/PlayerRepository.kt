@@ -8,6 +8,7 @@ import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerById
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
+import es.voghdev.playbattlegrounds.features.players.usecase.InsertContent
 import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeStats
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
@@ -18,11 +19,14 @@ class PlayerRepository(
     val getPlayerByNameApiDataSource: GetPlayerByName,
     val tooManyRequestsError: String,
     val getPlayerSeasonInfo: GetPlayerSeasonInfo,
-    val getContentByIdDataSource: GetContentById
+    val getContentByIdDataSource: GetContentById,
+    val getContentByIdDBDataSource: GetContentById,
+    val insertContentDBDataSource: InsertContent
 ) :
     GetPlayerByName,
     GetPlayerById by getPlayerByIdApiDataSource,
-    GetContentById {
+    GetContentById,
+    InsertContent by insertContentDBDataSource {
 
     var start = 0L
     var seasonInfoClock = 0L
@@ -62,13 +66,21 @@ class PlayerRepository(
         if (contents.containsKey(id))
             return Either.right(contents[id] ?: Content())
 
-        val result = getContentByIdDataSource.getContentById(id)
+        val dbResult = getContentByIdDBDataSource.getContentById(id)
 
-        if (result is Ok) {
-            contents[result.b.id] = result.b
+        if (dbResult is Ok) {
+            contents[dbResult.b.id] = dbResult.b
+
+            return dbResult
         }
 
-        return result
+        val apiResult = getContentByIdDataSource.getContentById(id)
+
+        if (apiResult is Ok) {
+            contents[apiResult.b.id] = apiResult.b
+        }
+
+        return apiResult
     }
 
     private fun emptyPlayerSeasonInfo() = PlayerSeasonInfo(
