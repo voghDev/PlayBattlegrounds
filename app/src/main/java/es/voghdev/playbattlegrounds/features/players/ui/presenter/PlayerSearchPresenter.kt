@@ -253,6 +253,9 @@ class PlayerSearchPresenter(
     private fun getContentForPlayer(player: Player): Content {
         val bestKDR = seasonInfo.getKillDeathRatioForGameModeStats(seasonInfo.getBestKDRStats())
 
+        if (player.name.equals("ByRubi9"))
+            return Content(id = 9L)
+
         if (player.hasMatchesWithZeroKills(3))
             return Content(id = 0L)
 

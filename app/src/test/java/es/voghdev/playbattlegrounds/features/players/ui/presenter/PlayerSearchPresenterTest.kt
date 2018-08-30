@@ -3,6 +3,7 @@ package es.voghdev.playbattlegrounds.features.players.ui.presenter
 import android.os.Build.VERSION_CODES.LOLLIPOP
 import arrow.core.Either
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -14,11 +15,13 @@ import es.voghdev.playbattlegrounds.features.onboarding.model.Region
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -68,6 +71,8 @@ class PlayerSearchPresenterTest {
     } as MutableList
 
     val oneMoreMatch = Match(id = "uuid006", gameMode = "duo-fpp", numberOfKillsForCurrentPlayer = 15)
+
+    val contentCaptor = argumentCaptor<Content>()
 
     @Before
     fun setUp() {
@@ -512,6 +517,34 @@ class PlayerSearchPresenterTest {
         }
 
         verify(mockView, never()).showShareButton()
+    }
+
+    @Test
+    fun `should load a sponsored content for player ByRubi9`() {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
+            override fun getPlayerName(): String = "ByRubi9"
+            override fun getRegion(): String = "pc-eu"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
+            Either.right(Player(
+                name = "ByRubi9",
+                matches = emptyList()
+            ))
+        )
+
+        runBlocking {
+            presenter.initialize()
+
+            presenter.onInitialData(data)
+
+            presenter.onContentButtonClicked()
+        }
+
+        verify(mockNavigator).launchContentDetailScreen(contentCaptor.capture())
+
+        assertEquals(9, contentCaptor.firstValue.id)
     }
 
     private fun givenThatQueryingForAnyPlayerReturns(player: Player) {

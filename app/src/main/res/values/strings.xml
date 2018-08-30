@@ -55,6 +55,9 @@
         <item>Tier 4</item>
         <item>Tier 5</item>
         <item>Tier 6</item>
+        <item>Tier 7</item>
+        <item>Tier 8</item>
+        <item>Tier 9</item>
     </string-array>
 
     <string-array name="sample_contents">
@@ -65,9 +68,15 @@
         <item>You are ranked tier 4 - Ocassional Winner!</item>
         <item>You are ranked tier 5 - Top 10 Rat</item>
         <item>You are ranked tier 6 - PUBG Master!</item>
+        <item>You are ranked tier 7 - PUBG Master!</item>
+        <item>You are ranked tier 8 - PUBG Master!</item>
+        <item>You are ranked tier 9 - PUBG Master!</item>
     </string-array>
 
     <string-array name="sample_links">
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
         <item>https://github.com/voghDev/PlayBattlegrounds/</item>
         <item>https://github.com/voghDev/PlayBattlegrounds/</item>
         <item>https://github.com/voghDev/PlayBattlegrounds/</item>
@@ -85,5 +94,8 @@
         <item>About the author...</item>
         <item>Find me on GitHub</item>
         <item>Contribute!</item>
+        <item>Find me on GitHub</item>
+        <item>About the author...</item>
+        <item>Support the project</item>
     </string-array>
 </resources>
