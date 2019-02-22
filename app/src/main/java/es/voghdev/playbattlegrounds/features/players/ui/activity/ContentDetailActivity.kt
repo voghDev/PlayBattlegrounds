@@ -12,8 +12,6 @@ import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailI
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailPresenter
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_content_detail.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -31,11 +29,9 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
         presenter?.view = this
         presenter?.navigator = this
 
-        launch(CommonPool) {
-            presenter?.initialize()
+        presenter?.initialize()
 
-            presenter?.onInitialData(ContentDetailInitialData(intent))
-        }
+        presenter?.onInitialData(ContentDetailInitialData(intent))
 
         btn_read_more.setOnClickListener {
             presenter?.onLinkButtonClicked()

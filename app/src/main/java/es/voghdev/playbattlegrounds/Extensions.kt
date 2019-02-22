@@ -14,6 +14,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 import java.io.File
 import java.io.FileOutputStream
 import java.text.ParseException
@@ -62,13 +65,13 @@ fun Activity.shareFilePreNougat(message: String, path: String) {
 }
 
 fun Activity.ui(action: () -> Unit) {
-    runOnUiThread {
+    CoroutineScope(Dispatchers.Main).launch {
         action()
     }
 }
 
 fun Fragment.ui(action: () -> Unit) {
-    activity?.runOnUiThread {
+    CoroutineScope(Dispatchers.Main).launch {
         action()
     }
 }

@@ -19,8 +19,7 @@ import android.os.Build
 import android.text.format.DateFormat
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.R
-import es.voghdev.playbattlegrounds.common.Fail
-import es.voghdev.playbattlegrounds.common.Ok
+import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
@@ -36,8 +35,10 @@ import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeSt
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.File
 
 class PlayerSearchPresenter(
@@ -60,19 +61,19 @@ class PlayerSearchPresenter(
     var enableAdditionalContents = true
     var region = DEFAULT_REGION
 
-    override suspend fun initialize() {
+    override fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
-        if (account is Ok && account.b.isNotEmpty())
+        if (account is Either.Right && account.b.isNotEmpty())
             view?.fillPlayerAccount(account.b)
     }
 
-    suspend fun onInitialData(data: InitialData) {
+    fun onInitialData(data: InitialData) {
         enableAdditionalContents = data.additionalContentsEnabled()
 
         region = if (data.getRegion().isNotEmpty()) {
             data.getRegion()
         } else {
-            (getPlayerRegion.getPlayerRegion() as? Ok)?.b?.name ?: DEFAULT_REGION
+            (getPlayerRegion.getPlayerRegion() as? Either.Right)?.b?.name ?: DEFAULT_REGION
         }
 
         if (data.getPlayerName().isNotEmpty()) {
@@ -86,115 +87,123 @@ class PlayerSearchPresenter(
         view?.hideSoftKeyboard()
     }
 
-    suspend fun onSendButtonClicked(playerName: String) {
+    fun onSendButtonClicked(playerName: String) {
         requestPlayerData(playerName)
     }
 
-    private suspend fun requestPlayerData(playerName: String) {
-        view?.showLoading()
-        view?.hideShareButton()
-        view?.hideContentAvailableButton()
+    private fun requestPlayerData(playerName: String) {
+        GlobalScope.launch {
+            view?.showLoading()
+            view?.hideShareButton()
+            view?.hideContentAvailableButton()
 
-        val task = async(CommonPool) {
-            playerRepository.getPlayerByName(playerName, region)
-        }
-
-        val result = task.await()
-
-        when (result) {
-            is Ok -> {
-                player = result.b
-                view?.showPlayerFoundMessage(resLocator.getString(R.string.player_found_param, player.name))
-                view?.hideSoftKeyboard()
-
-                view?.clearList()
-
-                requestPlayerSeasonStats(result.b)
-
-                requestPlayerMatches(result.b)
-
-                if (player.matches.size > matchesFrom + 5)
-                    view?.addLoadMoreItem()
+            val task = GlobalScope.async(Dispatchers.IO) {
+                playerRepository.getPlayerByName(playerName, region)
             }
-            is Fail -> {
-                view?.showDialog(resLocator.getString(R.string.error), result.a.message)
-                view?.hideLoading()
-            }
-        }
-    }
 
-    private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
-        if (player.matches.isNotEmpty()) {
-            var errors = 0
+            val result = task.await()
 
-            view?.hideEmptyCase()
+            when (result) {
+                is Either.Right<Player> -> {
+                    player = result.b
+                    view?.showPlayerFoundMessage(resLocator.getString(R.string.player_found_param, player.name))
+                    view?.hideSoftKeyboard()
 
-            player.matches.subList(from, player.matches.size).take(n).forEach {
-                val task = async(CommonPool) {
-                    matchRepository.getMatchById(it.id)
-                }
+                    view?.clearList()
 
-                val result = task.await()
+                    requestPlayerSeasonStats(result.b)
 
-                when (result) {
-                    is Ok -> {
-                        val name = player.name
-                        val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
-                        val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
-                        val copy = result.b.copy(
-                            numberOfKillsForCurrentPlayer = kills,
-                            placeForCurrentPlayer = place)
+                    requestPlayerMatches(result.b)
 
-                        with(it) {
-                            numberOfKillsForCurrentPlayer = kills
-                            placeForCurrentPlayer = place
-                            date = result.b.date
-                            gameMode = result.b.gameMode
-                        }
-
-                        matchRepository.insertMatch(copy)
-
-                        view?.addMatch(copy)
+                    if (player.matches.size > matchesFrom + 5) {
+                        view?.addLoadMoreItem()
                     }
-                    is Fail ->
-                        ++errors
+                    player.matches.takeIf { it.size > matchesFrom + 5 }
+                }
+                is Either.Left<AbsError> -> {
+                    view?.showDialog(resLocator.getString(R.string.error), result.a.message)
+                    view?.hideLoading()
                 }
             }
-
-            val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
-            if (contentResult is Ok && contentResult.b && enableAdditionalContents)
-                view?.showContentAvailableButton()
-
-            view?.showShareButton()
-
-            if (errors > 0)
-                view?.showError("Could not load $errors matches")
-        } else {
-            view?.showEmptyCase()
         }
-
-        view?.hideLoading()
     }
 
-    private suspend fun requestPlayerSeasonStats(player: Player) {
-        val currentSeasonResult = async(CommonPool) {
-            getCurrentSeason.getCurrentSeason()
-        }.await()
+    private fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
+        GlobalScope.launch {
+            if (player.matches.isNotEmpty()) {
+                var errors = 0
 
-        if (currentSeasonResult is Ok) {
-            val seasonInfoTask = async(CommonPool) {
-                playerRepository.getPlayerSeasonInfo(player, currentSeasonResult.b, System.currentTimeMillis())
+                view?.hideEmptyCase()
+
+                player.matches.subList(from, player.matches.size).take(n).forEach {
+                    val task = GlobalScope.async(Dispatchers.IO) {
+                        matchRepository.getMatchById(it.id)
+                    }
+
+                    val result = task.await()
+
+                    when (result) {
+                        is Either.Right<Match> -> {
+                            val name = player.name
+                            val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
+                            val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
+                            val copy = result.b.copy(
+                                numberOfKillsForCurrentPlayer = kills,
+                                placeForCurrentPlayer = place)
+
+                            with(it) {
+                                numberOfKillsForCurrentPlayer = kills
+                                placeForCurrentPlayer = place
+                                date = result.b.date
+                                gameMode = result.b.gameMode
+                            }
+
+                            matchRepository.insertMatch(copy)
+
+                            view?.addMatch(copy)
+                        }
+                        is Either.Left<*> ->
+                            ++errors
+                    }
+                }
+
+                val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
+                if (contentResult is Either.Right && contentResult.b && enableAdditionalContents)
+                    view?.showContentAvailableButton()
+
+                view?.showShareButton()
+
+                if (errors > 0)
+                    view?.showError("Could not load $errors matches")
+            } else {
+                view?.showEmptyCase()
             }
 
-            val seasonInfoResult = seasonInfoTask.await()
+            view?.hideLoading()
+        }
+    }
 
-            if (seasonInfoResult is Ok) {
-                seasonInfo = seasonInfoResult.b
-                view?.addPlayerStatsRow(seasonInfoResult.b)
+    private fun requestPlayerSeasonStats(player: Player) {
+        GlobalScope.launch {
+            val currentSeasonResult = GlobalScope.async(Dispatchers.IO) {
+                getCurrentSeason.getCurrentSeason()
+            }.await()
 
-                if (seasonInfo.isEmpty()) {
-                    view?.showNoMatchesInSeasonMessage(
-                        resLocator.getString(R.string.no_matches_in_season_param, player.name))
+            if (currentSeasonResult is Either.Right<Season>) {
+                val seasonInfoTask = GlobalScope.async(Dispatchers.IO) {
+                    playerRepository.getPlayerSeasonInfo(player, currentSeasonResult.b, System.currentTimeMillis())
+                }
+
+                val seasonInfoResult = seasonInfoTask.await()
+
+                if (seasonInfoResult is Either.Right<PlayerSeasonInfo>) {
+                    seasonInfo = seasonInfoResult.b
+                    view?.addPlayerStatsRow(seasonInfoResult.b)
+
+                    if (seasonInfo.isEmpty()) {
+                        view?.showNoMatchesInSeasonMessage(
+                            resLocator.getString(R.string.no_matches_in_season_param, player.name))
+                    }
                 }
             }
         }
@@ -214,7 +223,7 @@ class PlayerSearchPresenter(
         }
     }
 
-    suspend fun onLoadMoreMatchesClicked() {
+    fun onLoadMoreMatchesClicked() {
         view?.removeLoadMoreItem()
 
         matchesFrom += 6
@@ -239,7 +248,7 @@ class PlayerSearchPresenter(
     fun onShareStatsButtonClicked(ms: Long) {
         val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
         val pathResult = getImagesPath.getImagesPath()
-        if (pathResult is Ok) {
+        if (pathResult is Either.Right) {
             val imageFile = File(pathResult.b, "$now.png")
             view?.takeScreenshot(imageFile.absolutePath)
             if (sdkVersion >= Build.VERSION_CODES.N) {

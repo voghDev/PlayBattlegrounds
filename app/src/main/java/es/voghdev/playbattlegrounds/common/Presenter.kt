@@ -16,16 +16,16 @@
 package es.voghdev.playbattlegrounds.common
 
 abstract class Presenter<T1, T2>() {
-    open suspend fun initialize() { /* Empty */
+    open fun initialize() { /* Empty */
     }
 
-    open suspend fun resume() { /* Empty */
+    open fun resume() { /* Empty */
     }
 
-    open suspend fun pause() { /* Empty */
+    open fun pause() { /* Empty */
     }
 
-    open suspend fun destroy() {
+    open fun destroy() {
         view = null
         navigator = null
     }

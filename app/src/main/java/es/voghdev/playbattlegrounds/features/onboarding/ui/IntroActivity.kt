@@ -21,8 +21,9 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
+import arrow.core.Either
 import es.voghdev.playbattlegrounds.R
-import es.voghdev.playbattlegrounds.common.Ok
+
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.onboarding.model.Region
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
@@ -31,17 +32,19 @@ import es.voghdev.playbattlegrounds.features.onboarding.usecase.IsAppExpired
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
+import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_intro.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 class IntroActivity : AppCompatActivity(), KodeinAware {
     val DEFAULT_REGION = Region("pc-eu")
@@ -78,7 +81,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
             showAppExpiredDialog()
 
         val playerAccount = getPlayerAccount.getPlayerAccount()
-        if (!expired && playerAccount is Ok && playerAccount.b.isNotEmpty()) {
+        if (!expired && playerAccount is Either.Right && playerAccount.b.isNotEmpty()) {
             startActivity<PlayerSearchActivity>()
 
             finish()
@@ -89,12 +92,12 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun storeCurrentSeason() {
-        launch(CommonPool) {
-            val seasonsResult = async(CommonPool) {
+        GlobalScope.launch {
+            val seasonsResult = GlobalScope.async(Dispatchers.IO) {
                 getSeasons.getSeasons()
             }.await()
 
-            if (seasonsResult is Ok) {
+            if (seasonsResult is Either.Right<List<Season>>) {
                 val currentSeason = seasonsResult.b.firstOrNull { it.isCurrentSeason }
                 if (currentSeason != null)
                     setCurrentSeason.setCurrentSeason(currentSeason)
@@ -104,7 +107,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
 
     private fun fillServersSpinner() {
         val result = getRegions.getRegions()
-        if (result is Ok) {
+        if (result is Either.Right) {
             spn_server.attachDataSource(result.b.toMutableList())
 
             spn_server.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
