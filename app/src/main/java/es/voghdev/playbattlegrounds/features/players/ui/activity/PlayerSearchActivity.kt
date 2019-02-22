@@ -163,14 +163,16 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun showDialog(title: String, message: String) = ui {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(android.R.string.ok, null)
-            .setCancelable(false)
-            .create()
+        if (!isFinishing) {
+            val dialog = AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setCancelable(false)
+                .create()
 
-        dialog.show()
+            dialog.show()
+        }
     }
 
     override fun hideSoftKeyboard() = ui {
