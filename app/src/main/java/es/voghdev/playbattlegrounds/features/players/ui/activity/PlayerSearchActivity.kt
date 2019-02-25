@@ -61,8 +61,10 @@ import es.voghdev.playbattlegrounds.shareFileNougat
 import es.voghdev.playbattlegrounds.shareFilePreNougat
 import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
-import kotlinx.android.synthetic.main.activity_player_search.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivity
+import kotlinx.android.synthetic.main.activity_player_search.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -113,12 +115,16 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         presenter?.view = this
         presenter?.navigator = this
 
-        presenter?.initialize()
+        launch(CommonPool) {
+            presenter?.initialize()
 
-        presenter?.onInitialData(PlayerSearchInitialData(intent))
+            presenter?.onInitialData(PlayerSearchInitialData(intent))
+        }
 
         btn_send.setOnClickListener {
-            presenter?.onSendButtonClicked(et_username.text.toString().trim())
+            launch(CommonPool) {
+                presenter?.onSendButtonClicked(et_username.text.toString().trim())
+            }
         }
 
         rootView.setOnClickListener {
@@ -216,7 +222,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun onLoadMoreClicked() {
-        presenter?.onLoadMoreMatchesClicked()
+        launch(CommonPool) {
+            presenter?.onLoadMoreMatchesClicked()
+        }
     }
 
     override fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {

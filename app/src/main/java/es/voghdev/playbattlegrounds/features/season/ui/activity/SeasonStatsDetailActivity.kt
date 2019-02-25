@@ -22,6 +22,8 @@ import es.voghdev.playbattlegrounds.shareFilePreNougat
 import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_season_stats_detail.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -43,11 +45,13 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
         presenter?.view = this
         presenter?.navigator = this
 
-        presenter?.initialize()
+        launch(CommonPool) {
+            presenter?.initialize()
 
-        presenter?.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
+            presenter?.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
 
-        presenter?.onSdkVersionReceived(Build.VERSION.SDK_INT)
+            presenter?.onSdkVersionReceived(Build.VERSION.SDK_INT)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

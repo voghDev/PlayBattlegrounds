@@ -2,7 +2,7 @@ package es.voghdev.playbattlegrounds.features.players
 
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.common.AbsError
-
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetContentById
@@ -54,7 +54,7 @@ class PlayerRepository(
 
         return if (!seasonInfoMap.containsKey(player.name)) {
             val result = getPlayerSeasonInfo.getPlayerSeasonInfo(player, season)
-            seasonInfoMap[player.name] = (result as? Either.Right)?.b ?: emptyPlayerSeasonInfo()
+            seasonInfoMap[player.name] = (result as? Ok)?.b ?: emptyPlayerSeasonInfo()
             seasonInfoClock = ms
             result
         } else {
@@ -68,7 +68,7 @@ class PlayerRepository(
 
         val dbResult = getContentByIdDBDataSource.getContentById(id)
 
-        if (dbResult is Either.Right) {
+        if (dbResult is Ok) {
             contents[dbResult.b.id] = dbResult.b
 
             return dbResult
@@ -76,7 +76,7 @@ class PlayerRepository(
 
         val apiResult = getContentByIdDataSource.getContentById(id)
 
-        if (apiResult is Either.Right) {
+        if (apiResult is Ok) {
             contents[apiResult.b.id] = apiResult.b
         }
 

@@ -3,12 +3,11 @@ package es.voghdev.playbattlegrounds.features.season.ui.presenter
 import android.content.Intent
 import android.os.Build
 import android.text.format.DateFormat
-import arrow.core.Either
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
 import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
-
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
@@ -17,10 +16,8 @@ import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.format
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
 import java.io.File
 
 class SeasonStatsDetailPresenter(
@@ -31,28 +28,26 @@ class SeasonStatsDetailPresenter(
 
     var sdkVersion: Int = Build.VERSION.SDK_INT
 
-    override fun initialize() {
+    override suspend fun initialize() {
         view?.configureToolbar()
         view?.hideShareButton()
     }
 
-    fun onInitialData(data: InitialData) {
-        GlobalScope.launch {
-            val task = GlobalScope.async(Dispatchers.IO) {
-                playerRepository.getPlayerSeasonInfo(Player(data.getPlayerId()), Season(data.getSeason(), true, false), System.currentTimeMillis())
-            }
-            val seasonStatsResponse = task.await()
+    suspend fun onInitialData(data: InitialData) {
+        val task = async(CommonPool) {
+            playerRepository.getPlayerSeasonInfo(Player(data.getPlayerId()), Season(data.getSeason(), true, false), System.currentTimeMillis())
+        }
+        val seasonStatsResponse = task.await()
 
-            if (seasonStatsResponse is Either.Right<PlayerSeasonInfo>) {
-                val stats = seasonStatsResponse.b
+        if (seasonStatsResponse is Ok) {
+            val stats = seasonStatsResponse.b
 
-                showKillDeathRatios(stats)
-                showSummaries(stats)
-                showRatings(stats)
+            showKillDeathRatios(stats)
+            showSummaries(stats)
+            showRatings(stats)
 
-                view?.showShareButton()
-                view?.showToolbarTitle(data.getPlayerName())
-            }
+            view?.showShareButton()
+            view?.showToolbarTitle(data.getPlayerName())
         }
     }
 
@@ -90,7 +85,7 @@ class SeasonStatsDetailPresenter(
     fun onShareSeasonStatsButtonClicked(ms: Long) {
         val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
         val pathResult = getImagesPath.getImagesPath()
-        if (pathResult is Either.Right<String>) {
+        if (pathResult is Ok) {
             val imageFile = File(pathResult.b, "$now.png")
             view?.takeScreenshot(imageFile.absolutePath)
             if (sdkVersion >= Build.VERSION_CODES.N) {

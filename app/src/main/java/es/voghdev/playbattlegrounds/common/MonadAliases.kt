@@ -15,21 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.common
 
-abstract class Presenter<T1, T2>() {
-    open suspend fun initialize() { /* Empty */
-    }
+import arrow.core.Either
 
-    open suspend fun resume() { /* Empty */
-    }
-
-    open suspend fun pause() { /* Empty */
-    }
-
-    open suspend fun destroy() {
-        view = null
-        navigator = null
-    }
-
-    var view: T1? = null
-    var navigator: T2? = null
-}
+typealias Ok<A, B> = Either.Right<A, B> // Ok is maybe not the best identifier, but arrow has its own Success
+typealias Fail<A, B> = Either.Left<A, B> // I don't like Fail neither, but arrow has its own Failure

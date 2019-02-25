@@ -17,7 +17,7 @@ package es.voghdev.playbattlegrounds.features.matches
 
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.common.AbsError
-
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.features.matches.usecase.GetMatchById
 import es.voghdev.playbattlegrounds.features.matches.usecase.InsertMatch
 
@@ -32,7 +32,7 @@ class MatchRepository(
     override fun getMatchById(id: String): Either<AbsError, Match> {
         val dbResult = getMatchByIdDBDataSource.getMatchById(id)
 
-        if (dbResult is Either.Right) return dbResult
+        if (dbResult is Ok) return dbResult
 
         val apiResult = getMatchByIdApiDataSource.getMatchById(id)
 

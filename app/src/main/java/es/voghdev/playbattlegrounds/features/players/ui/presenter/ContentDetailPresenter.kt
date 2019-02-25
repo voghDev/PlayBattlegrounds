@@ -1,6 +1,6 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
-import arrow.core.Either
+import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
@@ -10,14 +10,14 @@ class ContentDetailPresenter(val playerRepository: PlayerRepository) :
 
     var content: Content = Content()
 
-    override fun initialize() {
+    override suspend fun initialize() {
         view?.configureToolbar()
     }
 
-    fun onInitialData(data: InitialData) {
+    suspend fun onInitialData(data: InitialData) {
         val result = playerRepository.getContentById(data.getContentId())
 
-        if (result is Either.Right) {
+        if (result is Ok) {
             content = result.b
             view?.showContentTitle(content.title)
             view?.showContentText(content.text)
