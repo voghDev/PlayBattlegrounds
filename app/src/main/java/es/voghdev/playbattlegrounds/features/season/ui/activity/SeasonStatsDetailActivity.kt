@@ -139,36 +139,6 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
         tv_squad_fpp_kills.text = text
     }
 
-    override fun showSoloRating(text: String, statColorResId: Int) = ui {
-        tv_solo_rating.text = text
-        tv_solo_rating.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSoloFPPRating(text: String, statColorResId: Int) = ui {
-        tv_solo_fpp_rating.text = text
-        tv_solo_fpp_rating.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showDuoRating(text: String, statColorResId: Int) = ui {
-        tv_duo_rating.text = text
-        tv_duo_rating.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showDuoFPPRating(text: String, statColorResId: Int) = ui {
-        tv_duo_fpp_rating.text = text
-        tv_duo_fpp_rating.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSquadRating(text: String, statColorResId: Int) = ui {
-        tv_squad_rating.text = text
-        tv_squad_rating.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSquadFPPRating(text: String, statColorResId: Int) = ui {
-        tv_squad_fpp_rating.text = text
-        tv_squad_fpp_rating.highlightCharsAfter(": ", statColorResId)
-    }
-
     override fun showShareButton() = ui {
         shareItem?.isVisible = true
     }

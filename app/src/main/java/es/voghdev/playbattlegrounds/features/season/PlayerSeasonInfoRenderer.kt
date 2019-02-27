@@ -27,7 +27,6 @@ import es.voghdev.playbattlegrounds.format
 
 class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSeasonInfo>() {
     var tv_kdr: TextView? = null
-    var tv_rating: TextView? = null
 
     override fun hookListeners(rootView: View?) {
         rootView?.setOnClickListener {
@@ -37,7 +36,6 @@ class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSea
 
     override fun setUpView(rootView: View?) {
         tv_kdr = rootView?.findViewById(R.id.tv_kdr)
-        tv_rating = rootView?.findViewById(R.id.tv_rating)
     }
 
     override fun inflate(inflater: LayoutInflater?, parent: ViewGroup?): View {
@@ -46,22 +44,6 @@ class PlayerSeasonInfoRenderer(val listener: OnRowClicked?) : Renderer<PlayerSea
 
     override fun render() {
         renderPlayerKillDeathRatio()
-        renderPlayerRating()
-    }
-
-    private fun renderPlayerRating() {
-        val bestRatingStats = content.getBestRatingStats()
-        val rating = content.getRatingForGameModeStats(bestRatingStats)
-        tv_rating?.text = "$rating"
-
-        tv_rating?.setTextColor(
-            when {
-                rating > 2200 -> ContextCompat.getColor(context, R.color.blue)
-                rating > 1900 -> ContextCompat.getColor(context, R.color.green)
-                rating > 1700 -> ContextCompat.getColor(context, R.color.colorPrimary)
-                else -> ContextCompat.getColor(context, R.color.light_red)
-            }
-        )
     }
 
     private fun renderPlayerKillDeathRatio() {
