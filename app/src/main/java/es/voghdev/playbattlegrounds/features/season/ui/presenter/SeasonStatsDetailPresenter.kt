@@ -44,7 +44,6 @@ class SeasonStatsDetailPresenter(
 
             showKillDeathRatios(stats)
             showSummaries(stats)
-            showRatings(stats)
 
             view?.showShareButton()
             view?.showToolbarTitle(data.getPlayerName())
@@ -73,15 +72,6 @@ class SeasonStatsDetailPresenter(
         view?.showSquadFPPSummary("${stats.statsSquadFPP.kills} kills, ${stats.statsSquadFPP.losses} deaths")
     }
 
-    private fun showRatings(stats: PlayerSeasonInfo) {
-        view?.showSoloRating("Solo Rating: ${stats.statsSolo.rating()}", getRatingColor(stats.statsSolo.rating()))
-        view?.showSoloFPPRating("Solo FPP Rating: ${stats.statsSoloFPP.rating()}", getRatingColor(stats.statsSoloFPP.rating()))
-        view?.showDuoRating("Duo Rating: ${stats.statsDuo.rating()}", getRatingColor(stats.statsDuo.rating()))
-        view?.showDuoFPPRating("Duo FPP Rating: ${stats.statsDuoFPP.rating()}", getRatingColor(stats.statsDuoFPP.rating()))
-        view?.showSquadRating("Squad Rating: ${stats.statsSquad.rating()}", getRatingColor(stats.statsSquad.rating()))
-        view?.showSquadFPPRating("Squad FPP Rating: ${stats.statsSquadFPP.rating()}", getRatingColor(stats.statsSquadFPP.rating()))
-    }
-
     fun onShareSeasonStatsButtonClicked(ms: Long) {
         val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
         val pathResult = getImagesPath.getImagesPath()
@@ -95,14 +85,6 @@ class SeasonStatsDetailPresenter(
             }
         }
     }
-
-    fun getRatingColor(rating: Int): Int =
-        when {
-            rating > 2200 -> R.color.blue
-            rating > 1900 -> R.color.green
-            rating > 1700 -> R.color.colorPrimary
-            else -> R.color.light_red
-        }
 
     fun getKDRColor(kdr: Float): Int =
         when {
@@ -146,13 +128,6 @@ class SeasonStatsDetailPresenter(
         fun showDuoFPPSummary(text: String)
         fun showSquadSummary(text: String)
         fun showSquadFPPSummary(text: String)
-
-        fun showSoloRating(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showSoloFPPRating(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showDuoRating(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showDuoFPPRating(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showSquadRating(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showSquadFPPRating(text: String, statColorResId: Int = R.color.colorPrimary)
 
         fun takeScreenshot(path: String)
         fun sharePlayerStatsNougat(path: String)

@@ -15,8 +15,6 @@
  */
 package es.voghdev.playbattlegrounds.features.season.model
 
-import kotlin.math.roundToInt
-
 data class PlayerSeasonGameModeStats(
     val killPoints: Float = 0f,
     val kills: Int = 0,
@@ -32,12 +30,5 @@ data class PlayerSeasonGameModeStats(
     fun kdr(): Float {
         val deaths: Int = roundsPlayed.minus(wins)
         return kills?.toFloat()?.div(maxOf(deaths, 1))
-    }
-
-    fun rating(): Int {
-        val winPoints = winPoints ?: 0f
-        val killPoints = killPoints ?: 0f
-
-        return (winPoints + .2f * killPoints).roundToInt()
     }
 }
