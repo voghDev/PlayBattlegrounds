@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "465655740112",
+    "firebase_url": "https://top-pubg-players.firebaseio.com",
+    "project_id": "top-pubg-players",
+    "storage_bucket": "top-pubg-players.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465655740112:android:b71329d95c1d33f7",
+        "android_client_info": {
+          "package_name": "es.voghdev.playbattlegrounds.season1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465655740112-1ioau96hnu5u9afvl279rdl3fleb6jlp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcYLgd54hNYv4N5kdzbtDiEhjnXjvz7go"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-3447634887555010~8628951216"
+    }
+  ],
+  "configuration_version": "1"
+}

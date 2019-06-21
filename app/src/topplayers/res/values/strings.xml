@@ -1,0 +1,101 @@
+<resources>
+    <string-array name="servers">
+        <item>pc-eu</item>
+        <item>pc-krjp</item>
+        <item>pc-jp</item>
+        <item>pc-na</item>
+        <item>pc-ru</item>
+        <item>pc-oc</item>
+        <item>pc-kakao</item>
+        <item>pc-sea</item>
+        <item>pc-sa</item>
+        <item>pc-as</item>
+        <item>xbox-as</item>
+        <item>xbox-eu</item>
+        <item>xbox-na</item>
+        <item>xbox-oc</item>
+    </string-array>
+    <string name="app_name">Top PUBG Players</string>
+    <string name="intro_title">Hi noob</string>
+    <string name="intro_subtitle">What\'s your PUBG account?</string>
+    <string name="accept">Accept</string>
+    <string name="user_name_hint">e.g. JohnDoe123</string>
+    <string name="search_box_hint">Enter user name</string>
+    <string name="server_selection_message">What Server do you play in?</string>
+    <string name="search">Search</string>
+    <string name="n_kills_param">%1$d kills</string>
+    <string name="best_kdr">Best Kill/Death Ratio:</string>
+    <string name="best_rating">Best Rating:</string>
+    <string name="expired_title">Expired</string>
+    <string name="expired_msg">App is expired - Please update</string>
+    <string name="error">Error</string>
+    <string name="too_many_requests_msg">Too many requests, try again later</string>
+    <string name="no_teammates_info">No info available</string>
+    <string name="content_available">See available content</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</string>
+    <string name="sample_title">Sed ut perspiciatis unde omnis iste</string>
+    <string name="player_found_param">Loading matches for %1$s...</string>
+    <string name="no_matches_found">No matches found</string>
+    <string name="no_matches_in_season_param">%1$s has no matches this season</string>
+    <string name="share">Share stats</string>
+
+    <plurals name="kills">
+        <item quantity="one">%d kill</item>
+        <item quantity="other">%d kills</item>
+    </plurals>
+
+    <string-array name="sample_titles">
+        <item>Tier 0</item>
+        <item>Tier 1</item>
+        <item>Tier 2</item>
+        <item>Tier 3</item>
+        <item>Tier 4</item>
+        <item>Tier 5</item>
+        <item>Tier 6</item>
+        <item>Tier 7</item>
+        <item>Tier 8</item>
+        <item>Tier 9</item>
+    </string-array>
+
+    <string-array name="sample_contents">
+        <item>You are ranked tier 0 - The Worst loser ever</item>
+        <item>You are ranked tier 1 - TPP Player!</item>
+        <item>You are ranked tier 2 - Loser</item>
+        <item>You are ranked tier 3 - Loser, just a bit</item>
+        <item>You are ranked tier 4 - Ocassional Winner!</item>
+        <item>You are ranked tier 5 - Top 10 Rat</item>
+        <item>You are ranked tier 6 - PUBG Master!</item>
+        <item>You are ranked tier 7 - PUBG Master!</item>
+        <item>You are ranked tier 8 - PUBG Master!</item>
+        <item>You are ranked tier 9 - PUBG Master!</item>
+    </string-array>
+
+    <string-array name="sample_links">
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+        <item>https://github.com/voghDev/PlayBattlegrounds/</item>
+    </string-array>
+
+    <string-array name="sample_button_texts">
+        <item>About this App...</item>
+        <item>Find me on GitHub</item>
+        <item>Know more</item>
+        <item>About this App...</item>
+        <item>About the author...</item>
+        <item>Find me on GitHub</item>
+        <item>Contribute!</item>
+        <item>Find me on GitHub</item>
+        <item>About the author...</item>
+        <item>Support the project</item>
+    </string-array>
+</resources>

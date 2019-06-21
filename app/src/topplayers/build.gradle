@@ -1,0 +1,21 @@
+android {
+    productFlavors {
+        topplayers {
+            applicationIdSuffix ".topplayers"
+
+            versionName "1.1.0"
+            versionCode 10
+
+            Properties prop = new Properties()
+            prop.load(project.rootProject.file('pubg-api.properties').newDataInputStream())
+            def apiKey = prop.get("apiKey", null)
+            if (apiKey == null)
+                throw new GradleException("Can't find apiKey in pubg-api.properties. Please set it to your PUBG Api key")
+
+            buildConfigField("String", "PUBGApiKey", "\"${apiKey}\"")
+            buildConfigField("long", "Limit", "1562650492000L")
+
+            dimension "isPaid"
+        }
+    }
+}

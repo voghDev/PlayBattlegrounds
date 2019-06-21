@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:background="@drawable/row_transparent_ripple_effect"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:background="#ddd" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/Element"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Player name"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_bio"
+        style="@style/Element"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="56dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Short player biography" />
+
+    <ImageView
+        android:id="@+id/iv_flag"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="96dp"
+        android:src="@mipmap/ic_flag_es" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="124dp"
+        android:background="@color/colorPrimaryDark" />
+
+</FrameLayout>
