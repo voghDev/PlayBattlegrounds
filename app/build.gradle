@@ -106,7 +106,7 @@ dependencies {
 
     kapt "com.github.Raizlabs.DBFlow:dbflow-processor:$dbflow_version"
 
-    ktlint "com.github.shyiko:ktlint:0.25.0"
+    ktlint "com.github.shyiko:ktlint:0.31.0"
 }
 
 repositories {
