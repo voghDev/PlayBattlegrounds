@@ -1,0 +1,101 @@
+<resources>
+    <string-array name="servers">
+        <item>pc-eu</item>
+        <item>pc-krjp</item>
+        <item>pc-jp</item>
+        <item>pc-na</item>
+        <item>pc-ru</item>
+        <item>pc-oc</item>
+        <item>pc-kakao</item>
+        <item>pc-sea</item>
+        <item>pc-sa</item>
+        <item>pc-as</item>
+        <item>xbox-as</item>
+        <item>xbox-eu</item>
+        <item>xbox-na</item>
+        <item>xbox-oc</item>
+    </string-array>
+    <string name="app_name">YouSuckAtPUBG</string>
+    <string name="intro_title">Hi noob</string>
+    <string name="intro_subtitle">What\'s your PUBG account?</string>
+    <string name="accept">Accept</string>
+    <string name="user_name_hint">e.g. JohnDoe123</string>
+    <string name="search_box_hint">Enter user name</string>
+    <string name="server_selection_message">What Server do you play in?</string>
+    <string name="search">Search</string>
+    <string name="n_kills_param">%1$d kills</string>
+    <string name="best_kdr">Best Kill/Death Ratio:</string>
+    <string name="expired_title">Caducada</string>
+    <string name="expired_msg">La App ha caducado - Actualiza hijo de puta</string>
+    <string name="error">Pesao</string>
+    <string name="too_many_requests_msg">Eres pesaico eh? Deja ya de darle al botón. Castigao cinco minutos sin búsquedas\n\nmanco</string>
+    <string name="no_teammates_info">No info available</string>
+    <string name="content_available">See available content</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</string>
+    <string name="sample_title">Sed ut perspiciatis unde omnis iste</string>
+    <string name="player_found_param">Found: %1$s. Loading matches...</string>
+    <string name="no_matches_found">No matches found for this noob</string>
+    <string name="no_matches_in_season_param">%1$s has no matches this season</string>
+    <string name="share">Share stats</string>
+    <string name="wins_this_season">Wins this season:</string>
+
+    <plurals name="kills">
+        <item quantity="one">%d kill</item>
+        <item quantity="other">%d kills</item>
+    </plurals>
+
+    <string-array name="sample_titles">
+        <item>Pls, kill...</item>
+        <item>Nooby style huh?</item>
+        <item>You 0wn!!</item>
+        <item>A bit n00b</item>
+        <item>Beginner\'s luck</item>
+        <item>Rat</item>
+        <item>Sucky 1337or</item>
+        <item>You are not that bad</item>
+        <item>Yayaya</item>
+        <item>Ojo</item>
+    </string-array>
+
+    <string-array name="sample_contents">
+        <item>3 matches with 0 kills... Your sucker level is awesome! Why don\'t you try killing someone, someday?</item>
+        <item>Good players play FPP, that\'s why you play tpp. Have a look at this tutorial</item>
+        <item>Nah, just kidding. You are so bad. Probably your mouse sensitivity is involved. We\'ve prepared this tutorial so maybe you improve your playstyle</item>
+        <item>I mean, There\'s nothing wrong about being bad. But you are. This tutorial won\'t fix it, but have a look at it anyway</item>
+        <item>We just noticed that you won a match or two. That was for sure hiding and playing like a rat. Check out this tutorial to improve your playstyle</item>
+        <item>You are an authentic top 10 rat. Try to get a high rating and brag with your friends, while you don\'t even kill a cold. Have a look at this tutorial, noob</item>
+        <item>With these numbers, one thing is sure: You h4x. We recommend you these gaming gadgets to start playing for real and stop using this wallhack you know you have</item>
+        <item>Just kidding. You suck big time. Any average player with .45 P1911 can beat you with full AKM + SKS. We send you this tutorial to learn to spray and control vertical recoil (though we known it\'s useless)</item>
+        <item>So much speed, so much momentum. The doc is simply The doc. Are you gonna peek? Go hide behind a tree and come back when there is a top 10 situation where The doc can be involved, everyone will have Kar98k for dinner except the 2x Champion. Cumcumcumcum</item>
+        <item>Chuck Norris was about to start playing PUBG. Then he found ByRubi9\'s videos and saw him playing. He decided to give up and go somewhere else</item>
+    </string-array>
+
+    <string-array name="sample_links">
+        <item>https://www.youtube.com/watch?v=N_C8u9UA4Zo</item>
+        <item>https://www.youtube.com/watch?v=8SIgpe0f5K8</item>
+        <item>https://www.youtube.com/watch?v=b9d7dFId8t4</item>
+        <item>https://www.youtube.com/watch?v=6Hz5FWhnn4I</item>
+        <item>https://www.youtube.com/watch?v=LTMDBx0cRNY</item>
+        <item>https://www.youtube.com/watch?v=CTRIEDLT-BQ</item>
+        <item>https://www.razer.com/gaming-mice-and-mats</item>
+        <item>https://www.youtube.com/watch?v=j5slpa-BySQ</item>
+        <item>https://www.youtube.com/watch?v=05pUIVnS_8g</item>
+        <item>https://www.youtube.com/ByRubi9</item>
+    </string-array>
+
+    <string-array name="sample_button_texts">
+        <item>Learn 2 play</item>
+        <item>Tutorial</item>
+        <item>Mouse sensi tutorial</item>
+        <item>That\'s you</item>
+        <item>PUBG Guide</item>
+        <item>Tutorial</item>
+        <item>Gadgets</item>
+        <item>Recoil control</item>
+        <item>Yaya</item>
+        <item>ByRubi9\'s videos</item>
+    </string-array>
+</resources>
