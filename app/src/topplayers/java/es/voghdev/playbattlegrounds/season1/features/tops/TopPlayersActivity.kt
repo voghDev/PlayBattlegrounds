@@ -20,7 +20,7 @@ import es.voghdev.playbattlegrounds.season1.features.tops.model.TopPlayer
 import es.voghdev.playbattlegrounds.season1.features.tops.model.Whitespace
 import es.voghdev.playbattlegrounds.season1.features.tops.renderer.WhitespaceRenderer
 import es.voghdev.playbattlegrounds.ui
-import kotlinx.android.synthetic.season1.activity_top_players.*
+import kotlinx.android.synthetic.topplayers.activity_top_players.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivity

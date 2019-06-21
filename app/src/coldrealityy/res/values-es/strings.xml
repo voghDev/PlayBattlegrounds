@@ -1,0 +1,101 @@
+<resources>
+    <string-array name="servers">
+        <item>pc-eu</item>
+        <item>pc-krjp</item>
+        <item>pc-jp</item>
+        <item>pc-na</item>
+        <item>pc-ru</item>
+        <item>pc-oc</item>
+        <item>pc-kakao</item>
+        <item>pc-sea</item>
+        <item>pc-sa</item>
+        <item>pc-as</item>
+        <item>xbox-as</item>
+        <item>xbox-eu</item>
+        <item>xbox-na</item>
+        <item>xbox-oc</item>
+    </string-array>
+    <string name="app_name">Mancx PUBG</string>
+    <string name="intro_title">Hi, noob</string>
+    <string name="intro_subtitle">What\'s your PUBG account?</string>
+    <string name="accept">Ok</string>
+    <string name="user_name_hint">p.ej. ManquerMaximer123</string>
+    <string name="search_box_hint">Nombre de usuario</string>
+    <string name="server_selection_message">What server do you play in?</string>
+    <string name="search">Buscar</string>
+    <string name="n_kills_param">%1$d kills</string>
+    <string name="best_kdr">Mejor Kill/Death Ratio:</string>
+    <string name="best_rating">Mejor Rating:</string>
+    <string name="expired_title">Caducada</string>
+    <string name="expired_msg">La App ha caducado - Actualiza</string>
+    <string name="error">Pesao</string>
+    <string name="too_many_requests_msg">Eres pesaico eh? Deja ya de darle al botón. Castigao cinco minutos sin búsquedas\n\nmanco</string>
+    <string name="no_teammates_info">No info available</string>
+    <string name="content_available">See available content</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</string>
+    <string name="sample_title">Sed ut perspiciatis unde omnis iste</string>
+    <string name="player_found_param">Encontrado: %1$s. Cargando partidas...</string>
+    <string name="no_matches_found">No se encontraron partidas de este Mancx</string>
+    <string name="no_matches_in_season_param">%1$s no ha jugado partidas esta Season</string>
+    <string name="share">Compartir esta mierda</string>
+
+    <plurals name="kills">
+        <item quantity="one">%d kill</item>
+        <item quantity="other">%d kills</item>
+    </plurals>
+
+    <string-array name="sample_titles">
+        <item>Madre mia</item>
+        <item>TPP.. Como los noobs</item>
+        <item>En resumen: Manquísimo</item>
+        <item>Un poco manco si que eres</item>
+        <item>Eres manquete, eh?</item>
+        <item>Ratilla</item>
+        <item>Pro de mierda</item>
+        <item>Ah pues no eres tan malo</item>
+        <item>Yayaya</item>
+        <item>Achanta!!</item>
+    </string-array>
+
+    <string-array name="sample_contents">
+        <item>En serio llevas 3 partidas con 0 kills? tu nivel de manquera es impresionante.\n\nEl mejor consejo: Uninstall game.\n\nLa sensi de tu ratón puede tener parte de culpa (sumado a tu manquera, obviamente). Mirate este tutorial.\nEso si, es en Inglés. Si eres un nini y no hablas el idioma no llores, no es nuestra culpa</item>
+        <item>Los buenos jugadores de esto juegan FPP.\n\nPrecisamente por eso tu juegas TPP. Enhorabuena, manca. Sigue así.\n\nTe dejamos con un video de un jugador que, al contrario que tu, sí que sabe jugar TPP</item>
+        <item>Vaya manquera manejas. Menos mal que te hemos preparado un tutorial para que aprendas un poco. Dudamos que sirva de algo, no obstante, si quieres intentarlo, pulsa en el enlace</item>
+        <item>Ojo, que no pasa ná, pero ser, eres. Frase cogida del mítico José Mota. Resumiendo: Deberías mejorar tu juego, por ejemplo con este tutorial</item>
+        <item>Segun parece, en alguna ocasión has probado el pollo; No obstante las ultimas partidas no te han salido demasiado bien, ¿verdad? los pollos los ganaste de potra y rateando, y lo sabes. Mira este tutorial para tratar de mejorar tu manquera</item>
+        <item>Juegas para subirte el rating y presumir con tus colegas, eh? Cuando en realidad no matas ni al resfriado, y lo sabes.\n\nDe toda squad en la que entras, eres el cáncer; Siempre llorando “¡le he dado 5 tiros! ¡yo flipo con este juego! Dadme res por favor”.\n\nAyyy que pena das, manquet</item>
+        <item>Con esos números, fijo que usas h4x. Reconocelo, llevas mierda y lo sabes. Te recomendamos estos gadgets de gaming para que no necesites activar ese wallhack. Matarás lo mismo sin llevar mierda puesta (en realidad no, en cuanto desactives los chetos harás cero kills, como todo el mundo)</item>
+        <item>Nah, es broma. Eres malísimo/a. Cualquiera que aterrice en una pipa P1911 te tumbaría, aunque tengas full AKM + SKS. Te dejamos con este tutorial de control de recoil, pese a que sabemos que no te servirá de nada</item>
+        <item>Esta frase va mejor en Inglés, así que mejor vas aprendiendo un poco, ratilla: So much speed, so much momentum. The doc is simply The doc. Are you gonna peek? Go hide behind a tree and come back when there is a top 10 situation where The doc can be involved, everyone will have Kar98k for dinner except the 2x Champion. Cumcumcumcum</item>
+        <item>Se rumorea que Chuck Norris quería empezar a jugar PUBG, pero entonces vió jugar a ByRubi9 y se achantó. Cogió el UAZ más cercano y se fue a casa. Algunas informaciones apuntan a que Chuck ahora se dedica a cocinar para ByRubi9 en la sarten de oro del PUBG Global Invitational</item>
+    </string-array>
+
+    <string-array name="sample_links">
+        <item>https://www.youtube.com/watch?v=b9d7dFId8t4</item>
+        <item>https://www.youtube.com/watch?v=rRTf4F-_Jqg</item>
+        <item>https://www.youtube.com/watch?v=H7z2E2GekvE</item>
+        <item>https://www.youtube.com/watch?v=EPT7BH8ZNGI</item>
+        <item>https://www.youtube.com/watch?v=VPSSyTwITGA</item>
+        <item>https://www.youtube.com/watch?v=6Hz5FWhnn4I</item>
+        <item>https://www.razer.com/gaming-mice-and-mats</item>
+        <item>https://www.youtube.com/watch?v=j5slpa-BySQ</item>
+        <item>https://www.youtube.com/watch?v=05pUIVnS_8g</item>
+        <item>https://www.youtube.com/ByRubi9</item>
+    </string-array>
+
+    <string-array name="sample_button_texts">
+        <item>Tuto de sensibilidad</item>
+        <item>Video</item>
+        <item>Tutorial</item>
+        <item>Ver tutorial</item>
+        <item>Ir al tutorial</item>
+        <item>Este eres tu</item>
+        <item>Los gadgets</item>
+        <item>Recoil control</item>
+        <item>Yaya</item>
+        <item>ByRubi9 videos</item>
+    </string-array>
+</resources>

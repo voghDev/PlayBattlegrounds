@@ -4,9 +4,9 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 if (new File('app/src/topplayers/build.gradle').exists()
-        && new File('app/src/coldreality/build.gradle').exists()) {
+        && new File('app/src/coldrealityy/build.gradle').exists()) {
     apply from: 'src/topplayers/build.gradle'
-    apply from: 'src/coldreality/build.gradle'
+    apply from: 'src/coldrealityy/build.gradle'
 }
 
 android {

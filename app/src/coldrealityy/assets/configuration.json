@@ -1,0 +1,92 @@
+{
+  "tiers": [
+    {
+      "id": 1,
+      "title": "Madre mia",
+      "text": "En serio llevas 3 partidas con 0 kills? tu nivel de manquera es impresionante.\n\nEl mejor consejo: Uninstall game.\n\n¿Por que no pruebas a jugar a otro juego? Echa un ojo a estos tutoriales (suponiendo que sepas Inglés, ratilla)",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Tutorial",
+      "link": "https://www.youtube.com/watch?v=zBSBu72qF0s",
+      "type": "zerokill",
+      "language": "es"
+    },
+    {
+      "id": 2,
+      "title": "TPP.. Como los noobs",
+      "text": "Los buenos jugadores de esto juegan FPP.\n\nPrecisamente por eso tu juegas TPP. Enhorabuena, manca. Sigue así.\n\nTe dejamos con un video de un jugador que, al contrario que tu, sí que sabe jugar TPP",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Video",
+      "link": "https://www.youtube.com/watch?v=rRTf4F-_Jqg",
+      "type": "gamemodetpp",
+      "language": "es"
+    },
+    {
+      "id": 3,
+      "title": "En resumen: Manquísimo",
+      "text": "Vaya manquera manejas. Menos mal que te hemos preparado un tutorial para que aprendas un poco. Dudamos que sirva de algo, no obstante, si quieres intentarlo, pulsa en el enlace",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Tutorial",
+      "link": "https://www.youtube.com/watch?v=H7z2E2GekvE",
+      "type": "zerokills",
+      "language": "es"
+    },
+    {
+      "id": 4,
+      "title": "Un poco manco si que eres",
+      "text": "Ojo, que no pasa ná, pero ser, eres. Frase cogida del mítico José Mota. Resumiendo: Deberías mejorar tu juego, por ejemplo con este tutorial",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Ver tutorial",
+      "link": "https://www.youtube.com/watch?v=EPT7BH8ZNGI",
+      "type": "zerokills",
+      "language": "es"
+    },
+    {
+      "id": 5,
+      "title": "Eres manquete, eh?",
+      "text": "Segun parece, en alguna ocasión has probado el pollo; No obstante las ultimas partidas no te han salido demasiado bien, ¿verdad? los pollos los ganaste de potra y rateando, y lo sabes. Mira este tutorial para tratar de mejorar tu manquera",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Ver tutorial",
+      "link": "https://www.youtube.com/watch?v=VPSSyTwITGA",
+      "type": "chickendinnerbadstats",
+      "language": "es"
+    },
+    {
+      "id": 6,
+      "title": "Ratilla",
+      "text": "Juegas para subirte el rating y presumir con tus colegas, eh? Cuando en realidad no matas ni al resfriado, y lo sabes.\n\nDe toda squad en la que entras, eres el cáncer; Siempre llorando “¡le he dado 5 tiros! ¡yo flipo con este juego! Dadme res por favor”.\n\nAyyy que pena das, manquet",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Este eres tu",
+      "link": "https://www.youtube.com/watch?v=6Hz5FWhnn4I",
+      "type": "zerokills",
+      "language": "es"
+    },
+    {
+      "id": 600,
+      "title": "Pro de mierda",
+      "text": "Con esos números, fijo que usas h4x. Reconocelo, llevas mierda y lo sabes. Te recomendamos estos gadgets de gaming para que no necesites activar ese wallhack. Matarás lo mismo sin llevar mierda puesta (en realidad no, en cuanto desactives los chetos harás cero kills, como todo el mundo)",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "Los gadgets",
+      "link": "https://www.razer.com/gaming-mice-and-mats",
+      "type": "1337",
+      "language": "es"
+    },
+    {
+      "id": 900,
+      "title": "Achant",
+      "text": "Es bien sabido que ByRubi9 mata a todo el server con un cargador de vector, y sin extendido. Con las 13 balas mata a la mitad, el resto tiene tanto miedo que explota sus coches, y los que quedan simplemente se piran",
+      "imageUrl": "",
+      "embeddedVideoUrl": "",
+      "buttonText": "ByRubi9 Channel",
+      "link": "https://www.youtube.com/channel/UCGakUs_c0iYHGF5IXcPyguQ",
+      "type": "sp-byRubi9",
+      "language": "es"
+    }
+  ]
+}
