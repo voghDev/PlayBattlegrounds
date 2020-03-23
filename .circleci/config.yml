@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/code
   docker:
-    - image: circleci/android:api-27-alpha
+    - image: circleci/android:api-29
   environment:
     TZ: Europe/Madrid
     JVM_OPTS: -Xmx3200m
@@ -22,7 +22,7 @@ download_gradle_dependencies: &download_gradle_dependencies
   command: ./gradlew dependencies
 
 
-version: 2
+version: 2.1
 jobs:
   tests:
     <<: *defaults
