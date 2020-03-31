@@ -60,15 +60,18 @@ task runAcceptanceTests(dependsOn: [':app:connectedAndroidTest']) {
     description 'Run all acceptance tests.'
 }
 
-task createTestResources << {
-    def mockMakerFile = new File("$projectDir/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker")
-    if (System.env.MOCK_MAKER != null) {
-        logger.info("Using MockMaker ${System.env.MOCK_MAKER}")
-        mockMakerFile.parentFile.mkdirs()
-        mockMakerFile.createNewFile()
-        mockMakerFile.write(System.env.MOCK_MAKER)
-    } else {
-        logger.info("Using default MockMaker")
+task createTestResources {
+    description = ""
+    doLast {
+        def mockMakerFile = new File("$projectDir/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker")
+        if (System.env.MOCK_MAKER != null) {
+            logger.info("Using MockMaker ${System.env.MOCK_MAKER}")
+            mockMakerFile.parentFile.mkdirs()
+            mockMakerFile.createNewFile()
+            mockMakerFile.write(System.env.MOCK_MAKER)
+        } else {
+            logger.info("Using default MockMaker")
+        }
     }
 }
 
