@@ -1,7 +1,7 @@
 package es.voghdev.playbattlegrounds.season1.features.tops
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.R

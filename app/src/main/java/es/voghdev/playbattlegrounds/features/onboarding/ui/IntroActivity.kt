@@ -128,6 +128,6 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
             .setCancelable(false)
             .create()
 
-        //dialog.show()
+        // dialog.show()
     }
 }
