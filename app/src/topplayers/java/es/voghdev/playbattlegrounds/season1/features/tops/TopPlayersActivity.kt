@@ -19,8 +19,8 @@ import es.voghdev.playbattlegrounds.season1.features.tops.renderer.WhitespaceRen
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.topplayers.activity_top_players.*
 import kotlinx.coroutines.Dispatchers
+import es.voghdev.playbattlegrounds.startActivity
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance

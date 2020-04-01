@@ -59,12 +59,12 @@ import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import es.voghdev.playbattlegrounds.shareFileNougat
 import es.voghdev.playbattlegrounds.shareFilePreNougat
+import es.voghdev.playbattlegrounds.startActivity
 import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
