@@ -15,19 +15,16 @@
  */
 package es.voghdev.playbattlegrounds.features.onboarding.ui
 
-import android.content.DialogInterface
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
+import androidx.appcompat.app.AppCompatActivity
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.onboarding.model.Region
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetRegions
-import es.voghdev.playbattlegrounds.features.onboarding.usecase.IsAppExpired
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerAccount
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.SetPlayerRegion
 import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchActivity
@@ -54,7 +51,6 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     val getRegions: GetRegions by instance()
     val getSeasons: GetSeasons by instance()
     val setCurrentSeason: SetCurrentSeason by instance()
-    val isAppExpired: IsAppExpired by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,12 +69,8 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
             hideSoftKeyboard(et_user)
         }
 
-        val expired = isAppExpired.isAppExpired()
-        if (expired)
-            showAppExpiredDialog()
-
         val playerAccount = getPlayerAccount.getPlayerAccount()
-        if (!expired && playerAccount is Ok && playerAccount.b.isNotEmpty()) {
+        if (playerAccount is Ok && playerAccount.b.isNotEmpty()) {
             startActivity<PlayerSearchActivity>()
 
             finish()
@@ -114,20 +106,5 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                     setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
             })
         }
-    }
-
-    private fun showAppExpiredDialog() {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.expired_title))
-            .setMessage(getString(R.string.expired_msg))
-            .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
-                override fun onClick(p0: DialogInterface?, p1: Int) {
-                    finish()
-                }
-            })
-            .setCancelable(false)
-            .create()
-
-        // dialog.show()
     }
 }

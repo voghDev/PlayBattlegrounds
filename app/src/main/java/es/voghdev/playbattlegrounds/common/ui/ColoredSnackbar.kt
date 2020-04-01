@@ -1,7 +1,7 @@
 package es.voghdev.playbattlegrounds.common.ui
 
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 
 object ColoredSnackbar {
 
