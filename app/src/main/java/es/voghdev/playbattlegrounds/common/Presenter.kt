@@ -15,7 +15,9 @@
  */
 package es.voghdev.playbattlegrounds.common
 
-abstract class Presenter<T1, T2>() {
+import kotlinx.coroutines.CoroutineDispatcher
+
+abstract class Presenter<T1, T2>(val dispatcher: CoroutineDispatcher) {
     open suspend fun initialize() { /* Empty */
     }
 

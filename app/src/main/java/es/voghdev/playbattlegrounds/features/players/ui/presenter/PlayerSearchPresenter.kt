@@ -36,11 +36,12 @@ import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonGameModeSt
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class PlayerSearchPresenter(
+    dispatcher: CoroutineDispatcher,
     val resLocator: ResLocator,
     val playerRepository: PlayerRepository,
     val matchRepository: MatchRepository,
@@ -51,7 +52,7 @@ class PlayerSearchPresenter(
     val getImagesPath: GetImagesPath,
     var sdkVersion: Int
 ) :
-    Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>() {
+        Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>(dispatcher) {
 
     val DEFAULT_REGION = "pc-eu"
     var player = Player()
@@ -95,11 +96,9 @@ class PlayerSearchPresenter(
         view?.hideShareButton()
         view?.hideContentAvailableButton()
 
-        val task = async(CommonPool) {
+        val result = withContext(dispatcher) {
             playerRepository.getPlayerByName(playerName, region)
         }
-
-        val result = task.await()
 
         when (result) {
             is Ok -> {
@@ -130,11 +129,9 @@ class PlayerSearchPresenter(
             view?.hideEmptyCase()
 
             player.matches.subList(from, player.matches.size).take(n).forEach {
-                val task = async(CommonPool) {
+                val result = withContext(dispatcher) {
                     matchRepository.getMatchById(it.id)
                 }
-
-                val result = task.await()
 
                 when (result) {
                     is Ok -> {
@@ -142,8 +139,8 @@ class PlayerSearchPresenter(
                         val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
                         val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
                         val copy = result.b.copy(
-                            numberOfKillsForCurrentPlayer = kills,
-                            placeForCurrentPlayer = place)
+                                numberOfKillsForCurrentPlayer = kills,
+                                placeForCurrentPlayer = place)
 
                         with(it) {
                             numberOfKillsForCurrentPlayer = kills
@@ -177,16 +174,14 @@ class PlayerSearchPresenter(
     }
 
     private suspend fun requestPlayerSeasonStats(player: Player) {
-        val currentSeasonResult = async(CommonPool) {
+        val currentSeasonResult = withContext(dispatcher) {
             getCurrentSeason.getCurrentSeason()
-        }.await()
+        }
 
         if (currentSeasonResult is Ok) {
-            val seasonInfoTask = async(CommonPool) {
+            val seasonInfoResult = withContext(dispatcher) {
                 playerRepository.getPlayerSeasonInfo(player, currentSeasonResult.b, System.currentTimeMillis())
             }
-
-            val seasonInfoResult = seasonInfoTask.await()
 
             if (seasonInfoResult is Ok) {
                 seasonInfo = seasonInfoResult.b
@@ -194,7 +189,7 @@ class PlayerSearchPresenter(
 
                 if (seasonInfo.isEmpty()) {
                     view?.showNoMatchesInSeasonMessage(
-                        resLocator.getString(R.string.no_matches_in_season_param, player.name))
+                            resLocator.getString(R.string.no_matches_in_season_param, player.name))
                 }
             }
         }
@@ -203,14 +198,14 @@ class PlayerSearchPresenter(
     fun onMatchClicked(match: Match) {
         if (match.isDuoOrSquad()) {
             val teammates = match.participants
-                .filter { it.place == match.placeForCurrentPlayer }
-                .map { "${it.name} (${it.kills} kills)" }
-                .joinToString("\n")
+                    .filter { it.place == match.placeForCurrentPlayer }
+                    .map { "${it.name} (${it.kills} kills)" }
+                    .joinToString("\n")
 
             view?.showDialog(
-                "#${match.placeForCurrentPlayer}",
-                if (teammates.isNotEmpty()) teammates
-                else resLocator.getString(R.string.no_teammates_info))
+                    "#${match.placeForCurrentPlayer}",
+                    if (teammates.isNotEmpty()) teammates
+                    else resLocator.getString(R.string.no_teammates_info))
         }
     }
 
@@ -282,24 +277,24 @@ class PlayerSearchPresenter(
     }
 
     fun Player.hasMatchesWithZeroKills(n: Int): Boolean =
-        matches.sortedByDescending { it.date }.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
+            matches.sortedByDescending { it.date }.take(n).sumBy { it.numberOfKillsForCurrentPlayer } == 0
 
     fun Player.hasWins(): Boolean =
-        matches.count { it.placeForCurrentPlayer == 1 } > 0
+            matches.count { it.placeForCurrentPlayer == 1 } > 0
 
     fun Player.hasTop10MatchesWithLessThan(n: Int, kills: Int): Boolean {
         val lastMatches = matches.sortedByDescending { it.date }.take(10)
         return lastMatches.count { it.placeForCurrentPlayer <= 10 } > n &&
-            lastMatches.sumBy { it.numberOfKillsForCurrentPlayer } < kills
+                lastMatches.sumBy { it.numberOfKillsForCurrentPlayer } < kills
     }
 
     private fun createEmptyPlayerSeasonInfo() = PlayerSeasonInfo(
-        PlayerSeasonGameModeStats(),
-        PlayerSeasonGameModeStats(),
-        PlayerSeasonGameModeStats(),
-        PlayerSeasonGameModeStats(),
-        PlayerSeasonGameModeStats(),
-        PlayerSeasonGameModeStats()
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats(),
+            PlayerSeasonGameModeStats()
     )
 
     interface MVPView {

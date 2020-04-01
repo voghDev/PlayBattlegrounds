@@ -32,9 +32,11 @@ import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_intro.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -51,6 +53,10 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     val getRegions: GetRegions by instance()
     val getSeasons: GetSeasons by instance()
     val setCurrentSeason: SetCurrentSeason by instance()
+    val dispatcher = Dispatchers.IO
+    val coroutineScope = IntroScope()
+
+    class IntroScope : CoroutineScope by MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,10 +87,10 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun storeCurrentSeason() {
-        launch(CommonPool) {
-            val seasonsResult = async(CommonPool) {
+        coroutineScope.launch {
+            val seasonsResult = withContext(dispatcher) {
                 getSeasons.getSeasons()
-            }.await()
+            }
 
             if (seasonsResult is Ok) {
                 val currentSeason = seasonsResult.b.firstOrNull { it.isCurrentSeason }
@@ -103,7 +109,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-                    setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
+                        setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
             })
         }
     }

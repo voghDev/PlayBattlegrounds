@@ -12,8 +12,8 @@ import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailI
 import es.voghdev.playbattlegrounds.features.players.ui.presenter.ContentDetailPresenter
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_content_detail.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -27,11 +27,11 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ContentDetailPresenter(playerRepository)
+        presenter = ContentDetailPresenter(Dispatchers.IO, playerRepository)
         presenter?.view = this
         presenter?.navigator = this
 
-        launch(CommonPool) {
+        coroutineScope.launch {
             presenter?.initialize()
 
             presenter?.onInitialData(ContentDetailInitialData(intent))
@@ -55,5 +55,5 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override fun close() = finish()
 
     override fun launchBrowser(link: String) =
-        startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
+            startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
 }

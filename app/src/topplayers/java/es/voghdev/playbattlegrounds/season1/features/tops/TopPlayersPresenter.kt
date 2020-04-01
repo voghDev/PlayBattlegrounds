@@ -1,24 +1,25 @@
 package es.voghdev.playbattlegrounds.season1.features.tops
 
 import es.voghdev.playbattlegrounds.common.Presenter
-import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
-import es.voghdev.playbattlegrounds.season1.common.asset.CopyAsset
 import es.voghdev.playbattlegrounds.season1.features.tops.model.TopPlayer
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
-class TopPlayersPresenter(val resLocator: ResLocator, val getTopPlayers: GetTopPlayers, val copyAsset: CopyAsset, val getPicturesPath: GetPicturesPath, val getSeasons: GetSeasons, val setCurrentSeason: SetCurrentSeason) :
-        Presenter<TopPlayersPresenter.MVPView, TopPlayersPresenter.Navigator>() {
+class TopPlayersPresenter(
+    dispatcher: CoroutineDispatcher,
+    val getTopPlayers: GetTopPlayers,
+    val getSeasons: GetSeasons,
+    val setCurrentSeason: SetCurrentSeason
+) : Presenter<TopPlayersPresenter.MVPView, TopPlayersPresenter.Navigator>(dispatcher) {
 
     override suspend fun initialize() {
 
         storeCurrentSeason()
-        async(CommonPool) {
+        withContext(dispatcher) {
             getTopPlayers.getTopPlayers()
         }
-                .await()
                 .fold({}, { players ->
                     players.sortedBy { it.position }.forEach { player ->
                         view?.addPlayer(player)
@@ -27,9 +28,9 @@ class TopPlayersPresenter(val resLocator: ResLocator, val getTopPlayers: GetTopP
     }
 
     suspend fun storeCurrentSeason() {
-        async(CommonPool) {
+        withContext(dispatcher) {
             getSeasons.getSeasons()
-        }.await().fold({}, {
+        }.fold({}, {
             val currentSeason = it.firstOrNull { it.isCurrentSeason }
             if (currentSeason != null)
                 setCurrentSeason.setCurrentSeason(currentSeason)

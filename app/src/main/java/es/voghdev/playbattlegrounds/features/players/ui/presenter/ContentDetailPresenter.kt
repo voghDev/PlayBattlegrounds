@@ -4,9 +4,12 @@ import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
+import kotlinx.coroutines.CoroutineDispatcher
 
-class ContentDetailPresenter(val playerRepository: PlayerRepository) :
-    Presenter<ContentDetailPresenter.MVPView, ContentDetailPresenter.Navigator>() {
+class ContentDetailPresenter(
+    dispatcher: CoroutineDispatcher,
+    val playerRepository: PlayerRepository
+) : Presenter<ContentDetailPresenter.MVPView, ContentDetailPresenter.Navigator>(dispatcher) {
 
     var content: Content = Content()
 

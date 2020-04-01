@@ -16,15 +16,16 @@ import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.format
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class SeasonStatsDetailPresenter(
+    dispatcher: CoroutineDispatcher,
     val resLocator: ResLocator,
     val playerRepository: PlayerRepository,
     val getImagesPath: GetImagesPath
-) : Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>() {
+) : Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>(dispatcher) {
 
     var sdkVersion: Int = Build.VERSION.SDK_INT
 
@@ -34,10 +35,9 @@ class SeasonStatsDetailPresenter(
     }
 
     suspend fun onInitialData(data: InitialData) {
-        val task = async(CommonPool) {
+        val seasonStatsResponse = withContext(dispatcher) {
             playerRepository.getPlayerSeasonInfo(Player(data.getPlayerId()), Season(data.getSeason(), true, false), System.currentTimeMillis())
         }
-        val seasonStatsResponse = task.await()
 
         if (seasonStatsResponse is Ok) {
             val stats = seasonStatsResponse.b
@@ -87,12 +87,12 @@ class SeasonStatsDetailPresenter(
     }
 
     fun getKDRColor(kdr: Float): Int =
-        when {
-            kdr > 2f -> R.color.blue
-            kdr > 1f -> R.color.green
-            kdr > 0.75f -> R.color.colorPrimary
-            else -> R.color.light_red
-        }
+            when {
+                kdr > 2f -> R.color.blue
+                kdr > 1f -> R.color.green
+                kdr > 0.75f -> R.color.colorPrimary
+                else -> R.color.light_red
+            }
 
     interface InitialData {
         fun getPlayerId(): String
@@ -102,13 +102,13 @@ class SeasonStatsDetailPresenter(
 
     class AndroidInitialData(val intent: Intent?) : InitialData {
         override fun getPlayerId(): String =
-            intent?.getStringExtra(EXTRA_PLAYER_ID) ?: ""
+                intent?.getStringExtra(EXTRA_PLAYER_ID) ?: ""
 
         override fun getPlayerName(): String =
-            intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
+                intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
 
         override fun getSeason(): String =
-            intent?.getStringExtra(EXTRA_SEASON) ?: ""
+                intent?.getStringExtra(EXTRA_SEASON) ?: ""
     }
 
     interface MVPView {

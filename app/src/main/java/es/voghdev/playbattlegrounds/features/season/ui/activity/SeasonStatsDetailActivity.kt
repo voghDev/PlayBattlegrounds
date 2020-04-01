@@ -22,8 +22,8 @@ import es.voghdev.playbattlegrounds.shareFilePreNougat
 import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.main.activity_season_stats_detail.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -39,13 +39,14 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
         super.onCreate(savedInstanceState)
 
         presenter = SeasonStatsDetailPresenter(
-            AndroidResLocator(this),
-            playerRepository,
-            GetImagesPathAndroidDataSource(applicationContext))
+                Dispatchers.IO,
+                AndroidResLocator(this),
+                playerRepository,
+                GetImagesPathAndroidDataSource(applicationContext))
         presenter?.view = this
         presenter?.navigator = this
 
-        launch(CommonPool) {
+        coroutineScope.launch {
             presenter?.initialize()
 
             presenter?.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
@@ -74,7 +75,7 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
         text = SpannableString(text).apply {
             setSpan(ForegroundColorSpan(
-                ContextCompat.getColor(applicationContext, highlightColorResId)),
+                    ContextCompat.getColor(applicationContext, highlightColorResId)),
                     start,
                     end,
                     SPAN_EXCLUSIVE_EXCLUSIVE)

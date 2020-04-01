@@ -22,7 +22,10 @@ import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import junit.framework.Assert.assertEquals
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
@@ -79,6 +82,8 @@ class PlayerSearchPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         presenter = createPresenterWithMocks(mockPlayerRepository, mockMatchRepository)
+
+        Dispatchers.setMain(TestCoroutineDispatcher())
     }
 
     @Test
@@ -89,7 +94,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -108,7 +113,7 @@ class PlayerSearchPresenterTest {
 
         givenTheStoredPlayerRegionIs("pc-jp")
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -132,7 +137,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -160,7 +165,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -184,7 +189,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -208,7 +213,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -234,7 +239,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -255,7 +260,7 @@ class PlayerSearchPresenterTest {
                 matches = someMatches
         ))
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -280,7 +285,7 @@ class PlayerSearchPresenterTest {
                 matches = someMatches
         ))
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -301,7 +306,7 @@ class PlayerSearchPresenterTest {
                 matches = someMatches
         ))
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -322,7 +327,7 @@ class PlayerSearchPresenterTest {
                 matches = someMatches
         ))
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -343,7 +348,7 @@ class PlayerSearchPresenterTest {
                 matches = someMatches
         ))
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -364,7 +369,7 @@ class PlayerSearchPresenterTest {
                 matches = emptyList()
         ))
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -390,7 +395,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -414,7 +419,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -438,7 +443,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -462,7 +467,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -486,7 +491,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -510,7 +515,7 @@ class PlayerSearchPresenterTest {
                 ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -528,13 +533,13 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "ByRubi9",
-                matches = emptyList()
-            ))
+                Either.right(Player(
+                        name = "ByRubi9",
+                        matches = emptyList()
+                ))
         )
 
-        runBlocking {
+        runBlockingTest {
             presenter.initialize()
 
             presenter.onInitialData(data)
@@ -578,7 +583,9 @@ class PlayerSearchPresenterTest {
     }
 
     private fun createPresenterWithMocks(playerRepository: PlayerRepository, matchRepository: MatchRepository): PlayerSearchPresenter {
-        val presenter = PlayerSearchPresenter(mockResLocator,
+        val presenter = PlayerSearchPresenter(
+                Dispatchers.Main,
+                mockResLocator,
                 playerRepository,
                 matchRepository,
                 mockGetPlayerAccount,

@@ -18,9 +18,14 @@ package es.voghdev.playbattlegrounds.common
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 
 abstract class BaseActivity : AppCompatActivity() {
     val NONE = -1
+    val coroutineScope = BaseScope()
+
+    class BaseScope : CoroutineScope by MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
