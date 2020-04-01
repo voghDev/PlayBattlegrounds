@@ -10,7 +10,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 
 class TopPlayersPresenter(val resLocator: ResLocator, val getTopPlayers: GetTopPlayers, val copyAsset: CopyAsset, val getPicturesPath: GetPicturesPath, val getSeasons: GetSeasons, val setCurrentSeason: SetCurrentSeason) :
-    Presenter<TopPlayersPresenter.MVPView, TopPlayersPresenter.Navigator>() {
+        Presenter<TopPlayersPresenter.MVPView, TopPlayersPresenter.Navigator>() {
 
     override suspend fun initialize() {
 
@@ -18,12 +18,12 @@ class TopPlayersPresenter(val resLocator: ResLocator, val getTopPlayers: GetTopP
         async(CommonPool) {
             getTopPlayers.getTopPlayers()
         }
-            .await()
-            .fold({}, { players ->
-                players.sortedBy { it.position }.forEach { player ->
-                    view?.addPlayer(player)
-                }
-            })
+                .await()
+                .fold({}, { players ->
+                    players.sortedBy { it.position }.forEach { player ->
+                        view?.addPlayer(player)
+                    }
+                })
     }
 
     suspend fun storeCurrentSeason() {

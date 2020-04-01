@@ -20,7 +20,7 @@
             android:id="@+id/tv_subtitle"
             style="@style/IntroSubtitle" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_user"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:textColor="@color/white"
                 android:inputType="text" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/tv_server"

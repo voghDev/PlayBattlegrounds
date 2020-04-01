@@ -15,7 +15,7 @@
  */
 package es.voghdev.playbattlegrounds.features.season
 
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

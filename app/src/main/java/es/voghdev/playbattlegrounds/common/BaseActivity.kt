@@ -16,7 +16,7 @@
 package es.voghdev.playbattlegrounds.common
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 
 abstract class BaseActivity : AppCompatActivity() {
