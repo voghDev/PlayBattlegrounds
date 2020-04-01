@@ -17,14 +17,14 @@ package es.voghdev.playbattlegrounds.features.players.ui.activity
 
 import android.os.Build
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import es.voghdev.playbattlegrounds.R
@@ -61,10 +61,10 @@ import es.voghdev.playbattlegrounds.shareFileNougat
 import es.voghdev.playbattlegrounds.shareFilePreNougat
 import es.voghdev.playbattlegrounds.takeAScreenshot
 import es.voghdev.playbattlegrounds.ui
+import kotlinx.android.synthetic.main.activity_player_search.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivity
-import kotlinx.android.synthetic.main.activity_player_search.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance

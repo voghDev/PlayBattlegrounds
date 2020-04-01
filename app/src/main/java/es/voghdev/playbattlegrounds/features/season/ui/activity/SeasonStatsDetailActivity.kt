@@ -2,7 +2,6 @@ package es.voghdev.playbattlegrounds.features.season.ui.activity
 
 import android.os.Build
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
@@ -10,6 +9,7 @@ import android.text.style.RelativeSizeSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.BaseActivity
 import es.voghdev.playbattlegrounds.common.asApp
