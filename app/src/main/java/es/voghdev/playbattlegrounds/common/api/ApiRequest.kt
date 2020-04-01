@@ -19,6 +19,6 @@ interface ApiRequest {
     fun getDefaultRegion() = "pc-eu"
 
     fun getEndPoint(): String {
-        return "http://api.playbattlegrounds.com/"
+        return "https://api.playbattlegrounds.com/"
     }
 }
