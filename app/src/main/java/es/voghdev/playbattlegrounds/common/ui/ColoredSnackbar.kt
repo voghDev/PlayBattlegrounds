@@ -1,7 +1,11 @@
 package es.voghdev.playbattlegrounds.common.ui
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.View
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
+import es.voghdev.playbattlegrounds.R
 
 object ColoredSnackbar {
 
@@ -16,6 +20,9 @@ object ColoredSnackbar {
         val snackBarView = getSnackBarLayout(snackbar)
         if (snackBarView != null) {
             snackBarView.setBackgroundColor(colorId)
+            val textView: TextView = snackBarView.findViewById(R.id.snackbar_text)
+            textView.setTypeface(null, if (bold) Typeface.BOLD else Typeface.NORMAL)
+            textView.setTextColor(Color.WHITE)
         }
 
         return snackbar
