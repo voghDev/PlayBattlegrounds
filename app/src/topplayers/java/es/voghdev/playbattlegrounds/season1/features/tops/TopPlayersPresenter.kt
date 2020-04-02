@@ -16,8 +16,8 @@ class TopPlayersPresenter(
 ) : Presenter<TopPlayersPresenter.MVPView, TopPlayersPresenter.Navigator>(dispatcher) {
 
     override suspend fun initialize() {
-
         storeCurrentSeason()
+
         withContext(dispatcher) { getTopPlayers.getTopPlayers() }
             .fold(ifLeft = { error ->
                 log(error.message)
