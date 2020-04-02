@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.BaseActivity
 import es.voghdev.playbattlegrounds.common.asApp
-import es.voghdev.playbattlegrounds.common.reslocator.AndroidResLocator
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.season.ui.presenter.SeasonStatsDetailPresenter
 import es.voghdev.playbattlegrounds.features.share.GetImagesPathAndroidDataSource
@@ -40,7 +39,6 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
         presenter = SeasonStatsDetailPresenter(
             Dispatchers.IO,
-            AndroidResLocator(this),
             playerRepository,
             GetImagesPathAndroidDataSource(applicationContext))
         presenter?.view = this

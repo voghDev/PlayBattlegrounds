@@ -87,24 +87,22 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should request a player by name to the API on start`() {
+    fun `should request a player by name to the API on start`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
             override fun getRegion(): String = "pc-na"
         }
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockPlayerRepository).getPlayerByName("DiabloVT", "pc-na")
     }
 
     @Test
-    fun `should request a player from current region if no region is passed in InitialData`() {
+    fun `should request a player from current region if no region is passed in InitialData`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "Nobunaga"
@@ -113,17 +111,15 @@ class PlayerSearchPresenterTest {
 
         givenTheStoredPlayerRegionIs("pc-jp")
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockPlayerRepository).getPlayerByName("Nobunaga", "pc-jp")
     }
 
     @Test
-    fun `should load matches 1 to 5 when search button is clicked`() {
+    fun `should load matches 1 to 5 when search button is clicked`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -131,17 +127,15 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = someMatches
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockMatchRepository).getMatchById("uuid001")
         verify(mockMatchRepository).getMatchById("uuid002")
@@ -151,7 +145,7 @@ class PlayerSearchPresenterTest {
     }
 
     @Test
-    fun `should hide "loading" when matches are loaded`() {
+    fun `should hide "loading" when matches are loaded`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -159,23 +153,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = someMatches
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).hideLoading()
     }
 
     @Test
-    fun `should show a "load more" icon if there are more matches to load`() {
+    fun `should show a "load more" icon if there are more matches to load`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -183,23 +175,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = someMatches.apply { add(oneMoreMatch) }
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches.apply { add(oneMoreMatch) }
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).addLoadMoreItem()
     }
 
     @Test
-    fun `should not show a "load more" icon if there are no more matches to load`() {
+    fun `should not show a "load more" icon if there are no more matches to load`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -207,23 +197,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = someMatches
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView, never()).addLoadMoreItem()
     }
 
     @Test
-    fun `should show "load more" only once if there are exactly ten matches`() {
+    fun `should show "load more" only once if there are exactly ten matches`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -231,48 +219,44 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = (1..10).map {
-                            Match(id = "id00$it", gameMode = "solo", numberOfKillsForCurrentPlayer = it)
-                        }
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = (1..10).map {
+                    Match(id = "id00$it", gameMode = "solo", numberOfKillsForCurrentPlayer = it)
+                }
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onLoadMoreMatchesClicked()
-        }
+        presenter.onLoadMoreMatchesClicked()
 
         verify(mockView, times(1)).addLoadMoreItem()
     }
 
     @Test
-    fun `should show "content available" button if there is content available for current player`() {
+    fun `should show "content available" button if there is content available for current player`() = runBlockingTest {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsContentAvailableForAllPlayers()
         givenThatQueryingForAnyPlayerReturns(Player(
-                name = "DiabloVT",
-                matches = someMatches
+            name = "DiabloVT",
+            matches = someMatches
         ))
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onSendButtonClicked("DiabloVT")
-        }
+        presenter.onSendButtonClicked("DiabloVT")
 
         verify(mockView).showContentAvailableButton()
     }
 
     @Test
-    fun `should not show "content available" button if this feature is disabled by InitialData`() {
+    fun `should not show "content available" button if this feature is disabled by InitialData`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = false
             override fun getPlayerName(): String = "DiabloVT"
@@ -281,107 +265,97 @@ class PlayerSearchPresenterTest {
 
         givenThereIsContentAvailableForAllPlayers()
         givenThatQueryingForAnyPlayerReturns(Player(
-                name = "DiabloVT",
-                matches = someMatches
+            name = "DiabloVT",
+            matches = someMatches
         ))
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onSendButtonClicked("DiabloVT")
-        }
+        presenter.onSendButtonClicked("DiabloVT")
 
         verify(mockView, never()).showContentAvailableButton()
     }
 
     @Test
-    fun `should hide "content available" button when a new request is performed`() {
+    fun `should hide "content available" button when a new request is performed`() = runBlockingTest {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsContentAvailableForAllPlayers()
         givenThatQueryingForAnyPlayerReturns(Player(
-                name = "DiabloVT",
-                matches = someMatches
+            name = "DiabloVT",
+            matches = someMatches
         ))
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onSendButtonClicked("DiabloVT")
-        }
+        presenter.onSendButtonClicked("DiabloVT")
 
         verify(mockView).hideContentAvailableButton()
     }
 
     @Test
-    fun `should not show "content available" button if there is no content available for current player`() {
+    fun `should not show "content available" button if there is no content available for current player`() = runBlockingTest {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsNoContentAvailableForAnyPlayer()
         givenThatQueryingForAnyPlayerReturns(Player(
-                name = "DiabloVT",
-                matches = someMatches
+            name = "DiabloVT",
+            matches = someMatches
         ))
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onSendButtonClicked("DiabloVT")
-        }
+        presenter.onSendButtonClicked("DiabloVT")
 
         verify(mockView, never()).showContentAvailableButton()
     }
 
     @Test
-    fun `should query "is content available" once and only once when a request is performed`() {
+    fun `should query "is content available" once and only once when a request is performed`() = runBlockingTest {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsNoContentAvailableForAnyPlayer()
         givenThatQueryingForAnyPlayerReturns(Player(
-                name = "DiabloVT",
-                matches = someMatches
+            name = "DiabloVT",
+            matches = someMatches
         ))
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onSendButtonClicked("DiabloVT")
-        }
+        presenter.onSendButtonClicked("DiabloVT")
 
         verify(mockIsContentAvailableForPlayer).isContentAvailableForPlayer(anyPlayer())
     }
 
     @Test
-    fun `should not show "content available" button if there are no matches for player`() {
+    fun `should not show "content available" button if there are no matches for player`() = runBlockingTest {
         val data = givenThatInitialDataIsEmpty()
 
         givenThereIsContentAvailableForAllPlayers()
         givenThatQueryingForAnyPlayerReturns(Player(
-                name = "DiabloVT",
-                matches = emptyList()
+            name = "DiabloVT",
+            matches = emptyList()
         ))
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onSendButtonClicked("DiabloVT")
-        }
+        presenter.onSendButtonClicked("DiabloVT")
 
         verify(mockView, never()).showContentAvailableButton()
     }
 
     @Test
-    fun `should show "empty case" when player has no matches`() {
+    fun `should show "empty case" when player has no matches`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -389,23 +363,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = emptyList()
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = emptyList()
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).showEmptyCase()
     }
 
     @Test
-    fun `should hide "empty case" when player has one or more matches`() {
+    fun `should hide "empty case" when player has one or more matches`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -413,23 +385,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = someMatches
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).hideEmptyCase()
     }
 
     @Test
-    fun `should hide "loading" when player has no matches`() {
+    fun `should hide "loading" when player has no matches`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -437,23 +407,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = emptyList()
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = emptyList()
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).hideLoading()
     }
 
     @Test
-    fun `should show "share" button once player matches have been loaded`() {
+    fun `should show "share" button once player matches have been loaded`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -461,23 +429,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = someMatches
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).showShareButton()
     }
 
     @Test
-    fun `should hide "share" button if player has no matches`() {
+    fun `should hide "share" button if player has no matches`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -485,23 +451,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = emptyList()
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = emptyList()
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView).hideShareButton()
     }
 
     @Test
-    fun `should not show "share" button if player has no matches`() {
+    fun `should not show "share" button if player has no matches`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "DiabloVT"
@@ -509,23 +473,21 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "DiabloVT",
-                        matches = emptyList()
-                ))
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = emptyList()
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
-        }
+        presenter.onInitialData(data)
 
         verify(mockView, never()).showShareButton()
     }
 
     @Test
-    fun `should load a sponsored content for player ByRubi9`() {
+    fun `should load a sponsored content for player ByRubi9`() = runBlockingTest {
         val data = object : PlayerSearchPresenter.InitialData {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = "ByRubi9"
@@ -533,19 +495,17 @@ class PlayerSearchPresenterTest {
         }
 
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(Player(
-                        name = "ByRubi9",
-                        matches = emptyList()
-                ))
+            Either.right(Player(
+                name = "ByRubi9",
+                matches = emptyList()
+            ))
         )
 
-        runBlockingTest {
-            presenter.initialize()
+        presenter.initialize()
 
-            presenter.onInitialData(data)
+        presenter.onInitialData(data)
 
-            presenter.onContentButtonClicked()
-        }
+        presenter.onContentButtonClicked()
 
         verify(mockNavigator).launchContentDetailScreen(contentCaptor.capture())
 
@@ -554,7 +514,7 @@ class PlayerSearchPresenterTest {
 
     private fun givenThatQueryingForAnyPlayerReturns(player: Player) {
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-                Either.right(player)
+            Either.right(player)
         )
     }
 
@@ -562,12 +522,12 @@ class PlayerSearchPresenterTest {
 
     private fun givenThereIsContentAvailableForAllPlayers() {
         whenever(mockIsContentAvailableForPlayer.isContentAvailableForPlayer(anyPlayer()))
-                .thenReturn(Either.right(true))
+            .thenReturn(Either.right(true))
     }
 
     private fun givenThereIsNoContentAvailableForAnyPlayer() {
         whenever(mockIsContentAvailableForPlayer.isContentAvailableForPlayer(anyPlayer()))
-                .thenReturn(Either.right(false))
+            .thenReturn(Either.right(false))
     }
 
     private fun givenTheStoredPlayerRegionIs(region: String) {
@@ -584,16 +544,16 @@ class PlayerSearchPresenterTest {
 
     private fun createPresenterWithMocks(playerRepository: PlayerRepository, matchRepository: MatchRepository): PlayerSearchPresenter {
         val presenter = PlayerSearchPresenter(
-                Dispatchers.Main,
-                mockResLocator,
-                playerRepository,
-                matchRepository,
-                mockGetPlayerAccount,
-                mockGetCurrentSeason,
-                mockIsContentAvailableForPlayer,
-                mockGetPlayerRegion,
-                mockGetImagesPath,
-                LOLLIPOP)
+            Dispatchers.Main,
+            mockResLocator,
+            playerRepository,
+            matchRepository,
+            mockGetPlayerAccount,
+            mockGetCurrentSeason,
+            mockIsContentAvailableForPlayer,
+            mockGetPlayerRegion,
+            mockGetImagesPath,
+            LOLLIPOP)
         presenter.view = mockView
         presenter.navigator = mockNavigator
         return presenter

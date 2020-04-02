@@ -3,6 +3,7 @@ package es.voghdev.playbattlegrounds.season1.features.tops
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
+import es.voghdev.playbattlegrounds.log
 import es.voghdev.playbattlegrounds.season1.features.tops.model.TopPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -17,10 +18,10 @@ class TopPlayersPresenter(
     override suspend fun initialize() {
 
         storeCurrentSeason()
-        withContext(dispatcher) {
-            getTopPlayers.getTopPlayers()
-        }
-            .fold({}, { players ->
+        withContext(dispatcher) { getTopPlayers.getTopPlayers() }
+            .fold(ifLeft = { error ->
+                log(error.message)
+            }, ifRight = { players ->
                 players.sortedBy { it.position }.forEach { player ->
                     view?.addPlayer(player)
                 }
@@ -28,13 +29,14 @@ class TopPlayersPresenter(
     }
 
     suspend fun storeCurrentSeason() {
-        withContext(dispatcher) {
-            getSeasons.getSeasons()
-        }.fold({}, {
-            val currentSeason = it.firstOrNull { it.isCurrentSeason }
-            if (currentSeason != null)
-                setCurrentSeason.setCurrentSeason(currentSeason)
-        })
+        withContext(dispatcher) { getSeasons.getSeasons() }
+            .fold(ifLeft = { error ->
+                log(error.message)
+            }, ifRight = { seasons ->
+                val currentSeason = seasons.firstOrNull { it.isCurrentSeason }
+                if (currentSeason != null)
+                    setCurrentSeason.setCurrentSeason(currentSeason)
+            })
     }
 
     fun onTopPlayerClicked(topPlayer: TopPlayer) {

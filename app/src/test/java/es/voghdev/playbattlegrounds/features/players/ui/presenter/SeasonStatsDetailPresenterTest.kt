@@ -38,7 +38,6 @@ class SeasonStatsDetailPresenterTest {
     private fun createMockedPresenter(): SeasonStatsDetailPresenter {
         val presenter = SeasonStatsDetailPresenter(
                 Dispatchers.Main,
-                mockResLocator,
                 mockPlayerRepository,
                 mockGetImagesPath)
         presenter.view = mockView

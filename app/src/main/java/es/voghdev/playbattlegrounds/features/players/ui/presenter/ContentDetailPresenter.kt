@@ -1,7 +1,7 @@
 package es.voghdev.playbattlegrounds.features.players.ui.presenter
 
-import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
+import es.voghdev.playbattlegrounds.common.Success
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +20,7 @@ class ContentDetailPresenter(
     suspend fun onInitialData(data: InitialData) {
         val result = playerRepository.getContentById(data.getContentId())
 
-        if (result is Ok) {
+        if (result is Success) {
             content = result.b
             view?.showContentTitle(content.title)
             view?.showContentText(content.text)
