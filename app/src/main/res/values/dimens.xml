@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="match_parent_is_not_supported_in_constraintlayout">0dp</dimen>
+    <dimen name="margin">16dp</dimen>
 </resources>
