@@ -122,9 +122,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
             presenter?.onInitialData(PlayerSearchInitialData(intent))
         }
 
-        btn_send.setOnClickListener {
+        sendButton.setOnClickListener {
             coroutineScope.launch {
-                presenter?.onSendButtonClicked(et_username.text.toString().trim())
+                presenter?.onSendButtonClicked(userNameEditText.text.toString().trim())
             }
         }
 
@@ -181,31 +181,31 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun showLoading() = ui {
-        btn_send.visibility = INVISIBLE
+        sendButton.visibility = INVISIBLE
         recyclerView.visibility = INVISIBLE
-        tv_empty_case.visibility = INVISIBLE
+        emptyCaseTextView.visibility = INVISIBLE
 
         progressBar.visibility = VISIBLE
     }
 
     override fun hideLoading() = ui {
-        btn_send.visibility = VISIBLE
+        sendButton.visibility = VISIBLE
 
         progressBar.visibility = GONE
     }
 
     override fun showEmptyCase() = ui {
-        tv_empty_case.visibility = VISIBLE
+        emptyCaseTextView.visibility = VISIBLE
         recyclerView.visibility = INVISIBLE
     }
 
     override fun hideEmptyCase() = ui {
-        tv_empty_case.visibility = INVISIBLE
+        emptyCaseTextView.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
     }
 
     override fun fillPlayerAccount(account: String) = ui {
-        et_username.setText(account)
+        userNameEditText.setText(account)
     }
 
     override fun clearList() = ui {
