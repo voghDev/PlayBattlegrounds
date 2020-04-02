@@ -8,9 +8,9 @@ import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.onboarding.ui.IntroActivity
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.startActivity
+import es.voghdev.playbattlegrounds.startActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -26,14 +26,14 @@ class ConfigurationActivity : BaseActivity(), KodeinAware, ConfigurationPresente
         super.onCreate(savedInstanceState)
 
         presenter = ConfigurationPresenter(
-            resLocator,
+            Dispatchers.IO,
             GetConfigurationApiDataSource(),
             playerRepository
         )
         presenter?.view = this
         presenter?.navigator = this
 
-        launch(CommonPool) {
+        coroutineScope.launch {
             presenter?.initialize()
         }
     }

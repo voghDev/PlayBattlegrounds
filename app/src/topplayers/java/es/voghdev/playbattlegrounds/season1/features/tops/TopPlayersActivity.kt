@@ -16,10 +16,10 @@ import es.voghdev.playbattlegrounds.season1.features.tops.api.GetTopPlayersApiDa
 import es.voghdev.playbattlegrounds.season1.features.tops.model.TopPlayer
 import es.voghdev.playbattlegrounds.season1.features.tops.model.Whitespace
 import es.voghdev.playbattlegrounds.season1.features.tops.renderer.WhitespaceRenderer
+import es.voghdev.playbattlegrounds.startActivity
 import es.voghdev.playbattlegrounds.ui
 import kotlinx.android.synthetic.topplayers.activity_top_players.*
 import kotlinx.coroutines.Dispatchers
-import es.voghdev.playbattlegrounds.startActivity
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
