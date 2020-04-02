@@ -17,5 +17,5 @@ package es.voghdev.playbattlegrounds.common
 
 import arrow.core.Either
 
-typealias Success<A, B> = Either.Right<A, B>
-typealias Failure<A, B> = Either.Left<A, B>
+typealias Success<A, B> = Either.Right<A>
+typealias Failure<A, B> = Either.Left<A>
