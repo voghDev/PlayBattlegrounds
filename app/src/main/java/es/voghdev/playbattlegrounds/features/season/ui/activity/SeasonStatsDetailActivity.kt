@@ -39,10 +39,10 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
         super.onCreate(savedInstanceState)
 
         presenter = SeasonStatsDetailPresenter(
-                Dispatchers.IO,
-                AndroidResLocator(this),
-                playerRepository,
-                GetImagesPathAndroidDataSource(applicationContext))
+            Dispatchers.IO,
+            AndroidResLocator(this),
+            playerRepository,
+            GetImagesPathAndroidDataSource(applicationContext))
         presenter?.view = this
         presenter?.navigator = this
 
@@ -75,14 +75,14 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
         text = SpannableString(text).apply {
             setSpan(ForegroundColorSpan(
-                    ContextCompat.getColor(applicationContext, highlightColorResId)),
-                    start,
-                    end,
-                    SPAN_EXCLUSIVE_EXCLUSIVE)
+                ContextCompat.getColor(applicationContext, highlightColorResId)),
+                start,
+                end,
+                SPAN_EXCLUSIVE_EXCLUSIVE)
             setSpan(RelativeSizeSpan(1.2f),
-                    start,
-                    end,
-                    SPAN_EXCLUSIVE_EXCLUSIVE)
+                start,
+                end,
+                SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 

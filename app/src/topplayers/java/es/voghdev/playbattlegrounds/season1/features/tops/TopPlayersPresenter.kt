@@ -20,11 +20,11 @@ class TopPlayersPresenter(
         withContext(dispatcher) {
             getTopPlayers.getTopPlayers()
         }
-                .fold({}, { players ->
-                    players.sortedBy { it.position }.forEach { player ->
-                        view?.addPlayer(player)
-                    }
-                })
+            .fold({}, { players ->
+                players.sortedBy { it.position }.forEach { player ->
+                    view?.addPlayer(player)
+                }
+            })
     }
 
     suspend fun storeCurrentSeason() {

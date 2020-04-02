@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import java.io.File
 import java.io.FileOutputStream
@@ -163,3 +164,10 @@ fun Context.screenWidth() = resources.displayMetrics.widthPixels
 fun Context.screenHeight() = resources.displayMetrics.heightPixels
 
 fun Context.screenDensity() = resources.displayMetrics.density
+
+inline fun <reified T> Context.startActivity(vararg args: Pair<String, Any?>, init: Intent.() -> Unit = {}) {
+    val intent = Intent(this, T::class.java)
+    intent.putExtras(bundleOf(*args))
+    intent.apply(init)
+    startActivity(intent)
+}

@@ -31,13 +31,13 @@ import es.voghdev.playbattlegrounds.features.players.ui.activity.PlayerSearchAct
 import es.voghdev.playbattlegrounds.features.season.usecase.GetSeasons
 import es.voghdev.playbattlegrounds.features.season.usecase.SetCurrentSeason
 import es.voghdev.playbattlegrounds.hideSoftKeyboard
+import es.voghdev.playbattlegrounds.startActivity
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.startActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -109,7 +109,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-                        setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
+                    setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
             })
         }
     }
