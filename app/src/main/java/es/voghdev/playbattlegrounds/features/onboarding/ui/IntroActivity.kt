@@ -109,7 +109,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-                        setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
+                    setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
             })
         }
     }

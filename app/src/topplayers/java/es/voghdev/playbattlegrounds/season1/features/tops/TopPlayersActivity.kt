@@ -39,18 +39,18 @@ class TopPlayersActivity : BaseActivity(), KodeinAware, TopPlayersPresenter.MVPV
 
         val renderer = TopPlayerRenderer(this)
         val rendererBuilder = RendererBuilder<ListEntity>()
-                .bind(TopPlayer::class.java, renderer)
-                .bind(Whitespace::class.java, WhitespaceRenderer())
+            .bind(TopPlayer::class.java, renderer)
+            .bind(Whitespace::class.java, WhitespaceRenderer())
         adapter = RVRendererAdapter<ListEntity>(rendererBuilder)
 
         recyclerView?.adapter = adapter
         recyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         presenter = TopPlayersPresenter(
-                Dispatchers.IO,
-                GetTopPlayersApiDataSource(),
-                getSeasons,
-                setCurrentSeason
+            Dispatchers.IO,
+            GetTopPlayersApiDataSource(),
+            getSeasons,
+            setCurrentSeason
         )
         presenter?.view = this
         presenter?.navigator = this

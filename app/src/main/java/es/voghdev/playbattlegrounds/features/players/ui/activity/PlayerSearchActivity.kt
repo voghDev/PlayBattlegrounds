@@ -93,25 +93,25 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         val seasonRenderer = PlayerSeasonInfoRenderer(this)
         val loadMoreRenderer = LoadMoreRenderer(this)
         val rendererBuilder = RendererBuilder<ListEntity>()
-                .bind(Match::class.java, matchRenderer)
-                .bind(PlayerSeasonInfo::class.java, seasonRenderer)
-                .bind(LoadMore::class.java, loadMoreRenderer)
+            .bind(Match::class.java, matchRenderer)
+            .bind(PlayerSeasonInfo::class.java, seasonRenderer)
+            .bind(LoadMore::class.java, loadMoreRenderer)
         adapter = RVRendererAdapter<ListEntity>(rendererBuilder)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         presenter = PlayerSearchPresenter(
-                Dispatchers.IO,
-                resLocator,
-                playerRepository,
-                matchRepository,
-                getPlayerAccount,
-                getCurrentSeason,
-                isContentAvailable,
-                getPlayerRegion,
-                getImagesPath,
-                Build.VERSION.SDK_INT
+            Dispatchers.IO,
+            resLocator,
+            playerRepository,
+            matchRepository,
+            getPlayerAccount,
+            getCurrentSeason,
+            isContentAvailable,
+            getPlayerRegion,
+            getImagesPath,
+            Build.VERSION.SDK_INT
         )
         presenter?.view = this
         presenter?.navigator = this
@@ -166,11 +166,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     override fun showDialog(title: String, message: String) = ui {
         if (!isFinishing) {
             val dialog = AlertDialog.Builder(this)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .setCancelable(false)
-                    .create()
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setCancelable(false)
+                .create()
 
             dialog.show()
         }
@@ -270,9 +270,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun launchPlayerSeasonInfoScreen(player: Player, season: Season?) {
         startActivity<SeasonStatsDetailActivity>(
-                EXTRA_PLAYER_ID to player.id,
-                EXTRA_PLAYER_NAME to player.name,
-                EXTRA_SEASON to (season?.id ?: "")
+            EXTRA_PLAYER_ID to player.id,
+            EXTRA_PLAYER_NAME to player.name,
+            EXTRA_SEASON to (season?.id ?: "")
         )
     }
 

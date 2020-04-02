@@ -55,5 +55,5 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
     override fun close() = finish()
 
     override fun launchBrowser(link: String) =
-            startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
+        startActivity(Intent(ACTION_VIEW).apply { data = Uri.parse(link) })
 }
