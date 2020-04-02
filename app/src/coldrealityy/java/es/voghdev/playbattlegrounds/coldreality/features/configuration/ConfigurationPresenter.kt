@@ -3,6 +3,7 @@ package es.voghdev.playbattlegrounds.coldreality.features.configuration
 import es.voghdev.playbattlegrounds.coldreality.features.configuration.usecase.GetConfiguration
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
+import es.voghdev.playbattlegrounds.log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -14,11 +15,14 @@ class ConfigurationPresenter(
 
     override suspend fun initialize() {
         withContext(dispatcher) {
-            getConfiguration.getConfiguration().fold({}) {
-                it.contents.forEach {
-                    playerRepository.insertContent(it)
-                }
-            }
+            getConfiguration.getConfiguration()
+                .fold(ifLeft = { error ->
+                    log(error.message)
+                }, ifRight = { response ->
+                    response.contents.forEach {
+                        playerRepository.insertContent(it)
+                    }
+                })
         }
 
         navigator?.launchOnboardingScreen()

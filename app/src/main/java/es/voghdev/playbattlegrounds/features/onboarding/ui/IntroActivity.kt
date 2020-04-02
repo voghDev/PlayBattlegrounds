@@ -20,7 +20,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import es.voghdev.playbattlegrounds.R
-import es.voghdev.playbattlegrounds.common.Ok
+import es.voghdev.playbattlegrounds.common.Success
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.onboarding.model.Region
 import es.voghdev.playbattlegrounds.features.onboarding.usecase.GetPlayerAccount
@@ -76,7 +76,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
         }
 
         val playerAccount = getPlayerAccount.getPlayerAccount()
-        if (playerAccount is Ok && playerAccount.b.isNotEmpty()) {
+        if (playerAccount is Success && playerAccount.b.isNotEmpty()) {
             startActivity<PlayerSearchActivity>()
 
             finish()
@@ -92,7 +92,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
                 getSeasons.getSeasons()
             }
 
-            if (seasonsResult is Ok) {
+            if (seasonsResult is Success) {
                 val currentSeason = seasonsResult.b.firstOrNull { it.isCurrentSeason }
                 if (currentSeason != null)
                     setCurrentSeason.setCurrentSeason(currentSeason)
@@ -102,7 +102,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
 
     private fun fillServersSpinner() {
         val result = getRegions.getRegions()
-        if (result is Ok) {
+        if (result is Success) {
             spn_server.attachDataSource(result.b.toMutableList())
 
             spn_server.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {

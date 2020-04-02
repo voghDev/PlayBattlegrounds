@@ -19,9 +19,9 @@ import android.os.Build
 import android.text.format.DateFormat
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.R
-import es.voghdev.playbattlegrounds.common.Fail
-import es.voghdev.playbattlegrounds.common.Ok
+import es.voghdev.playbattlegrounds.common.Failure
 import es.voghdev.playbattlegrounds.common.Presenter
+import es.voghdev.playbattlegrounds.common.Success
 import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
 import es.voghdev.playbattlegrounds.features.matches.Match
 import es.voghdev.playbattlegrounds.features.matches.MatchRepository
@@ -63,7 +63,7 @@ class PlayerSearchPresenter(
 
     override suspend fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()
-        if (account is Ok && account.b.isNotEmpty())
+        if (account is Success && account.b.isNotEmpty())
             view?.fillPlayerAccount(account.b)
     }
 
@@ -73,7 +73,7 @@ class PlayerSearchPresenter(
         region = if (data.getRegion().isNotEmpty()) {
             data.getRegion()
         } else {
-            (getPlayerRegion.getPlayerRegion() as? Ok)?.b?.name ?: DEFAULT_REGION
+            (getPlayerRegion.getPlayerRegion() as? Success)?.b?.name ?: DEFAULT_REGION
         }
 
         if (data.getPlayerName().isNotEmpty()) {
@@ -96,27 +96,27 @@ class PlayerSearchPresenter(
         view?.hideShareButton()
         view?.hideContentAvailableButton()
 
-        val result = withContext(dispatcher) {
+        val response = withContext(dispatcher) {
             playerRepository.getPlayerByName(playerName, region)
         }
 
-        when (result) {
-            is Ok -> {
-                player = result.b
+        when (response) {
+            is Success -> {
+                player = response.b
                 view?.showPlayerFoundMessage(resLocator.getString(R.string.player_found_param, player.name))
                 view?.hideSoftKeyboard()
 
                 view?.clearList()
 
-                requestPlayerSeasonStats(result.b)
+                requestPlayerSeasonStats(response.b)
 
-                requestPlayerMatches(result.b)
+                requestPlayerMatches(response.b)
 
                 if (player.matches.size > matchesFrom + 5)
                     view?.addLoadMoreItem()
             }
-            is Fail -> {
-                view?.showDialog(resLocator.getString(R.string.error), result.a.message)
+            is Failure -> {
+                view?.showDialog(resLocator.getString(R.string.error), response.a.message)
                 view?.hideLoading()
             }
         }
@@ -134,7 +134,7 @@ class PlayerSearchPresenter(
                 }
 
                 when (result) {
-                    is Ok -> {
+                    is Success -> {
                         val name = player.name
                         val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
                         val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
@@ -153,13 +153,13 @@ class PlayerSearchPresenter(
 
                         view?.addMatch(copy)
                     }
-                    is Fail ->
+                    is Failure ->
                         ++errors
                 }
             }
 
             val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
-            if (contentResult is Ok && contentResult.b && enableAdditionalContents)
+            if (contentResult is Success && contentResult.b && enableAdditionalContents)
                 view?.showContentAvailableButton()
 
             view?.showShareButton()
@@ -178,12 +178,12 @@ class PlayerSearchPresenter(
             getCurrentSeason.getCurrentSeason()
         }
 
-        if (currentSeasonResult is Ok) {
+        if (currentSeasonResult is Success) {
             val seasonInfoResult = withContext(dispatcher) {
                 playerRepository.getPlayerSeasonInfo(player, currentSeasonResult.b, System.currentTimeMillis())
             }
 
-            if (seasonInfoResult is Ok) {
+            if (seasonInfoResult is Success) {
                 seasonInfo = seasonInfoResult.b
                 view?.addPlayerStatsRow(seasonInfoResult.b)
 
@@ -234,7 +234,7 @@ class PlayerSearchPresenter(
     fun onShareStatsButtonClicked(ms: Long) {
         val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
         val pathResult = getImagesPath.getImagesPath()
-        if (pathResult is Ok) {
+        if (pathResult is Success) {
             val imageFile = File(pathResult.b, "$now.png")
             view?.takeScreenshot(imageFile.absolutePath)
             if (sdkVersion >= Build.VERSION_CODES.N) {

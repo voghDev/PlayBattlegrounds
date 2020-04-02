@@ -7,9 +7,8 @@ import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
 import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
 import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
-import es.voghdev.playbattlegrounds.common.Ok
 import es.voghdev.playbattlegrounds.common.Presenter
-import es.voghdev.playbattlegrounds.common.reslocator.ResLocator
+import es.voghdev.playbattlegrounds.common.Success
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.season.Season
@@ -22,7 +21,6 @@ import java.io.File
 
 class SeasonStatsDetailPresenter(
     dispatcher: CoroutineDispatcher,
-    val resLocator: ResLocator,
     val playerRepository: PlayerRepository,
     val getImagesPath: GetImagesPath
 ) : Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>(dispatcher) {
@@ -39,7 +37,7 @@ class SeasonStatsDetailPresenter(
             playerRepository.getPlayerSeasonInfo(Player(data.getPlayerId()), Season(data.getSeason(), true, false), System.currentTimeMillis())
         }
 
-        if (seasonStatsResponse is Ok) {
+        if (seasonStatsResponse is Success) {
             val stats = seasonStatsResponse.b
 
             showKillDeathRatios(stats)
@@ -75,7 +73,7 @@ class SeasonStatsDetailPresenter(
     fun onShareSeasonStatsButtonClicked(ms: Long) {
         val now = DateFormat.format("yyyyMMdd_hhmmss", ms)
         val pathResult = getImagesPath.getImagesPath()
-        if (pathResult is Ok) {
+        if (pathResult is Success) {
             val imageFile = File(pathResult.b, "$now.png")
             view?.takeScreenshot(imageFile.absolutePath)
             if (sdkVersion >= Build.VERSION_CODES.N) {

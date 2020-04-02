@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
@@ -170,4 +171,8 @@ inline fun <reified T> Context.startActivity(vararg args: Pair<String, Any?>, in
     intent.putExtras(bundleOf(*args))
     intent.apply(init)
     startActivity(intent)
+}
+
+fun log(message: String) {
+    Log.e("PlayBattlegrounds", message)
 }
