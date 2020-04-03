@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import es.voghdev.playbattlegrounds.common.AbsError
 import java.io.File
 import java.io.FileOutputStream
 import java.text.ParseException
@@ -173,6 +174,6 @@ inline fun <reified T> Context.startActivity(vararg args: Pair<String, Any?>, in
     startActivity(intent)
 }
 
-fun log(message: String) {
-    Log.e("PlayBattlegrounds", message)
+fun log(error: AbsError) {
+    Log.e("PlayBattlegrounds", error.message)
 }

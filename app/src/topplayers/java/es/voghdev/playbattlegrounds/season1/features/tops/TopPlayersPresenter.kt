@@ -19,9 +19,7 @@ class TopPlayersPresenter(
         storeCurrentSeason()
 
         withContext(dispatcher) { getTopPlayers.getTopPlayers() }
-            .fold(ifLeft = { error ->
-                log(error.message)
-            }, ifRight = { players ->
+            .fold(ifLeft = ::log, ifRight = { players ->
                 players.sortedBy { it.position }.forEach { player ->
                     view?.addPlayer(player)
                 }
@@ -30,9 +28,7 @@ class TopPlayersPresenter(
 
     suspend fun storeCurrentSeason() {
         withContext(dispatcher) { getSeasons.getSeasons() }
-            .fold(ifLeft = { error ->
-                log(error.message)
-            }, ifRight = { seasons ->
+            .fold(ifLeft = ::log, ifRight = { seasons ->
                 val currentSeason = seasons.firstOrNull { it.isCurrentSeason }
                 if (currentSeason != null)
                     setCurrentSeason.setCurrentSeason(currentSeason)

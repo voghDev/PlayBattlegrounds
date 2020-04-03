@@ -16,9 +16,7 @@ class ConfigurationPresenter(
     override suspend fun initialize() {
         withContext(dispatcher) {
             getConfiguration.getConfiguration()
-                .fold(ifLeft = { error ->
-                    log(error.message)
-                }, ifRight = { response ->
+                .fold(ifLeft = ::log, ifRight = { response ->
                     response.contents.forEach {
                         playerRepository.insertContent(it)
                     }
