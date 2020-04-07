@@ -42,24 +42,24 @@ import java.io.File
 
 class PlayerSearchPresenter(
     dispatcher: CoroutineDispatcher,
-    val resLocator: ResLocator,
-    val playerRepository: PlayerRepository,
-    val matchRepository: MatchRepository,
-    val getPlayerAccount: GetPlayerAccount,
-    val getCurrentSeason: GetCurrentSeason,
-    val isContentAvailableForPlayer: IsContentAvailableForPlayer,
-    val getPlayerRegion: GetPlayerRegion,
-    val getImagesPath: GetImagesPath,
-    var sdkVersion: Int
+    private val resLocator: ResLocator,
+    private val playerRepository: PlayerRepository,
+    private val matchRepository: MatchRepository,
+    private val getPlayerAccount: GetPlayerAccount,
+    private val getCurrentSeason: GetCurrentSeason,
+    private val isContentAvailableForPlayer: IsContentAvailableForPlayer,
+    private val getPlayerRegion: GetPlayerRegion,
+    private val getImagesPath: GetImagesPath,
+    private var sdkVersion: Int
 ) :
     Presenter<PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator>(dispatcher) {
 
-    val DEFAULT_REGION = "pc-eu"
-    var player = Player()
-    var seasonInfo = createEmptyPlayerSeasonInfo()
-    var matchesFrom = 0
-    var enableAdditionalContents = true
-    var region = DEFAULT_REGION
+    private val DEFAULT_REGION = "pc-eu"
+    private var player = Player()
+    private var seasonInfo = createEmptyPlayerSeasonInfo()
+    private var matchesFrom = 0
+    private var enableAdditionalContents = true
+    private var region = DEFAULT_REGION
 
     override suspend fun initialize() {
         val account = getPlayerAccount.getPlayerAccount()

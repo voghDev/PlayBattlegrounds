@@ -72,19 +72,19 @@ import org.kodein.di.generic.instance
 class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.MVPView, PlayerSearchPresenter.Navigator, MatchRenderer.OnRowClicked, PlayerSeasonInfoRenderer.OnRowClicked, LoadMoreRenderer.OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    val playerRepository: PlayerRepository by instance()
-    val matchRepository: MatchRepository by instance()
-    val getPlayerAccount: GetPlayerAccount by instance()
-    val getCurrentSeason: GetCurrentSeason by instance()
-    val getPlayerRegion: GetPlayerRegion by instance()
-    val isContentAvailable: IsContentAvailableForPlayer by instance()
-    val getImagesPath: GetImagesPath by instance()
-    val resLocator: ResLocator by instance()
-    var adapter: RVRendererAdapter<ListEntity>? = null
-    var contentAvailableItem: MenuItem? = null
-    var shareItem: MenuItem? = null
+    private val playerRepository: PlayerRepository by instance()
+    private val matchRepository: MatchRepository by instance()
+    private val getPlayerAccount: GetPlayerAccount by instance()
+    private val getCurrentSeason: GetCurrentSeason by instance()
+    private val getPlayerRegion: GetPlayerRegion by instance()
+    private val isContentAvailable: IsContentAvailableForPlayer by instance()
+    private val getImagesPath: GetImagesPath by instance()
+    private val resLocator: ResLocator by instance()
+    private lateinit var adapter: RVRendererAdapter<ListEntity>
+    private var contentAvailableItem: MenuItem? = null
+    private var shareItem: MenuItem? = null
 
-    var presenter: PlayerSearchPresenter? = null
+    private lateinit var presenter: PlayerSearchPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,23 +113,23 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
             getImagesPath,
             Build.VERSION.SDK_INT
         )
-        presenter?.view = this
-        presenter?.navigator = this
+        presenter.view = this
+        presenter.navigator = this
 
         coroutineScope.launch {
-            presenter?.initialize()
+            presenter.initialize()
 
-            presenter?.onInitialData(PlayerSearchInitialData(intent))
+            presenter.onInitialData(PlayerSearchInitialData(intent))
         }
 
         sendButton.setOnClickListener {
             coroutineScope.launch {
-                presenter?.onSendButtonClicked(userNameEditText.text.toString().trim())
+                presenter.onSendButtonClicked(userNameEditText.text.toString().trim())
             }
         }
 
         rootView.setOnClickListener {
-            presenter?.onRootViewClicked()
+            presenter.onRootViewClicked()
         }
     }
 
@@ -144,8 +144,8 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_content_available -> presenter?.onContentButtonClicked()
-            R.id.action_share -> presenter?.onShareStatsButtonClicked(System.currentTimeMillis())
+            R.id.action_content_available -> presenter.onContentButtonClicked()
+            R.id.action_share -> presenter.onShareStatsButtonClicked(System.currentTimeMillis())
         }
 
         return super.onOptionsItemSelected(item)
@@ -209,45 +209,45 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
     }
 
     override fun clearList() = ui {
-        adapter?.clear()
+        adapter.clear()
     }
 
     override fun addMatch(match: Match) = ui {
-        adapter?.add(match)
+        adapter.add(match)
 
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun onMatchClicked(match: Match) {
-        presenter?.onMatchClicked(match)
+        presenter.onMatchClicked(match)
     }
 
     override fun onLoadMoreClicked() {
         coroutineScope.launch {
-            presenter?.onLoadMoreMatchesClicked()
+            presenter.onLoadMoreMatchesClicked()
         }
     }
 
     override fun onPlayerSeasonInfoClicked(playerSeasonInfo: PlayerSeasonInfo) {
-        presenter?.onPlayerSeasonInfoClicked(playerSeasonInfo)
+        presenter.onPlayerSeasonInfoClicked(playerSeasonInfo)
     }
 
     override fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo) = ui {
-        adapter?.add(seasonInfo)
+        adapter.add(seasonInfo)
 
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun addLoadMoreItem() = ui {
-        adapter?.add(LoadMore("matches"))
+        adapter.add(LoadMore("matches"))
 
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun removeLoadMoreItem() = ui {
-        adapter?.remove(LoadMore("matches"))
+        adapter.remove(LoadMore("matches"))
 
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun hideContentAvailableButton() = ui {

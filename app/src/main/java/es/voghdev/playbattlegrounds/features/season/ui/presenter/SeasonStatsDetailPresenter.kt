@@ -21,8 +21,8 @@ import java.io.File
 
 class SeasonStatsDetailPresenter(
     dispatcher: CoroutineDispatcher,
-    val playerRepository: PlayerRepository,
-    val getImagesPath: GetImagesPath
+    private val playerRepository: PlayerRepository,
+    private val getImagesPath: GetImagesPath
 ) : Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>(dispatcher) {
 
     var sdkVersion: Int = Build.VERSION.SDK_INT

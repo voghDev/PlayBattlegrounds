@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 class ConfigurationPresenter(
     dispatcher: CoroutineDispatcher,
     private val getConfiguration: GetConfiguration,
-    val playerRepository: PlayerRepository
+    private val playerRepository: PlayerRepository
 ) : Presenter<ConfigurationPresenter.MVPView, ConfigurationPresenter.Navigator>(dispatcher) {
 
     override suspend fun initialize() {

@@ -47,14 +47,14 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
 
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    val setPlayerAccount: SetPlayerAccount by instance()
-    val getPlayerAccount: GetPlayerAccount by instance()
-    val setUserRegion: SetPlayerRegion by instance()
-    val getRegions: GetRegions by instance()
-    val getSeasons: GetSeasons by instance()
-    val setCurrentSeason: SetCurrentSeason by instance()
-    val dispatcher = Dispatchers.IO
-    val coroutineScope = IntroScope()
+    private val setPlayerAccount: SetPlayerAccount by instance()
+    private val getPlayerAccount: GetPlayerAccount by instance()
+    private val setUserRegion: SetPlayerRegion by instance()
+    private val getRegions: GetRegions by instance()
+    private val getSeasons: GetSeasons by instance()
+    private val setCurrentSeason: SetCurrentSeason by instance()
+    private val dispatcher = Dispatchers.IO
+    private val coroutineScope = IntroScope()
 
     class IntroScope : CoroutineScope by MainScope()
 

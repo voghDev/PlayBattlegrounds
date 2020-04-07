@@ -21,24 +21,24 @@ import org.kodein.di.generic.instance
 class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresenter.MVPView, ContentDetailPresenter.Navigator {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    var presenter: ContentDetailPresenter? = null
-    val playerRepository: PlayerRepository by instance()
+    private lateinit var presenter: ContentDetailPresenter
+    private val playerRepository: PlayerRepository by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         presenter = ContentDetailPresenter(Dispatchers.IO, playerRepository)
-        presenter?.view = this
-        presenter?.navigator = this
+        presenter.view = this
+        presenter.navigator = this
 
         coroutineScope.launch {
-            presenter?.initialize()
+            presenter.initialize()
 
-            presenter?.onInitialData(ContentDetailInitialData(intent))
+            presenter.onInitialData(ContentDetailInitialData(intent))
         }
 
         btn_read_more.setOnClickListener {
-            presenter?.onLinkButtonClicked()
+            presenter.onLinkButtonClicked()
         }
     }
 

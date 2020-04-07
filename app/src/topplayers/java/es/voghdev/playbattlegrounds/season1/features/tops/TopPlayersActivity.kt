@@ -28,11 +28,11 @@ import org.kodein.di.generic.instance
 class TopPlayersActivity : BaseActivity(), KodeinAware, TopPlayersPresenter.MVPView, TopPlayersPresenter.Navigator, OnRowClicked {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    val getSeasons: GetSeasons by instance()
-    val setCurrentSeason: SetCurrentSeason by instance()
-    var adapter: RVRendererAdapter<ListEntity>? = null
+    private val getSeasons: GetSeasons by instance()
+    private val setCurrentSeason: SetCurrentSeason by instance()
+    private lateinit var adapter: RVRendererAdapter<ListEntity>
 
-    var presenter: TopPlayersPresenter? = null
+    private lateinit var presenter: TopPlayersPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,22 +52,22 @@ class TopPlayersActivity : BaseActivity(), KodeinAware, TopPlayersPresenter.MVPV
             getSeasons,
             setCurrentSeason
         )
-        presenter?.view = this
-        presenter?.navigator = this
+        presenter.view = this
+        presenter.navigator = this
 
         coroutineScope.launch {
-            presenter?.initialize()
+            presenter.initialize()
         }
     }
 
     override fun addPlayer(player: TopPlayer) = ui {
-        adapter?.add(player)
+        adapter.add(player)
 
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun onTopPlayerClicked(topPlayer: TopPlayer) {
-        presenter?.onTopPlayerClicked(topPlayer)
+        presenter.onTopPlayerClicked(topPlayer)
     }
 
     override fun launchPlayerSearchScreenForPlayer(topPlayer: TopPlayer) {
