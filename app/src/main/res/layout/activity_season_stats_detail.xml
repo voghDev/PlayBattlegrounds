@@ -1,150 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/v_guideline1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/v_guideline2"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_percent="0.9"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/season_stats_motion"
+    app:motionDebug="SHOW_PATH">
 
     <TextView
         android:id="@+id/tv_solo_kdr"
-        style="@style/SeasonStatsLabel.Left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03" />
+        style="@style/SeasonStatsLabel"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginTop="@dimen/margin_bigger"
+        app:layout_constraintBottom_toTopOf="@id/tv_solo_kills"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_solo_kills"
         style="@style/SeasonStatsLabel.Kills"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_solo_kdr" />
 
     <TextView
         android:id="@+id/tv_solo_fpp_kdr"
-        style="@style/SeasonStatsLabel.Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        style="@style/SeasonStatsLabel"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_marginRight="@dimen/margin"
+        app:layout_constraintBottom_toTopOf="@+id/tv_solo_fpp_kills"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_solo_fpp_kills"
         style="@style/SeasonStatsLabel.Kills.Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_solo_fpp_kdr" />
 
     <TextView
         android:id="@+id/tv_duo_kdr"
-        style="@style/SeasonStatsLabel.Left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+        style="@style/SeasonStatsLabel"
+        android:layout_marginTop="@dimen/margin_bigger"
+        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_solo_kills" />
 
     <TextView
         android:id="@+id/tv_duo_kills"
         style="@style/SeasonStatsLabel.Kills"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.28" />
+        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_duo_kdr" />
 
     <TextView
         android:id="@+id/tv_duo_fpp_kdr"
-        style="@style/SeasonStatsLabel.Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33" />
+        style="@style/SeasonStatsLabel"
+        android:layout_marginTop="@dimen/margin_bigger"
+        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_solo_fpp_kills" />
 
     <TextView
         android:id="@+id/tv_duo_fpp_kills"
         style="@style/SeasonStatsLabel.Kills.Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_duo_fpp_kdr" />
 
     <TextView
         android:id="@+id/tv_squad_kdr"
-        style="@style/SeasonStatsLabel.Left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43" />
+        style="@style/SeasonStatsLabel"
+        android:layout_marginTop="@dimen/margin_bigger"
+        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
+        app:layout_constraintTop_toBottomOf="@id/tv_duo_kills" />
 
     <TextView
         android:id="@+id/tv_squad_kills"
         style="@style/SeasonStatsLabel.Kills"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_squad_kdr" />
 
     <TextView
         android:id="@+id/tv_squad_fpp_kdr"
-        style="@style/SeasonStatsLabel.Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
+        style="@style/SeasonStatsLabel"
+        android:layout_marginTop="@dimen/margin_bigger"
+        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_duo_fpp_kills" />
 
     <TextView
         android:id="@+id/tv_squad_fpp_kills"
         style="@style/SeasonStatsLabel.Kills.Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@+id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_squad_fpp_kdr"
+         />
 
-    <View
-        android:id="@+id/v_separator"
-        android:layout_width="0dp"
-        android:layout_height="1px"
-        android:background="#333"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/v_guideline1"
-        app:layout_constraintRight_toRightOf="@id/v_guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.63" />
+    <ImageButton
+        android:id="@+id/shareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_share"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_squad_fpp_kills" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

@@ -51,6 +51,10 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
             presenter?.onSdkVersionReceived(Build.VERSION.SDK_INT)
         }
+
+        shareButton.setOnClickListener {
+            presenter?.onShareSeasonStatsButtonClicked(millis())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -61,11 +65,13 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_share -> presenter?.onShareSeasonStatsButtonClicked(System.currentTimeMillis())
+            R.id.action_share -> presenter?.onShareSeasonStatsButtonClicked(millis())
         }
 
         return super.onOptionsItemSelected(item)
     }
+
+    private fun millis() = System.currentTimeMillis()
 
     fun TextView.highlightCharsAfter(separator: String = ": ", highlightColorResId: Int) {
         val start = maxOf(1, text.indexOf(separator))
@@ -140,6 +146,8 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
     override fun showShareButton() = ui {
         shareItem?.isVisible = true
+
+        rootView.transitionToEnd()
     }
 
     override fun hideShareButton() = ui {
