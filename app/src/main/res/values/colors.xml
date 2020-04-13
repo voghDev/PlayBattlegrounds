@@ -11,4 +11,6 @@
     <color name="dark_green">#006600</color>
     <color name="blue">#00a2ff</color>
     <color name="dark_blue">#0070cc</color>
+    <color name="darker_blue">#000066</color>
+    <color name="dark_orange">#cc3300</color>
 </resources>

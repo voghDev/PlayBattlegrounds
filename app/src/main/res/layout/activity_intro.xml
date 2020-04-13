@@ -29,27 +29,33 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/step2View"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/dark_blue"
+        android:background="@drawable/white_background"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.7"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tv_subtitle"
-            style="@style/IntroSubtitle" />
+            style="@style/IntroSubtitle"
+            app:layout_constraintBottom_toTopOf="@+id/til_user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/step2View" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_user"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle">
 
             <EditText
                 android:id="@+id/et_user"
@@ -65,44 +71,53 @@
         <Button
             android:id="@+id/step2NextButton"
             style="@style/IntroSendButton"
-            android:text="Next" />
+            android:text="Next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_user" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/step3View"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/dark_green"
+        android:background="@drawable/dark_orange_background"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.65"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tv_server"
             style="@style/IntroSubtitle"
             android:text="@string/server_selection_message"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/step3View" />
 
         <org.angmarch.views.NiceSpinner
             android:id="@+id/spn_server"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             app:arrowTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_server"
             app:textTint="@android:color/black" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/sendButton"
-        style="@style/IntroSendButton"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Element"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_accept"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Select" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
