@@ -40,17 +40,12 @@
         app:constraintSetEnd="@+id/step3"
         app:constraintSetStart="@+id/step2"
         app:duration="1300">
-
-        <KeyFrameSet>
-
-        </KeyFrameSet>
     </Transition>
 
     <Transition
         app:constraintSetEnd="@+id/step4"
         app:constraintSetStart="@+id/step3"
         app:duration="1300">
-        <KeyFrameSet></KeyFrameSet>
     </Transition>
 
     <!-- Constraints to apply at the start of the animation -->

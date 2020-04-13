@@ -64,7 +64,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.activity_intro)
 
         rootView.setOnClickListener {
-            hideSoftKeyboard(et_user)
+            hideSoftKeyboard(userEditText)
         }
 
         startButton.setOnClickListener {
@@ -78,7 +78,7 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
         }
 
         sendButton.setOnClickListener {
-            val playerName = et_user.text.toString().trim()
+            val playerName = userEditText.text.toString().trim()
 
             setPlayerAccount.setPlayerAccount(playerName)
 
@@ -113,9 +113,9 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     private fun fillServersSpinner() {
         val result = getRegions.getRegions()
         if (result is Success) {
-            spn_server.attachDataSource(result.b.toMutableList())
+            serverSpinner.attachDataSource(result.b.toMutableList())
 
-            spn_server.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            serverSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

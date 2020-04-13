@@ -19,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/titleTextView"
             style="@style/IntroTitle" />
 
         <Button
             android:id="@+id/startButton"
             style="@style/IntroSendButton"
-            android:text="Start" />
+            android:text="@string/start" />
 
     </LinearLayout>
 
@@ -41,24 +41,24 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tv_subtitle"
+            android:id="@+id/subtitleTextView"
             style="@style/IntroSubtitle"
-            app:layout_constraintBottom_toTopOf="@+id/til_user"
+            app:layout_constraintBottom_toTopOf="@+id/userTextInputLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/step2View" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_user"
+            android:id="@+id/userTextInputLayout"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle">
+            app:layout_constraintTop_toBottomOf="@+id/subtitleTextView">
 
             <EditText
-                android:id="@+id/et_user"
+                android:id="@+id/userEditText"
                 style="@style/FullW"
                 android:gravity="top|center_horizontal"
                 android:hint="@string/user_name_hint"
@@ -71,10 +71,10 @@
         <Button
             android:id="@+id/step2NextButton"
             style="@style/IntroSendButton"
-            android:text="Next"
+            android:text="@string/next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_user" />
+            app:layout_constraintTop_toBottomOf="@+id/userTextInputLayout" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 
@@ -90,7 +90,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tv_server"
+            android:id="@+id/serverTextView"
             style="@style/IntroSubtitle"
             android:text="@string/server_selection_message"
             android:textSize="20sp"
@@ -99,14 +99,14 @@
             app:layout_constraintTop_toTopOf="@+id/step3View" />
 
         <org.angmarch.views.NiceSpinner
-            android:id="@+id/spn_server"
+            android:id="@+id/serverSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:arrowTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_server"
+            app:layout_constraintTop_toBottomOf="@id/serverTextView"
             app:textTint="@android:color/black" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
