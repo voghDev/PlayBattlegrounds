@@ -83,6 +83,8 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
             setPlayerAccount.setPlayerAccount(playerName)
 
             startActivity<PlayerSearchActivity>("playerName" to playerName)
+
+            finish()
         }
 
         val playerAccount = getPlayerAccount.getPlayerAccount()
