@@ -22,10 +22,9 @@
             android:id="@+id/titleTextView"
             style="@style/IntroTitle" />
 
-        <Button
+        <ImageButton
             android:id="@+id/startButton"
-            style="@style/IntroSendButton"
-            android:text="@string/start" />
+            style="@style/HelloButton" />
 
     </LinearLayout>
 
