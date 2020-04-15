@@ -126,4 +126,12 @@
         <item name="layout_constraintHorizontal_bias">1</item>
     </style>
 
+    <style name="HelloButton" parent="Element">
+        <item name="android:src">@mipmap/hello</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/margin_bigger</item>
+        <item name="android:background">@drawable/orange_circle</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
 </resources>

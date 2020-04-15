@@ -63,16 +63,28 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
 
         setContentView(R.layout.activity_intro)
 
-        btn_send.setOnClickListener {
-            val playerName = et_user.text.toString().trim()
+        rootView.setOnClickListener {
+            hideSoftKeyboard(userEditText)
+        }
+
+        startButton.setOnClickListener {
+            rootView.setTransition(R.id.start, R.id.step2)
+            rootView.transitionToEnd()
+        }
+
+        step2NextButton.setOnClickListener {
+            rootView.setTransition(R.id.step2, R.id.step3)
+            rootView.transitionToEnd()
+        }
+
+        sendButton.setOnClickListener {
+            val playerName = userEditText.text.toString().trim()
 
             setPlayerAccount.setPlayerAccount(playerName)
 
             startActivity<PlayerSearchActivity>("playerName" to playerName)
-        }
 
-        rootView.setOnClickListener {
-            hideSoftKeyboard(et_user)
+            finish()
         }
 
         val playerAccount = getPlayerAccount.getPlayerAccount()
@@ -103,13 +115,17 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     private fun fillServersSpinner() {
         val result = getRegions.getRegions()
         if (result is Success) {
-            spn_server.attachDataSource(result.b.toMutableList())
+            serverSpinner.attachDataSource(result.b.toMutableList())
 
-            spn_server.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            serverSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
+
+                    rootView.setTransition(R.id.step3, R.id.step4)
+                    rootView.transitionToEnd()
+                }
             })
         }
     }

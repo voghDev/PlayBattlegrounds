@@ -1,62 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    app:layoutDescription="@xml/intro_motion"
+    app:motionDebug="SHOW_PATH">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/verticalLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/titleTextView"
             style="@style/IntroTitle" />
 
+        <ImageButton
+            android:id="@+id/startButton"
+            style="@style/HelloButton" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/step2View"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/white_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent">
+
         <TextView
-            android:id="@+id/tv_subtitle"
-            style="@style/IntroSubtitle" />
+            android:id="@+id/subtitleTextView"
+            style="@style/IntroSubtitle"
+            app:layout_constraintBottom_toTopOf="@+id/userTextInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/step2View" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_user"
+            android:id="@+id/userTextInputLayout"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subtitleTextView">
 
             <EditText
-                android:id="@+id/et_user"
+                android:id="@+id/userEditText"
                 style="@style/FullW"
                 android:gravity="top|center_horizontal"
                 android:hint="@string/user_name_hint"
                 android:imeOptions="actionDone"
-                android:textColor="@color/white"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Button
+            android:id="@+id/step2NextButton"
+            style="@style/IntroSendButton"
+            android:text="@string/next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userTextInputLayout" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/step3View"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/dark_orange_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintStart_toStartOf="parent">
+
         <TextView
-            android:id="@+id/tv_server"
+            android:id="@+id/serverTextView"
             style="@style/IntroSubtitle"
             android:text="@string/server_selection_message"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/step3View" />
 
         <org.angmarch.views.NiceSpinner
-            android:id="@+id/spn_server"
+            android:id="@+id/serverSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             app:arrowTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/serverTextView"
             app:textTint="@android:color/black" />
 
-        <Button
-            android:id="@+id/btn_send"
-            style="@style/IntroSendButton" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/sendButton"
+        style="@style/Element"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_accept"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

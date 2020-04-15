@@ -41,6 +41,8 @@
     <string name="no_matches_found">No matches found</string>
     <string name="no_matches_in_season_param">%1$s has no matches this season</string>
     <string name="share">Share stats</string>
+    <string name="start">Start</string>
+    <string name="next">Next</string>
 
     <plurals name="kills">
         <item quantity="one">%d kill</item>
