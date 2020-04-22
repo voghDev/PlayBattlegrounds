@@ -30,7 +30,7 @@ import org.kodein.di.generic.instance
 class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    var presenter: SeasonStatsDetailPresenter? = null
+    lateinit var presenter: SeasonStatsDetailPresenter
     val playerRepository: PlayerRepository by instance()
     var shareItem: MenuItem? = null
 
@@ -41,19 +41,19 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
             Dispatchers.IO,
             playerRepository,
             GetImagesPathAndroidDataSource(applicationContext))
-        presenter?.view = this
-        presenter?.navigator = this
+        presenter.view = this
+        presenter.navigator = this
 
         coroutineScope.launch {
-            presenter?.initialize()
+            presenter.initialize()
 
-            presenter?.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
+            presenter.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
 
-            presenter?.onSdkVersionReceived(Build.VERSION.SDK_INT)
+            presenter.onSdkVersionReceived(Build.VERSION.SDK_INT)
         }
 
         shareButton.setOnClickListener {
-            presenter?.onShareSeasonStatsButtonClicked(millis())
+            presenter.onShareSeasonStatsButtonClicked(millis())
         }
     }
 
@@ -65,7 +65,7 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_share -> presenter?.onShareSeasonStatsButtonClicked(millis())
+            R.id.action_share -> presenter.onShareSeasonStatsButtonClicked(millis())
         }
 
         return super.onOptionsItemSelected(item)
