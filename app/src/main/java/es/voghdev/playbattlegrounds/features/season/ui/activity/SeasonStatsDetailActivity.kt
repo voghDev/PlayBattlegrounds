@@ -119,29 +119,29 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
     override fun render(state: SeasonStatsDetailPresenter.ViewState) {
         state as SeasonStatsDetailPresenter.ViewState.Success
 
-        tv_solo_kdr.text = state.soloKDR
-        tv_solo_kdr.highlightCharsAfter(": ", state.soloColor)
-        tv_solo_kills.text = state.soloSummary
+        soloKDRTextView.text = state.soloKDR
+        soloKDRTextView.highlightCharsAfter(": ", state.soloColor)
+        soloKillsTextView.text = state.soloSummary
 
-        tv_solo_fpp_kdr.text = state.soloFppKDR
-        tv_solo_fpp_kdr.highlightCharsAfter(": ", state.soloFppColor)
-        tv_solo_fpp_kills.text = state.soloFppSummary
+        soloFppKDRTextView.text = state.soloFppKDR
+        soloFppKDRTextView.highlightCharsAfter(": ", state.soloFppColor)
+        soloFppKillsTextView.text = state.soloFppSummary
 
-        tv_duo_kdr.text = state.duoKDR
-        tv_duo_kdr.highlightCharsAfter(": ", state.duoColor)
-        tv_duo_kills.text = state.duoSummary
+        duoKdrTextView.text = state.duoKDR
+        duoKdrTextView.highlightCharsAfter(": ", state.duoColor)
+        duoKillsTextView.text = state.duoSummary
 
-        tv_duo_fpp_kdr.text = state.duoFppKDR
-        tv_duo_fpp_kdr.highlightCharsAfter(": ", state.duoFppColor)
-        tv_duo_fpp_kills.text = state.duoFppSummary
+        duoFppKDRTextView.text = state.duoFppKDR
+        duoFppKDRTextView.highlightCharsAfter(": ", state.duoFppColor)
+        duoFppKillsTextView.text = state.duoFppSummary
 
-        tv_squad_kdr.text = state.squadKDR
-        tv_squad_kdr.highlightCharsAfter(": ", state.squadColor)
-        tv_squad_kills.text = state.squadSummary
+        squadKDRTextView.text = state.squadKDR
+        squadKDRTextView.highlightCharsAfter(": ", state.squadColor)
+        squadKillsTextView.text = state.squadSummary
 
-        tv_squad_fpp_kdr.text = state.squadFppKDR
-        tv_squad_fpp_kdr.highlightCharsAfter(": ", state.squadFppColor)
-        tv_squad_fpp_kills.text = state.squadFppSummary
+        squadFppKDRTextView.text = state.squadFppKDR
+        squadFppKDRTextView.highlightCharsAfter(": ", state.squadFppColor)
+        squadFppKillsTextView.text = state.squadFppSummary
     }
 
     override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }

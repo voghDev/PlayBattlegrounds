@@ -8,86 +8,86 @@
     app:motionDebug="SHOW_PATH">
 
     <TextView
-        android:id="@+id/tv_solo_kdr"
+        android:id="@+id/soloKDRTextView"
         style="@style/SeasonStatsLabel"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginTop="@dimen/margin_bigger"
-        app:layout_constraintBottom_toTopOf="@id/tv_solo_kills"
+        app:layout_constraintBottom_toTopOf="@id/soloKillsTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_solo_kills"
+        android:id="@+id/soloKillsTextView"
         style="@style/SeasonStatsLabel.Kills"
-        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_solo_kdr" />
+        app:layout_constraintStart_toStartOf="@+id/soloKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/soloKDRTextView" />
 
     <TextView
-        android:id="@+id/tv_solo_fpp_kdr"
+        android:id="@+id/soloFppKDRTextView"
         style="@style/SeasonStatsLabel"
         android:layout_marginTop="@dimen/margin_big"
         android:layout_marginRight="@dimen/margin"
-        app:layout_constraintBottom_toTopOf="@+id/tv_solo_fpp_kills"
+        app:layout_constraintBottom_toTopOf="@+id/soloFppKillsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_solo_fpp_kills"
+        android:id="@+id/soloFppKillsTextView"
         style="@style/SeasonStatsLabel.Kills.Right"
-        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_solo_fpp_kdr" />
+        app:layout_constraintEnd_toEndOf="@+id/soloFppKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/soloFppKDRTextView" />
 
     <TextView
-        android:id="@+id/tv_duo_kdr"
+        android:id="@+id/duoKdrTextView"
         style="@style/SeasonStatsLabel"
         android:layout_marginTop="@dimen/margin_bigger"
-        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_solo_kills" />
+        app:layout_constraintStart_toStartOf="@+id/soloKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/soloKillsTextView" />
 
     <TextView
-        android:id="@+id/tv_duo_kills"
+        android:id="@+id/duoKillsTextView"
         style="@style/SeasonStatsLabel.Kills"
-        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_duo_kdr" />
+        app:layout_constraintStart_toStartOf="@+id/soloKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/duoKdrTextView" />
 
     <TextView
-        android:id="@+id/tv_duo_fpp_kdr"
+        android:id="@+id/duoFppKDRTextView"
         style="@style/SeasonStatsLabel"
         android:layout_marginTop="@dimen/margin_bigger"
-        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_solo_fpp_kills" />
+        app:layout_constraintEnd_toEndOf="@+id/soloFppKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/soloFppKillsTextView" />
 
     <TextView
-        android:id="@+id/tv_duo_fpp_kills"
+        android:id="@+id/duoFppKillsTextView"
         style="@style/SeasonStatsLabel.Kills.Right"
-        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_duo_fpp_kdr" />
+        app:layout_constraintEnd_toEndOf="@+id/soloFppKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/duoFppKDRTextView" />
 
     <TextView
-        android:id="@+id/tv_squad_kdr"
+        android:id="@+id/squadKDRTextView"
         style="@style/SeasonStatsLabel"
         android:layout_marginTop="@dimen/margin_bigger"
-        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
-        app:layout_constraintTop_toBottomOf="@id/tv_duo_kills" />
+        app:layout_constraintStart_toStartOf="@+id/soloKDRTextView"
+        app:layout_constraintTop_toBottomOf="@id/duoKillsTextView" />
 
     <TextView
-        android:id="@+id/tv_squad_kills"
+        android:id="@+id/squadKillsTextView"
         style="@style/SeasonStatsLabel.Kills"
-        app:layout_constraintStart_toStartOf="@+id/tv_solo_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_squad_kdr" />
+        app:layout_constraintStart_toStartOf="@+id/soloKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/squadKDRTextView" />
 
     <TextView
-        android:id="@+id/tv_squad_fpp_kdr"
+        android:id="@+id/squadFppKDRTextView"
         style="@style/SeasonStatsLabel"
         android:layout_marginTop="@dimen/margin_bigger"
-        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_duo_fpp_kills" />
+        app:layout_constraintEnd_toEndOf="@+id/soloFppKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/duoFppKillsTextView" />
 
     <TextView
-        android:id="@+id/tv_squad_fpp_kills"
+        android:id="@+id/squadFppKillsTextView"
         style="@style/SeasonStatsLabel.Kills.Right"
-        app:layout_constraintEnd_toEndOf="@+id/tv_solo_fpp_kdr"
-        app:layout_constraintTop_toBottomOf="@+id/tv_squad_fpp_kdr"
+        app:layout_constraintEnd_toEndOf="@+id/soloFppKDRTextView"
+        app:layout_constraintTop_toBottomOf="@+id/squadFppKDRTextView"
          />
 
     <ImageButton
@@ -100,6 +100,6 @@
         android:tint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_squad_fpp_kills" />
+        app:layout_constraintTop_toBottomOf="@+id/squadFppKillsTextView" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
