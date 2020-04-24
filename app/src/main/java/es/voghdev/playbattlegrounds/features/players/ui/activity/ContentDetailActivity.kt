@@ -37,7 +37,7 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
             presenter.onInitialData(ContentDetailInitialData(intent))
         }
 
-        btn_read_more.setOnClickListener {
+        readMoreButton.setOnClickListener {
             presenter.onLinkButtonClicked()
         }
     }
@@ -46,11 +46,15 @@ class ContentDetailActivity : BaseActivity(), KodeinAware, ContentDetailPresente
 
     override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }
 
-    override fun showContentTitle(title: String) = ui { tv_title.text = title }
+    override fun render(state: ContentDetailPresenter.ViewState) = ui {
+        state as ContentDetailPresenter.ViewState.Success
 
-    override fun showContentText(text: String) = ui { tv_text.text = text }
+        titleTextView.text = state.contentTitle
+        textView.text = state.contentText
 
-    override fun showButtonText(text: String) = ui { btn_read_more.text = text }
+        if (state.isButtonVisible)
+            readMoreButton.text = state.buttonText
+    }
 
     override fun close() = finish()
 

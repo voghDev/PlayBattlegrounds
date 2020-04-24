@@ -22,11 +22,13 @@ class ContentDetailPresenter(
 
         if (result is Success) {
             content = result.b
-            view?.showContentTitle(content.title)
-            view?.showContentText(content.text)
 
-            if (content.isButtonVisible)
-                view?.showButtonText(content.buttonText)
+            view?.render(ViewState.Success(
+                content.title,
+                content.text,
+                content.isButtonVisible,
+                content.buttonText
+            ))
         }
     }
 
@@ -34,10 +36,20 @@ class ContentDetailPresenter(
         navigator?.launchBrowser(content.link)
     }
 
+    sealed class ViewState {
+        object Failure : ViewState()
+        object Loading : ViewState()
+        data class Success(
+            val contentTitle: String,
+            val contentText: String,
+            val isButtonVisible: Boolean,
+            val buttonText: String
+        ) : ViewState()
+    }
+
     interface MVPView {
-        fun showContentTitle(title: String)
-        fun showContentText(text: String)
-        fun showButtonText(text: String)
+        fun render(state: ViewState)
+
         fun configureToolbar()
     }
 
