@@ -117,31 +117,31 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
     override fun showToolbarTitle(title: String) = ui { supportActionBar?.title = title }
 
     override fun render(state: SeasonStatsDetailPresenter.ViewState) {
-        (state as SeasonStatsDetailPresenter.ViewState.Success)?.let { state ->
-            tv_solo_kdr.text = state.soloKDR
-            tv_solo_kdr.highlightCharsAfter(": ", state.soloColor)
-            tv_solo_kills.text = state.soloSummary
+        state as SeasonStatsDetailPresenter.ViewState.Success
 
-            tv_solo_fpp_kdr.text = state.soloFppKDR
-            tv_solo_fpp_kdr.highlightCharsAfter(": ", state.soloFppColor)
-            tv_solo_fpp_kills.text = state.soloFppSummary
+        tv_solo_kdr.text = state.soloKDR
+        tv_solo_kdr.highlightCharsAfter(": ", state.soloColor)
+        tv_solo_kills.text = state.soloSummary
 
-            tv_duo_kdr.text = state.duoKDR
-            tv_duo_kdr.highlightCharsAfter(": ", state.duoColor)
-            tv_duo_kills.text = state.duoSummary
+        tv_solo_fpp_kdr.text = state.soloFppKDR
+        tv_solo_fpp_kdr.highlightCharsAfter(": ", state.soloFppColor)
+        tv_solo_fpp_kills.text = state.soloFppSummary
 
-            tv_duo_fpp_kdr.text = state.duoFppKDR
-            tv_duo_fpp_kdr.highlightCharsAfter(": ", state.duoFppColor)
-            tv_duo_fpp_kills.text = state.duoFppSummary
+        tv_duo_kdr.text = state.duoKDR
+        tv_duo_kdr.highlightCharsAfter(": ", state.duoColor)
+        tv_duo_kills.text = state.duoSummary
 
-            tv_squad_kdr.text = state.squadKDR
-            tv_squad_kdr.highlightCharsAfter(": ", state.squadColor)
-            tv_squad_kills.text = state.squadSummary
+        tv_duo_fpp_kdr.text = state.duoFppKDR
+        tv_duo_fpp_kdr.highlightCharsAfter(": ", state.duoFppColor)
+        tv_duo_fpp_kills.text = state.duoFppSummary
 
-            tv_squad_fpp_kdr.text = state.squadFppKDR
-            tv_squad_fpp_kdr.highlightCharsAfter(": ", state.squadFppColor)
-            tv_squad_fpp_kills.text = state.squadFppSummary
-        }
+        tv_squad_kdr.text = state.squadKDR
+        tv_squad_kdr.highlightCharsAfter(": ", state.squadColor)
+        tv_squad_kills.text = state.squadSummary
+
+        tv_squad_fpp_kdr.text = state.squadFppKDR
+        tv_squad_fpp_kdr.highlightCharsAfter(": ", state.squadFppColor)
+        tv_squad_fpp_kills.text = state.squadFppSummary
     }
 
     override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }
