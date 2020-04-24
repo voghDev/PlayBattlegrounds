@@ -67,6 +67,6 @@
             android:layout_marginTop="@dimen/margin_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_squad_fpp_kills" />
+            app:layout_constraintTop_toBottomOf="@+id/squadFppKillsTextView" />
     </ConstraintSet>
 </MotionScene>

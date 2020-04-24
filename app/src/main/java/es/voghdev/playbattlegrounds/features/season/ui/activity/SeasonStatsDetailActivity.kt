@@ -1,5 +1,6 @@
 package es.voghdev.playbattlegrounds.features.season.ui.activity
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
@@ -12,6 +13,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.BaseActivity
+import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
+import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
+import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
 import es.voghdev.playbattlegrounds.common.asApp
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.season.ui.presenter.SeasonStatsDetailPresenter
@@ -30,7 +34,7 @@ import org.kodein.di.generic.instance
 class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator {
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
-    var presenter: SeasonStatsDetailPresenter? = null
+    lateinit var presenter: SeasonStatsDetailPresenter
     val playerRepository: PlayerRepository by instance()
     var shareItem: MenuItem? = null
 
@@ -41,19 +45,17 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
             Dispatchers.IO,
             playerRepository,
             GetImagesPathAndroidDataSource(applicationContext))
-        presenter?.view = this
-        presenter?.navigator = this
+        presenter.view = this
+        presenter.navigator = this
 
         coroutineScope.launch {
-            presenter?.initialize()
+            presenter.initialize()
 
-            presenter?.onInitialData(SeasonStatsDetailPresenter.AndroidInitialData(intent))
-
-            presenter?.onSdkVersionReceived(Build.VERSION.SDK_INT)
+            presenter.onInitialData(AndroidInitialData(intent))
         }
 
         shareButton.setOnClickListener {
-            presenter?.onShareSeasonStatsButtonClicked(millis())
+            presenter.onShareSeasonStatsButtonClicked(millis())
         }
     }
 
@@ -65,7 +67,7 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_share -> presenter?.onShareSeasonStatsButtonClicked(millis())
+            R.id.action_share -> presenter.onShareSeasonStatsButtonClicked(millis())
         }
 
         return super.onOptionsItemSelected(item)
@@ -88,60 +90,6 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
                 end,
                 SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-    }
-
-    override fun showSoloKDR(text: String, statColorResId: Int) = ui {
-        tv_solo_kdr.text = text
-        tv_solo_kdr.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSoloFPPKDR(text: String, statColorResId: Int) = ui {
-        tv_solo_fpp_kdr.text = text
-        tv_solo_fpp_kdr.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showDuoKDR(text: String, statColorResId: Int) = ui {
-        tv_duo_kdr.text = text
-        tv_duo_kdr.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showDuoFPPKDR(text: String, statColorResId: Int) = ui {
-        tv_duo_fpp_kdr.text = text
-        tv_duo_fpp_kdr.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSquadKDR(text: String, statColorResId: Int) = ui {
-        tv_squad_kdr.text = text
-        tv_squad_kdr.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSquadFPPKDR(text: String, statColorResId: Int) = ui {
-        tv_squad_fpp_kdr.text = text
-        tv_squad_fpp_kdr.highlightCharsAfter(": ", statColorResId)
-    }
-
-    override fun showSoloSummary(text: String) = ui {
-        tv_solo_kills.text = text
-    }
-
-    override fun showSoloFPPSummary(text: String) = ui {
-        tv_solo_fpp_kills.text = text
-    }
-
-    override fun showDuoSummary(text: String) = ui {
-        tv_duo_kills.text = text
-    }
-
-    override fun showDuoFPPSummary(text: String) = ui {
-        tv_duo_fpp_kills.text = text
-    }
-
-    override fun showSquadSummary(text: String) = ui {
-        tv_squad_kills.text = text
-    }
-
-    override fun showSquadFPPSummary(text: String) = ui {
-        tv_squad_fpp_kills.text = text
     }
 
     override fun showShareButton() = ui {
@@ -168,7 +116,48 @@ class SeasonStatsDetailActivity : BaseActivity(), KodeinAware, SeasonStatsDetail
 
     override fun showToolbarTitle(title: String) = ui { supportActionBar?.title = title }
 
+    override fun render(state: SeasonStatsDetailPresenter.ViewState) {
+        state as SeasonStatsDetailPresenter.ViewState.Success
+
+        soloKDRTextView.text = state.soloKDR
+        soloKDRTextView.highlightCharsAfter(": ", state.soloColor)
+        soloKillsTextView.text = state.soloSummary
+
+        soloFppKDRTextView.text = state.soloFppKDR
+        soloFppKDRTextView.highlightCharsAfter(": ", state.soloFppColor)
+        soloFppKillsTextView.text = state.soloFppSummary
+
+        duoKdrTextView.text = state.duoKDR
+        duoKdrTextView.highlightCharsAfter(": ", state.duoColor)
+        duoKillsTextView.text = state.duoSummary
+
+        duoFppKDRTextView.text = state.duoFppKDR
+        duoFppKDRTextView.highlightCharsAfter(": ", state.duoFppColor)
+        duoFppKillsTextView.text = state.duoFppSummary
+
+        squadKDRTextView.text = state.squadKDR
+        squadKDRTextView.highlightCharsAfter(": ", state.squadColor)
+        squadKillsTextView.text = state.squadSummary
+
+        squadFppKDRTextView.text = state.squadFppKDR
+        squadFppKDRTextView.highlightCharsAfter(": ", state.squadFppColor)
+        squadFppKillsTextView.text = state.squadFppSummary
+    }
+
     override fun configureToolbar() = ui { supportActionBar?.setDisplayHomeAsUpEnabled(true) }
+
+    class AndroidInitialData(val intent: Intent?) : SeasonStatsDetailPresenter.InitialData {
+        override fun getPlayerId(): String =
+            intent?.getStringExtra(EXTRA_PLAYER_ID) ?: ""
+
+        override fun getPlayerName(): String =
+            intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
+
+        override fun getSeason(): String =
+            intent?.getStringExtra(EXTRA_SEASON) ?: ""
+
+        override fun getSdkVersion(): Int = Build.VERSION.SDK_INT
+    }
 
     override fun getLayoutId(): Int = R.layout.activity_season_stats_detail
 }

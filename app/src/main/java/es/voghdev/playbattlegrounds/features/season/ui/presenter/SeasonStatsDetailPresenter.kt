@@ -1,18 +1,13 @@
 package es.voghdev.playbattlegrounds.features.season.ui.presenter
 
-import android.content.Intent
 import android.os.Build
 import android.text.format.DateFormat
 import es.voghdev.playbattlegrounds.R
-import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_ID
-import es.voghdev.playbattlegrounds.common.EXTRA_PLAYER_NAME
-import es.voghdev.playbattlegrounds.common.EXTRA_SEASON
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.common.Success
 import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.season.Season
-import es.voghdev.playbattlegrounds.features.season.model.PlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
 import es.voghdev.playbattlegrounds.format
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,7 +20,7 @@ class SeasonStatsDetailPresenter(
     private val getImagesPath: GetImagesPath
 ) : Presenter<SeasonStatsDetailPresenter.MVPView, SeasonStatsDetailPresenter.Navigator>(dispatcher) {
 
-    var sdkVersion: Int = Build.VERSION.SDK_INT
+    lateinit var initialData: InitialData
 
     override suspend fun initialize() {
         view?.configureToolbar()
@@ -33,41 +28,46 @@ class SeasonStatsDetailPresenter(
     }
 
     suspend fun onInitialData(data: InitialData) {
+        initialData = data
+
         val seasonStatsResponse = withContext(dispatcher) {
-            playerRepository.getPlayerSeasonInfo(Player(data.getPlayerId()), Season(data.getSeason(), true, false), System.currentTimeMillis())
+            playerRepository.getPlayerSeasonInfo(
+                Player(data.getPlayerId()),
+                Season(
+                    id = data.getSeason(),
+                    isCurrentSeason = true,
+                    isOffSeason = false
+                ),
+                System.currentTimeMillis()
+            )
         }
 
         if (seasonStatsResponse is Success) {
             val stats = seasonStatsResponse.b
 
-            showKillDeathRatios(stats)
-            showSummaries(stats)
+            view?.render(ViewState.Success(
+                data.getPlayerName(),
+                "Solo KDR: ${stats.statsSolo.kdr().format(2)}",
+                getKDRColor(stats.statsSolo.kdr()),
+                "${stats.statsSolo.kills} kills, ${stats.statsSolo.losses} deaths",
+                "Solo FPP KDR: ${stats.statsSoloFPP.kdr().format(2)}",
+                getKDRColor(stats.statsSoloFPP.kdr()),
+                "${stats.statsSoloFPP.kills} kills, ${stats.statsSoloFPP.losses} deaths",
+                "Duo KDR: ${stats.statsDuo.kdr().format(2)}",
+                getKDRColor(stats.statsDuo.kdr()),
+                "${stats.statsDuo.kills} kills, ${stats.statsDuo.losses} deaths",
+                "Duo FPP KDR: ${stats.statsDuoFPP.kdr().format(2)}",
+                getKDRColor(stats.statsDuoFPP.kdr()),
+                "${stats.statsDuoFPP.kills} kills, ${stats.statsDuoFPP.losses} deaths",
+                "Squad KDR: ${stats.statsSquad.kdr().format(2)}", getKDRColor(stats.statsSquad.kdr()),
+                "${stats.statsSquad.kills} kills, ${stats.statsSquad.losses} deaths",
+                "Squad FPP KDR: ${stats.statsSquadFPP.kdr().format(2)}", getKDRColor(stats.statsSquadFPP.kdr()),
+                "${stats.statsSquadFPP.kills} kills, ${stats.statsSquadFPP.losses} deaths"
+            ))
 
             view?.showShareButton()
             view?.showToolbarTitle(data.getPlayerName())
         }
-    }
-
-    fun onSdkVersionReceived(sdk: Int) {
-        sdkVersion = sdk
-    }
-
-    private fun showKillDeathRatios(stats: PlayerSeasonInfo) {
-        view?.showSoloKDR("Solo KDR: ${stats.statsSolo.kdr().format(2)}", getKDRColor(stats.statsSolo.kdr()))
-        view?.showSoloFPPKDR("Solo FPP KDR: ${stats.statsSoloFPP.kdr().format(2)}", getKDRColor(stats.statsSoloFPP.kdr()))
-        view?.showDuoKDR("Duo KDR: ${stats.statsDuo.kdr().format(2)}", getKDRColor(stats.statsDuo.kdr()))
-        view?.showDuoFPPKDR("Duo FPP KDR: ${stats.statsDuoFPP.kdr().format(2)}", getKDRColor(stats.statsDuoFPP.kdr()))
-        view?.showSquadKDR("Squad KDR: ${stats.statsSquad.kdr().format(2)}", getKDRColor(stats.statsSquad.kdr()))
-        view?.showSquadFPPKDR("Squad FPP KDR: ${stats.statsSquadFPP.kdr().format(2)}", getKDRColor(stats.statsSquadFPP.kdr()))
-    }
-
-    private fun showSummaries(stats: PlayerSeasonInfo) {
-        view?.showSoloSummary("${stats.statsSolo.kills} kills, ${stats.statsSolo.losses} deaths")
-        view?.showSoloFPPSummary("${stats.statsSoloFPP.kills} kills, ${stats.statsSoloFPP.losses} deaths")
-        view?.showDuoSummary("${stats.statsDuo.kills} kills, ${stats.statsDuo.losses} deaths")
-        view?.showDuoFPPSummary("${stats.statsDuoFPP.kills} kills, ${stats.statsDuoFPP.losses} deaths")
-        view?.showSquadSummary("${stats.statsSquad.kills} kills, ${stats.statsSquad.losses} deaths")
-        view?.showSquadFPPSummary("${stats.statsSquadFPP.kills} kills, ${stats.statsSquadFPP.losses} deaths")
     }
 
     fun onShareSeasonStatsButtonClicked(ms: Long) {
@@ -76,7 +76,7 @@ class SeasonStatsDetailPresenter(
         if (pathResult is Success) {
             val imageFile = File(pathResult.b, "$now.png")
             view?.takeScreenshot(imageFile.absolutePath)
-            if (sdkVersion >= Build.VERSION_CODES.N) {
+            if (initialData.getSdkVersion() >= Build.VERSION_CODES.N) {
                 view?.sharePlayerStatsNougat(imageFile.absolutePath)
             } else {
                 view?.sharePlayerStatsPreNougat(imageFile.absolutePath)
@@ -92,40 +92,44 @@ class SeasonStatsDetailPresenter(
             else -> R.color.light_red
         }
 
+    sealed class ViewState {
+        object Failure : ViewState()
+        object Loading : ViewState()
+        data class Success(
+            val toolbarTitle: String,
+            val soloKDR: String,
+            val soloColor: Int,
+            val soloSummary: String,
+            val soloFppKDR: String,
+            val soloFppColor: Int,
+            val soloFppSummary: String,
+            val duoKDR: String,
+            val duoColor: Int,
+            val duoSummary: String,
+            val duoFppKDR: String,
+            val duoFppColor: Int,
+            val duoFppSummary: String,
+            val squadKDR: String,
+            val squadColor: Int,
+            val squadSummary: String,
+            val squadFppKDR: String,
+            val squadFppColor: Int,
+            val squadFppSummary: String
+        ) : ViewState()
+    }
+
     interface InitialData {
         fun getPlayerId(): String
         fun getPlayerName(): String
         fun getSeason(): String
-    }
-
-    class AndroidInitialData(val intent: Intent?) : InitialData {
-        override fun getPlayerId(): String =
-            intent?.getStringExtra(EXTRA_PLAYER_ID) ?: ""
-
-        override fun getPlayerName(): String =
-            intent?.getStringExtra(EXTRA_PLAYER_NAME) ?: ""
-
-        override fun getSeason(): String =
-            intent?.getStringExtra(EXTRA_SEASON) ?: ""
+        fun getSdkVersion(): Int
     }
 
     interface MVPView {
+        fun render(state: ViewState)
+
         fun configureToolbar()
         fun showToolbarTitle(title: String)
-
-        fun showSoloKDR(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showSoloFPPKDR(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showDuoKDR(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showDuoFPPKDR(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showSquadKDR(text: String, statColorResId: Int = R.color.colorPrimary)
-        fun showSquadFPPKDR(text: String, statColorResId: Int = R.color.colorPrimary)
-
-        fun showSoloSummary(text: String)
-        fun showSoloFPPSummary(text: String)
-        fun showDuoSummary(text: String)
-        fun showDuoFPPSummary(text: String)
-        fun showSquadSummary(text: String)
-        fun showSquadFPPSummary(text: String)
 
         fun takeScreenshot(path: String)
         fun sharePlayerStatsNougat(path: String)
