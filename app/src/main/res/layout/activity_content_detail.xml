@@ -5,17 +5,17 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/titleTextView"
         style="@style/ContentDetailTitle" />
 
     <TextView
-        android:id="@+id/tv_text"
-        android:layout_below="@+id/tv_title"
+        android:id="@+id/textView"
+        android:layout_below="@+id/titleTextView"
         style="@style/ContentDetailText" />
 
     <Button
-        android:id="@+id/btn_read_more"
-        android:layout_below="@+id/tv_text"
+        android:id="@+id/readMoreButton"
+        android:layout_below="@+id/textView"
         style="@style/ContentDetailReadMoreButton" />
 
 </RelativeLayout>
