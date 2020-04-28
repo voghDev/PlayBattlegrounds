@@ -28,7 +28,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -205,11 +204,13 @@ class PlayerSearchPresenterTest {
             ))
         )
 
+        givenThereAreSomeMatchesForPlayer()
+
         presenter.initialize()
 
         presenter.onInitialData(data)
 
-        verify(mockView).render(matchesCaptor.capture())
+        verify(mockView).addMatches(matchesCaptor.capture())
 
         assertEquals(5, matchesCaptor.firstValue.size)
     }
@@ -565,6 +566,12 @@ class PlayerSearchPresenterTest {
             override fun additionalContentsEnabled(): Boolean = true
             override fun getPlayerName(): String = ""
             override fun getRegion(): String = ""
+        }
+    }
+
+    private fun givenThereAreSomeMatchesForPlayer() {
+        (0..someMatches.size.minus(1)).forEach { i ->
+            whenever(mockMatchRepository.getMatchById(someMatches[i].id)).thenReturn(Either.Right(someMatches[i]))
         }
     }
 

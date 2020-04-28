@@ -159,7 +159,7 @@ class PlayerSearchPresenter(
                 }
             }
 
-            view?.render(matches)
+            view?.addMatches(matches)
 
             val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
             if (contentResult is Success && contentResult.b && enableAdditionalContents)
@@ -301,8 +301,6 @@ class PlayerSearchPresenter(
     )
 
     interface MVPView {
-        fun render(matches: List<Match>)
-
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
         fun showDialog(title: String, message: String)
@@ -312,6 +310,7 @@ class PlayerSearchPresenter(
         fun hideLoading()
         fun fillPlayerAccount(account: String)
         fun addPlayerStatsRow(seasonInfo: PlayerSeasonInfo)
+        fun addMatches(matches: List<Match>)
         fun addLoadMoreItem()
         fun removeLoadMoreItem()
         fun hideContentAvailableButton()

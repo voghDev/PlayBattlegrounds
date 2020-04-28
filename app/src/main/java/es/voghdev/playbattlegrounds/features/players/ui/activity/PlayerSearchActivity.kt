@@ -212,7 +212,7 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         adapter.clear()
     }
 
-    override fun render(matches: List<Match>) = ui {
+    override fun addMatches(matches: List<Match>) = ui {
         adapter.addAll(matches)
 
         adapter.notifyDataSetChanged()
