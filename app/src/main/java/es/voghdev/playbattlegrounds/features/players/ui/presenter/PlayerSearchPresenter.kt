@@ -125,6 +125,7 @@ class PlayerSearchPresenter(
     private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
         if (player.matches.isNotEmpty()) {
             var errors = 0
+            var matches: MutableList<Match> = ArrayList()
 
             view?.hideEmptyCase()
 
@@ -151,12 +152,14 @@ class PlayerSearchPresenter(
 
                         matchRepository.insertMatch(copy)
 
-                        view?.addMatch(copy)
+                        matches.add(copy)
                     }
                     is Failure ->
                         ++errors
                 }
             }
+
+            view?.render(matches)
 
             val contentResult = isContentAvailableForPlayer.isContentAvailableForPlayer(player)
             if (contentResult is Success && contentResult.b && enableAdditionalContents)
@@ -298,11 +301,12 @@ class PlayerSearchPresenter(
     )
 
     interface MVPView {
+        fun render(matches: List<Match>)
+
         fun showPlayerFoundMessage(message: String)
         fun showError(message: String)
         fun showDialog(title: String, message: String)
         fun clearList()
-        fun addMatch(match: Match)
         fun hideSoftKeyboard()
         fun showLoading()
         fun hideLoading()

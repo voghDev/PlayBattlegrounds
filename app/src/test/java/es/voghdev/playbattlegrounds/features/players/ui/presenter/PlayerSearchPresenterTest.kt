@@ -28,6 +28,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -76,6 +77,7 @@ class PlayerSearchPresenterTest {
     val oneMoreMatch = Match(id = "uuid006", gameMode = "duo-fpp", numberOfKillsForCurrentPlayer = 15)
 
     val contentCaptor = argumentCaptor<Content>()
+    val matchesCaptor = argumentCaptor<List<Match>>()
 
     @Before
     fun setUp() {
@@ -186,6 +188,30 @@ class PlayerSearchPresenterTest {
         presenter.onInitialData(data)
 
         verify(mockView).addLoadMoreItem()
+    }
+
+    @Test
+    fun `should render View state when some matches are available`() = runBlockingTest {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = true
+            override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
+        )
+
+        presenter.initialize()
+
+        presenter.onInitialData(data)
+
+        verify(mockView).render(matchesCaptor.capture())
+
+        assertEquals(5, matchesCaptor.firstValue.size)
     }
 
     @Test
