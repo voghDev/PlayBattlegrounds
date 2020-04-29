@@ -18,6 +18,7 @@ import es.voghdev.playbattlegrounds.features.players.PlayerRepository
 import es.voghdev.playbattlegrounds.features.players.model.Content
 import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.IsContentAvailableForPlayer
+import es.voghdev.playbattlegrounds.features.season.Season
 import es.voghdev.playbattlegrounds.features.season.usecase.GetCurrentSeason
 import es.voghdev.playbattlegrounds.features.season.usecase.GetPlayerSeasonInfo
 import es.voghdev.playbattlegrounds.features.share.GetImagesPath
@@ -28,6 +29,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -78,6 +80,8 @@ class PlayerSearchPresenterTest {
     val contentCaptor = argumentCaptor<Content>()
     val matchesCaptor = argumentCaptor<List<Match>>()
 
+    val aSeason = Season("2020-01", true, false)
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -100,6 +104,30 @@ class PlayerSearchPresenterTest {
         presenter.onInitialData(data)
 
         verify(mockPlayerRepository).getPlayerByName("DiabloVT", "pc-na")
+    }
+
+    @Test
+    fun `should request player season info on start`() = runBlockingTest {
+        val data = object : PlayerSearchPresenter.InitialData {
+            override fun additionalContentsEnabled(): Boolean = false
+            override fun getPlayerName(): String = "DiabloVT"
+            override fun getRegion(): String = "pc-na"
+        }
+
+        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
+            Either.right(Player(
+                name = "DiabloVT",
+                matches = someMatches
+            ))
+        )
+
+        whenever(mockGetCurrentSeason.getCurrentSeason()).thenReturn(Either.Right(aSeason))
+
+        presenter.initialize()
+
+        presenter.onInitialData(data)
+
+        verify(mockPlayerRepository).getPlayerSeasonInfo(anyPlayer(), anySeason(), anyLong())
     }
 
     @Test
@@ -546,6 +574,7 @@ class PlayerSearchPresenterTest {
     }
 
     private fun anyPlayer(): Player = any()
+    private fun anySeason(): Season = any()
 
     private fun givenThereIsContentAvailableForAllPlayers() {
         whenever(mockIsContentAvailableForPlayer.isContentAvailableForPlayer(anyPlayer()))
