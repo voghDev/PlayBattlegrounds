@@ -81,6 +81,10 @@ class PlayerSearchPresenterTest {
     val matchesCaptor = argumentCaptor<List<Match>>()
 
     val aSeason = Season("2020-01", true, false)
+    val aPlayer = Player(
+        name = "DiabloVT",
+        matches = someMatches
+    )
 
     @Before
     fun setUp() {
@@ -114,12 +118,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         whenever(mockGetCurrentSeason.getCurrentSeason()).thenReturn(Either.Right(aSeason))
 
@@ -155,12 +154,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         presenter.initialize()
 
@@ -181,12 +175,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         presenter.initialize()
 
@@ -203,12 +192,10 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches.apply { add(oneMoreMatch) }
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "DiabloVT",
+            matches = someMatches.apply { add(oneMoreMatch) }
+        ))
 
         presenter.initialize()
 
@@ -225,12 +212,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         givenThereAreSomeMatchesForPlayer()
 
@@ -251,12 +233,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         presenter.initialize()
 
@@ -273,14 +250,12 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = (1..10).map {
-                    Match(id = "id00$it", gameMode = "solo", numberOfKillsForCurrentPlayer = it)
-                }
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "DiabloVT",
+            matches = (1..10).map {
+                Match(id = "id00$it", gameMode = "solo", numberOfKillsForCurrentPlayer = it)
+            }
+        ))
 
         presenter.initialize()
 
@@ -417,12 +392,10 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = emptyList()
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "DiabloVT",
+            matches = emptyList()
+        ))
 
         presenter.initialize()
 
@@ -439,12 +412,7 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         presenter.initialize()
 
@@ -461,12 +429,10 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = emptyList()
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "DiabloVT",
+            matches = emptyList()
+        ))
 
         presenter.initialize()
 
@@ -483,18 +449,17 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = someMatches
-            ))
-        )
+        givenThereIsAPlayerWithSomeMatches()
 
         presenter.initialize()
 
         presenter.onInitialData(data)
 
         verify(mockView).showShareButton()
+    }
+
+    private fun givenThereIsAPlayerWithSomeMatches() {
+        givenThereIsAPlayer(aPlayer)
     }
 
     @Test
@@ -505,12 +470,10 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = emptyList()
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "DiabloVT",
+            matches = emptyList()
+        ))
 
         presenter.initialize()
 
@@ -527,12 +490,10 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-na"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "DiabloVT",
-                matches = emptyList()
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "DiabloVT",
+            matches = emptyList()
+        ))
 
         presenter.initialize()
 
@@ -549,12 +510,10 @@ class PlayerSearchPresenterTest {
             override fun getRegion(): String = "pc-eu"
         }
 
-        whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
-            Either.right(Player(
-                name = "ByRubi9",
-                matches = emptyList()
-            ))
-        )
+        givenThereIsAPlayer(Player(
+            name = "ByRubi9",
+            matches = emptyList()
+        ))
 
         presenter.initialize()
 
@@ -568,6 +527,10 @@ class PlayerSearchPresenterTest {
     }
 
     private fun givenThatQueryingForAnyPlayerReturns(player: Player) {
+        givenThereIsAPlayer(player)
+    }
+
+    private fun givenThereIsAPlayer(player: Player) {
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
             Either.right(player)
         )
