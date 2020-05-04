@@ -43,7 +43,8 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 
 class IntroActivity : AppCompatActivity(), KodeinAware {
-    val DEFAULT_REGION = Region("pc-eu")
+    private val defaultRegion = Region("pc-eu")
+    private val placeholderElement = 1
 
     override val kodein: Kodein by lazy { applicationContext.asApp().kodein }
 
@@ -113,18 +114,24 @@ class IntroActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun fillServersSpinner() {
+        val emptyRegion = Region("")
         val result = getRegions.getRegions()
         if (result is Success) {
-            serverSpinner.attachDataSource(result.b.toMutableList())
+            serverSpinner.attachDataSource(listOf(emptyRegion).plus(result.b.toMutableList()))
 
             serverSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position, { DEFAULT_REGION }))
+                    if (position > 0) {
+                        setUserRegion.setCurrentRegion(result.b.elementAtOrElse(position.plus(placeholderElement)) { defaultRegion })
 
-                    rootView.setTransition(R.id.step3, R.id.step4)
-                    rootView.transitionToEnd()
+                        rootView.setTransition(R.id.step3, R.id.step4)
+                        rootView.transitionToEnd()
+                    } else {
+                        rootView.setTransition(R.id.step4, R.id.step3)
+                        rootView.transitionToEnd()
+                    }
                 }
             })
         }
