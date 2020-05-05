@@ -458,7 +458,7 @@ class PlayerSearchPresenterTest {
         verify(mockView).showShareButton()
     }
 
-    private fun givenThereIsAPlayerWithSomeMatches() {
+    private suspend fun givenThereIsAPlayerWithSomeMatches() {
         givenThereIsAPlayer(aPlayer)
     }
 
@@ -526,11 +526,11 @@ class PlayerSearchPresenterTest {
         assertEquals(9, contentCaptor.firstValue.id)
     }
 
-    private fun givenThatQueryingForAnyPlayerReturns(player: Player) {
+    private suspend fun givenThatQueryingForAnyPlayerReturns(player: Player) {
         givenThereIsAPlayer(player)
     }
 
-    private fun givenThereIsAPlayer(player: Player) {
+    private suspend fun givenThereIsAPlayer(player: Player) {
         whenever(mockPlayerRepository.getPlayerByName(anyString(), anyString())).thenReturn(
             Either.right(player)
         )

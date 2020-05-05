@@ -35,7 +35,7 @@ import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 class GetPlayerByNameApiDataSource() : GetPlayerByName, ApiRequest {
-    override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
+    override suspend fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG)
             builder.addInterceptor(LogJsonInterceptor())

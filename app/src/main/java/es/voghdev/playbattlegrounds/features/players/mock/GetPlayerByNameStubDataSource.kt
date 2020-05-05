@@ -21,7 +21,7 @@ import es.voghdev.playbattlegrounds.features.players.model.Player
 import es.voghdev.playbattlegrounds.features.players.usecase.GetPlayerByName
 
 class GetPlayerByNameStubDataSource : GetPlayerByName {
-    override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> =
+    override suspend fun getPlayerByName(name: String, region: String): Either<AbsError, Player> =
         Either.right(
             Player(
                 "account.afbb96044b3b4e888e3cef65fcdaf898",

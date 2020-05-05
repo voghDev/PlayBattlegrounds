@@ -33,7 +33,7 @@ class PlayerRepository(
     var seasonInfoMap = mutableMapOf<String, PlayerSeasonInfo>()
     var contents = mutableMapOf<Long, Content>()
 
-    override fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
+    override suspend fun getPlayerByName(name: String, region: String): Either<AbsError, Player> {
         val result = getPlayerByNameApiDataSource.getPlayerByName(name, region)
 
         return if (userCanRequest(System.currentTimeMillis())) result

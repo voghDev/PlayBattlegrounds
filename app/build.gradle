@@ -100,6 +100,8 @@ dependencies {
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
 
     implementation 'io.arrow-kt:arrow-core-data:0.10.5'
+    implementation 'io.arrow-kt:arrow-fx:0.10.5'
+    implementation 'io.arrow-kt:arrow-fx-kotlinx-coroutines:0.10.5'
 
     implementation 'org.kodein.di:kodein-di-generic-jvm:5.0.0'
 

@@ -19,6 +19,7 @@ import android.os.Build
 import android.text.format.DateFormat
 import arrow.core.Either
 import es.voghdev.playbattlegrounds.R
+import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.Failure
 import es.voghdev.playbattlegrounds.common.Presenter
 import es.voghdev.playbattlegrounds.common.Success
@@ -100,32 +101,45 @@ class PlayerSearchPresenter(
             playerRepository.getPlayerByName(playerName, region)
         }
 
-        when (response) {
-            is Success -> {
-                player = response.b
+        response.fold(
+            ifLeft = { error ->
+                view?.showDialog(resLocator.getString(R.string.error), error.message)
+                view?.hideLoading()
+            },
+            ifRight = { player ->
+                this.player = player
                 view?.showPlayerFoundMessage(resLocator.getString(R.string.player_found_param, player.name))
                 view?.hideSoftKeyboard()
 
                 view?.clearList()
 
-                requestPlayerSeasonStats(response.b)
+                requestPlayerSeasonStats(player)
 
-                requestPlayerMatches(response.b)
+                val playerMatches = requestPlayerMatches(player)
+
+                playerMatches.fold(
+                    ifLeft = { error ->
+                        view?.showError(error.message)
+                    },
+                    ifRight = { matches ->
+                        this.player = this.player.copy(matches = matches)
+                        matches.forEach { match ->
+                            matchRepository.insertMatch(match)
+                        }
+                        Unit
+                    }
+                )
 
                 if (player.matches.size > matchesFrom + 5)
                     view?.addLoadMoreItem()
-            }
-            is Failure -> {
-                view?.showDialog(resLocator.getString(R.string.error), response.a.message)
-                view?.hideLoading()
-            }
-        }
+            })
     }
 
-    private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5) {
+    private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5): Either<AbsError, List<Match>> {
+        var matches: MutableList<Match> = ArrayList()
+
         if (player.matches.isNotEmpty()) {
             var errors = 0
-            var matches: MutableList<Match> = ArrayList()
 
             view?.hideEmptyCase()
 
@@ -143,15 +157,6 @@ class PlayerSearchPresenter(
                             numberOfKillsForCurrentPlayer = kills,
                             placeForCurrentPlayer = place)
 
-                        with(it) {
-                            numberOfKillsForCurrentPlayer = kills
-                            placeForCurrentPlayer = place
-                            date = result.b.date
-                            gameMode = result.b.gameMode
-                        }
-
-                        matchRepository.insertMatch(copy)
-
                         matches.add(copy)
                     }
                     is Failure ->
@@ -168,12 +173,14 @@ class PlayerSearchPresenter(
             view?.showShareButton()
 
             if (errors > 0)
-                view?.showError("Could not load $errors matches")
+                return Either.Left(AbsError("Could not load $errors matches"))
         } else {
             view?.showEmptyCase()
         }
 
         view?.hideLoading()
+
+        return Either.right(matches)
     }
 
     private suspend fun requestPlayerSeasonStats(player: Player) {
