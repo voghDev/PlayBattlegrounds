@@ -137,7 +137,7 @@ class PlayerSearchPresenter(
             })
     }
 
-    private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 5): Either<AbsError, List<Match>> {
+    private suspend fun requestPlayerMatches(player: Player, from: Int = 0, n: Int = 10): Either<AbsError, List<Match>> {
         var matches: MutableList<Match> = ArrayList()
 
         if (player.matches.isNotEmpty()) {

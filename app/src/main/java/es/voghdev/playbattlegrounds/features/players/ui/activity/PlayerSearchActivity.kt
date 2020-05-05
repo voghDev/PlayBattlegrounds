@@ -24,6 +24,8 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import arrow.fx.IO
+import arrow.integrations.kotlinx.unsafeRunIO
 import com.google.android.material.snackbar.Snackbar
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
@@ -116,11 +118,11 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         presenter.view = this
         presenter.navigator = this
 
-        coroutineScope.launch {
+        coroutineScope.unsafeRunIO(IO {
             presenter.initialize()
 
             presenter.onInitialData(PlayerSearchInitialData(intent))
-        }
+        }) {}
 
         sendButton.setOnClickListener {
             coroutineScope.launch {
