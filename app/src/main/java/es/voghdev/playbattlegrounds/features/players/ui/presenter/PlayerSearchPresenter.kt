@@ -18,6 +18,8 @@ package es.voghdev.playbattlegrounds.features.players.ui.presenter
 import android.os.Build
 import android.text.format.DateFormat
 import arrow.core.Either
+import arrow.fx.IO
+import arrow.fx.extensions.io.concurrent.parSequence
 import es.voghdev.playbattlegrounds.R
 import es.voghdev.playbattlegrounds.common.AbsError
 import es.voghdev.playbattlegrounds.common.Failure
@@ -143,26 +145,28 @@ class PlayerSearchPresenter(
 
             view?.hideEmptyCase()
 
-            player.matches.subList(from, player.matches.size).take(n).forEach {
-                val result = withContext(dispatcher) {
+            player.matches.subList(from, player.matches.size).take(n).map {
+                IO(dispatcher) {
                     matchRepository.getMatchById(it.id)
                 }
+            }.parSequence()
+                .suspended()
+                .map { result ->
+                    when (result) {
+                        is Success -> {
+                            val name = player.name
+                            val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
+                            val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
+                            val copy = result.b.copy(
+                                numberOfKillsForCurrentPlayer = kills,
+                                placeForCurrentPlayer = place)
 
-                when (result) {
-                    is Success -> {
-                        val name = player.name
-                        val kills = maxOf(result.b.getNumberOfKills(name), result.b.numberOfKillsForCurrentPlayer)
-                        val place = maxOf(result.b.getWinPlaceForParticipant(name), result.b.placeForCurrentPlayer)
-                        val copy = result.b.copy(
-                            numberOfKillsForCurrentPlayer = kills,
-                            placeForCurrentPlayer = place)
-
-                        matches.add(copy)
+                            matches.add(copy)
+                        }
+                        is Failure ->
+                            ++errors
                     }
-                    is Failure ->
-                        ++errors
                 }
-            }
 
             view?.addMatches(matches)
 
