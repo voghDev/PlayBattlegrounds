@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import arrow.fx.IO
 import arrow.integrations.kotlinx.unsafeRunIO
+import arrow.integrations.kotlinx.unsafeRunScoped
 import com.google.android.material.snackbar.Snackbar
 import com.pedrogomez.renderers.RVRendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
@@ -125,9 +126,9 @@ class PlayerSearchActivity : BaseActivity(), KodeinAware, PlayerSearchPresenter.
         }) {}
 
         sendButton.setOnClickListener {
-            coroutineScope.launch {
+            IO {
                 presenter.onSendButtonClicked(userNameEditText.text.toString().trim())
-            }
+            }.unsafeRunScoped(coroutineScope) {}
         }
 
         rootView.setOnClickListener {
