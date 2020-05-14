@@ -1,7 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("kotlin-android-extensions")
+    id("ktlint")
+}
+
+repositories {
+    mavenCentral()
+}
 
 if (new File('app/src/topplayers/build.gradle').exists()
         && new File('app/src/coldrealityy/build.gradle').exists()) {
@@ -46,10 +53,6 @@ android {
             dimension "isPaid"
         }
     }
-}
-
-configurations {
-    ktlint
 }
 
 task runUnitTests(dependsOn: [':app:testDebugUnitTest']) {
@@ -110,24 +113,4 @@ dependencies {
     implementation "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:$dbflow_version"
 
     kapt "com.github.Raizlabs.DBFlow:dbflow-processor:$dbflow_version"
-
-    ktlint "com.github.shyiko:ktlint:0.31.0"
-}
-
-repositories {
-    mavenCentral()
-}
-
-task ktlint(type: JavaExec) {
-    main = "com.github.shyiko.ktlint.Main"
-    classpath = configurations.ktlint
-    args "src/**/*.kt", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/ktlint.xml"
-}
-
-check.dependsOn ktlint
-
-task ktlintFormat(type: JavaExec) {
-    main = "com.github.shyiko.ktlint.Main"
-    classpath = configurations.ktlint
-    args "-F", "src/**/*.kt"
 }
