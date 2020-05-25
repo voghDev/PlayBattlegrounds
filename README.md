@@ -16,6 +16,7 @@ This is a small App that tries to work on the following aspects:
 - Elegant & comfortable *RecyclerView* management using [Renderers 3.x][11]
 - A small Database layer using [DBFlow][10], fully implemented in Kotlin
 - Continous Integration using [CircleCI][8] - thanks to [JcMinarro][6] for [this awesome PR][9]
+- Configuring ktlint as a Gradle plugin thanks to [this PR][15] by [JavierSegoviaCordoba][16]
 
 ![Sample][appSample]
 
@@ -52,5 +53,7 @@ Thanks to [sokogames][13] for their contribution to support this project
 [12]: https://github.com/voghDev/PlayBattlegrounds/blob/master/app/src/test/java/es/voghdev/playbattlegrounds/features/players/ui/presenter/PlayerSearchPresenterTest.kt
 [13]: http://www.sokogames.com
 [14]: https://github.com/Kotlin/kotlinx.coroutines
+[15]: https://github.com/voghDev/PlayBattlegrounds/pull/72
+[16]: https://github.com/JavierSegoviaCordoba
 
 [appSample]: ./img/sample.gif
